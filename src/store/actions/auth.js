@@ -57,9 +57,7 @@ export const login = (email, password) => {
   };
 };
 
-export const register = (email, username, password, confirmPW) => {
-  // Add check for passwords
-
+export const register = (email, password) => {
   return (dispatch) => {
     dispatch(authStart());
     const authData = { email, password, returnSecureToken: true };

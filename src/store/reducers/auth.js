@@ -13,9 +13,8 @@ const initalState = {
   loading: false,
 };
 
-const authStart = (state, action) => {
+const authStart = (state, action) =>
   updateObject(state, { error: false, loading: true });
-};
 
 const authSuccess = (state, action) =>
   updateObject(state, {

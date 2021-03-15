@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 import Input from '../../../components/UI/Input/Input';
 import {
@@ -80,9 +81,13 @@ const Login = () => {
   ));
 
   return (
-    <div>
-      {form} <button onClick={submitLogin}>Login</button>
-    </div>
+    <>
+      <div>
+        {form}
+        <button onClick={submitLogin}>Login</button>
+      </div>
+      <Link to="/register">Register</Link>
+    </>
   );
 };
 
