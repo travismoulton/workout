@@ -6,6 +6,9 @@ import {
   AUTH_LOGOUT,
 } from './actionsTypes';
 
+const firebase = require('firebase');
+const firebaseui = require('firebaseui');
+
 export const authStart = () => {
   return { type: AUTH_START };
 };
@@ -94,4 +97,15 @@ export const authCheckState = () => (dispatch) => {
       dispatch(logout());
     }
   }
+};
+
+export const getUser = () => {
+  console.log(firebase);
+  firebase.default.auth().onAuthStateChanged(function (user) {
+    if (user) {
+      console.log(user);
+    } else {
+      console.log('no user');
+    }
+  });
 };

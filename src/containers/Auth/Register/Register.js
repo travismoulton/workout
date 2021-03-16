@@ -2,21 +2,8 @@ import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import Input from '../../../components/UI/Input/Input';
-import {
-  AUTH_START,
-  AUTH_SUCCESS,
-  AUTH_FAIL,
-  AUTH_LOGOUT,
-} from '../../../store/actions/actionsTypes';
-import {
-  authStart,
-  authSuccess,
-  authFail,
-  logout,
-  login,
-  register,
-  authCheckState,
-} from '../../../store/actions/index';
+
+import { register } from '../../../store/actions/index';
 
 const Register = () => {
   const [emailInput, setEmailInput] = useState({
