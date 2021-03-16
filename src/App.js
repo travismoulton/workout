@@ -7,6 +7,7 @@ import Login from './containers/Auth/Login/Login';
 import Register from './containers/Auth/Register/Register';
 import Logout from './components/Logout/Logout';
 import Search from './containers/Search/Search';
+import Layout from './components/Layout/Layout';
 import { authCheckState } from './store/actions';
 
 function App() {
@@ -17,14 +18,20 @@ function App() {
     dispatch(authCheckState());
   }, [isAuthenticated, dispatch]);
 
+  console.log('isAuthenticated', isAuthenticated);
+
+  const routes = (
+    <Switch>
+      <Route path="/register" component={Register} />
+      <Route path="/logout" component={Logout} />
+      <Route path="/search" component={Search} />
+      <Route path="/" component={Login} />
+    </Switch>
+  );
+
   return (
     <div className="App">
-      <Switch>
-        <Route path="/register" component={Register} />
-        <Route path="/logout" component={Logout} />
-        <Route path="/search" component={Search} />
-        <Route path="/" component={Login} />
-      </Switch>
+      <Layout isAuthenticated={isAuthenticated}>{routes}</Layout>
     </div>
   );
 }

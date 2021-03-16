@@ -1,0 +1,15 @@
+.Nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 5.6rem;
+  width: 100%;
+  background-color: #eee;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 10rem;
+}
+
+.NavBar {
+  width: 100%;
+}

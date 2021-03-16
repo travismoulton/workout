@@ -1,0 +1,15 @@
+.NavItem {
+  list-style: none;
+}
+
+.NavItem a {
+  color: #0099ff;
+  text-decoration: none;
+  width: 100%;
+}
+
+.NavItem a:hover,
+.NavItem a:active,
+.NavItem a.active {
+  color: #004d80;
+}

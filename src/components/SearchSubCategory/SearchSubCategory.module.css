@@ -1,0 +1,12 @@
+.SearchSubCategory {
+  width: 20rem;
+  height: 3.5rem;
+  border: 1px solid #000;
+  border-radius: 2px;
+  background-color: #80ccff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.6rem;
+  margin-bottom: 5rem;
+}
