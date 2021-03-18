@@ -8,7 +8,7 @@ import Register from './containers/Auth/Register/Register';
 import Logout from './components/Logout/Logout';
 import Search from './containers/Search/Search';
 import Layout from './components/Layout/Layout';
-import { authCheckState, getUser } from './store/actions';
+import { authCheckState } from './store/actions';
 
 const firebaseui = require('firebaseui');
 const firebase = require('firebase');
@@ -21,9 +21,9 @@ function App() {
     dispatch(authCheckState());
   }, [isAuthenticated, dispatch]);
 
-  useEffect(() => {
-    dispatch(getUser());
-  });
+  // useEffect(() => {
+  //   dispatch(getUser());
+  // });
 
   const routes = (
     <Switch>

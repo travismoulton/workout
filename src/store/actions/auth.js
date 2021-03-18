@@ -6,8 +6,9 @@ import {
   AUTH_LOGOUT,
 } from './actionsTypes';
 
-const firebase = require('firebase');
-const firebaseui = require('firebaseui');
+import Firebase from '../../components/Firebase/index';
+
+const firebase = new Firebase();
 
 export const authStart = () => {
   return { type: AUTH_START };
@@ -40,23 +41,30 @@ const checkAuthTimeout = (expirationTime) => {
   };
 };
 
+// export const login = (email, password) => {
+//   return (dispatch) => {
+//     dispatch(authStart());
+//     const authData = { email, password, returnSecureToken: true };
+//     const url =
+//       'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyD0ikjJ5GfckmGG7ku0iE3zQRupx5VeC4E';
+
+//     axios.post(url, authData).then((res) => {
+//       console.log(res);
+//       const expirationDate = new Date(
+//         new Date().getTime() + res.data.expiresIn * 1000
+//       );
+//       localStorage.setItem('token', res.data.idToken);
+//       localStorage.setItem('expirationDate', expirationDate);
+//       localStorage.setItem('userId', res.data.localId);
+//       dispatch(authSuccess(res.data.idToken, res.data.localId));
+//       dispatch(checkAuthTimeout(res.data.expiresIn));
+//     });
+//   };
+// };
+
 export const login = (email, password) => {
   return (dispatch) => {
-    dispatch(authStart());
-    const authData = { email, password, returnSecureToken: true };
-    const url =
-      'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyD0ikjJ5GfckmGG7ku0iE3zQRupx5VeC4E';
-
-    axios.post(url, authData).then((res) => {
-      const expirationDate = new Date(
-        new Date().getTime() + res.data.expiresIn * 1000
-      );
-      localStorage.setItem('token', res.data.idToken);
-      localStorage.setItem('expirationDate', expirationDate);
-      localStorage.setItem('userId', res.data.localId);
-      dispatch(authSuccess(res.data.idToken, res.data.localId));
-      dispatch(checkAuthTimeout(res.data.expiresIn));
-    });
+    firebase.doSignInWithEmailAndPassword(email, password);
   };
 };
 
@@ -99,13 +107,13 @@ export const authCheckState = () => (dispatch) => {
   }
 };
 
-export const getUser = () => {
-  console.log(firebase);
-  firebase.default.auth().onAuthStateChanged(function (user) {
-    if (user) {
-      console.log(user);
-    } else {
-      console.log('no user');
-    }
-  });
-};
+// export const getUser = () => {
+//   console.log(firebase);
+//   firebase.default.auth().onAuthStateChanged(function (user) {
+//     if (user) {
+//       console.log(user);
+//     } else {
+//       console.log('no user');
+//     }
+//   });
+// };

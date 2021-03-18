@@ -8,6 +8,7 @@ import thunk from 'redux-thunk';
 import './index.css';
 import App from './App';
 import authReducer from './store/reducers/auth';
+// import Firebase, { FirebaseContext } from './components/Firebase/index';
 import reportWebVitals from './reportWebVitals';
 
 const composeEnhancers =
@@ -26,11 +27,13 @@ const store = createStore(
 
 ReactDOM.render(
   <React.StrictMode>
+    {/* <FirebaseContext.Provider value={new Firebase()}> */}
     <Provider store={store}>
       <BrowserRouter>
         <App />
       </BrowserRouter>
     </Provider>
+    {/* </FirebaseContext.Provider> */}
   </React.StrictMode>,
   document.getElementById('root')
 );
