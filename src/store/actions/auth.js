@@ -6,10 +6,6 @@ import {
   AUTH_LOGOUT,
 } from './actionsTypes';
 
-import Firebase from '../../components/Firebase/index';
-
-const firebase = new Firebase();
-
 export const authStart = () => {
   return { type: AUTH_START };
 };
@@ -41,30 +37,24 @@ const checkAuthTimeout = (expirationTime) => {
   };
 };
 
-// export const login = (email, password) => {
-//   return (dispatch) => {
-//     dispatch(authStart());
-//     const authData = { email, password, returnSecureToken: true };
-//     const url =
-//       'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyD0ikjJ5GfckmGG7ku0iE3zQRupx5VeC4E';
-
-//     axios.post(url, authData).then((res) => {
-//       console.log(res);
-//       const expirationDate = new Date(
-//         new Date().getTime() + res.data.expiresIn * 1000
-//       );
-//       localStorage.setItem('token', res.data.idToken);
-//       localStorage.setItem('expirationDate', expirationDate);
-//       localStorage.setItem('userId', res.data.localId);
-//       dispatch(authSuccess(res.data.idToken, res.data.localId));
-//       dispatch(checkAuthTimeout(res.data.expiresIn));
-//     });
-//   };
-// };
-
 export const login = (email, password) => {
   return (dispatch) => {
-    firebase.doSignInWithEmailAndPassword(email, password);
+    dispatch(authStart());
+    const authData = { email, password, returnSecureToken: true };
+    const url =
+      'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyD0ikjJ5GfckmGG7ku0iE3zQRupx5VeC4E';
+
+    axios.post(url, authData).then((res) => {
+      console.log(res);
+      const expirationDate = new Date(
+        new Date().getTime() + res.data.expiresIn * 1000
+      );
+      localStorage.setItem('token', res.data.idToken);
+      localStorage.setItem('expirationDate', expirationDate);
+      localStorage.setItem('userId', res.data.localId);
+      dispatch(authSuccess(res.data.idToken, res.data.localId));
+      dispatch(checkAuthTimeout(res.data.expiresIn));
+    });
   };
 };
 
@@ -105,6 +95,14 @@ export const authCheckState = () => (dispatch) => {
       dispatch(logout());
     }
   }
+};
+
+export const authUpdateState = () => {
+  console.log('update');
+  return {
+    type: AUTH_SUCCESS,
+    isUser: true,
+  };
 };
 
 // export const getUser = () => {

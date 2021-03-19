@@ -19,7 +19,7 @@ import {
   authCheckState,
 } from '../../../store/actions/index';
 
-const Login = () => {
+const Login = (props) => {
   const [emailInput, setEmailInput] = useState({
     elementType: 'input',
     elementConfig: {
@@ -66,8 +66,15 @@ const Login = () => {
   const updateFunctions = [updateEmail, updatePassword];
   const formFields = [emailInput, passwordInput];
 
-  const submitLogin = (e) => {
-    dispatch(login(emailInput.value, passwordInput.value));
+  // const submitLogin = (e) => {
+  //   dispatch(login(emailInput.value, passwordInput.value));
+  // };
+
+  const submitLogin = () => {
+    props.firebase.doSignInWithEmailAndPassword(
+      emailInput.value,
+      passwordInput.value
+    );
   };
 
   const form = formFields.map((el, i) => (

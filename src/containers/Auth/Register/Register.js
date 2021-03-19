@@ -3,9 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import Input from '../../../components/UI/Input/Input';
 
-import { register } from '../../../store/actions/index';
-
-const Register = () => {
+const Register = (props) => {
   const [emailInput, setEmailInput] = useState({
     elementType: 'input',
     elementConfig: {
@@ -71,10 +69,17 @@ const Register = () => {
   const updateFunctions = [updateEmail, updatePassword, updateConfirmPW];
   const formFields = [emailInput, passwordInput, confirmPWInput];
 
+  // const submitRegister = () => {
+  //   if (passwordInput.value === confirmPWInput.value)
+  //     dispatch(register(emailInput.value, passwordInput.value));
+  //   else throw new Error();
+  // };
+
   const submitRegister = () => {
-    if (passwordInput.value === confirmPWInput.value)
-      dispatch(register(emailInput.value, passwordInput.value));
-    else throw new Error();
+    props.firebase.doCreateUserWithEmailAndPassword(
+      emailInput.value,
+      passwordInput.value
+    );
   };
 
   const form = formFields.map((el, i) => (

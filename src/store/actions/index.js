@@ -6,4 +6,5 @@ export {
   login,
   register,
   authCheckState,
+  authUpdateState,
 } from './auth';

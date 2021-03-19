@@ -23,9 +23,7 @@ class Firebase {
     this.auth.createUserWithEmailAndPassword(email, password);
 
   doSignInWithEmailAndPassword = (email, password) =>
-    this.auth
-      .signInWithEmailAndPassword(email, password)
-      .then((userCredential) => console.log(userCredential));
+    this.auth.signInWithEmailAndPassword(email, password);
 
   doSignOut = () => this.auth.signOut();
 
@@ -33,6 +31,8 @@ class Firebase {
 
   doPasswordUpdate = (password) =>
     this.auth.currentUser.updatePassword(password);
+
+  getUser = (user, fn) => this.auth.onAuthStateChanged((user) => fn(user));
 }
 
 export default Firebase;

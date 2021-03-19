@@ -4,11 +4,15 @@ import { useEffect } from 'react';
 
 import { logout } from '../../store/actions';
 
-const Logout = () => {
+const Logout = (props) => {
   const dispatch = useDispatch();
+  // useEffect(() => {
+  //   dispatch(logout());
+  // });
+
   useEffect(() => {
-    dispatch(logout());
-  });
+    props.firebase.doSignOut();
+  }, [props.firebase]);
 
   return <Redirect to="/" />;
 };
