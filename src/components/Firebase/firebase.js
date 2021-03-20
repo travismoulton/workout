@@ -31,8 +31,6 @@ class Firebase {
 
   doPasswordUpdate = (password) =>
     this.auth.currentUser.updatePassword(password);
-
-  getUser = (user, fn) => this.auth.onAuthStateChanged((user) => fn(user));
 }
 
 export default Firebase;

@@ -3,21 +3,13 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import Input from '../../../components/UI/Input/Input';
-import {
-  AUTH_START,
-  AUTH_SUCCESS,
-  AUTH_FAIL,
-  AUTH_LOGOUT,
-} from '../../../store/actions/actionsTypes';
-import {
-  authStart,
-  authSuccess,
-  authFail,
-  logout,
-  login,
-  register,
-  authCheckState,
-} from '../../../store/actions/index';
+// import {
+//   AUTH_START,
+//   AUTH_SUCCESS,
+//   AUTH_FAIL,
+//   AUTH_LOGOUT,
+// } from '../../../store/actions/actionsTypes';
+import { login } from '../../../store/actions/index';
 
 const Login = (props) => {
   const [emailInput, setEmailInput] = useState({
@@ -50,9 +42,9 @@ const Login = (props) => {
     id: 2,
   });
 
-  const loading = useSelector((state) => state.auth.loading);
-  const error = useSelector((state) => state.auth.error);
-  const isAuthenticated = useSelector((state) => state.auth.token !== null);
+  // const loading = useSelector((state) => state.auth.loading);
+  // const error = useSelector((state) => state.auth.error);
+  // const isAuthenticated = useSelector((state) => state.auth.user !== null);
   const dispatch = useDispatch();
 
   const updatePassword = (e) => {
@@ -66,15 +58,12 @@ const Login = (props) => {
   const updateFunctions = [updateEmail, updatePassword];
   const formFields = [emailInput, passwordInput];
 
-  // const submitLogin = (e) => {
-  //   dispatch(login(emailInput.value, passwordInput.value));
-  // };
-
   const submitLogin = () => {
-    props.firebase.doSignInWithEmailAndPassword(
-      emailInput.value,
-      passwordInput.value
-    );
+    props.firebase
+      .doSignInWithEmailAndPassword(emailInput.value, passwordInput.value)
+      .then((userCredential) => {
+        dispatch(login(userCredential.user));
+      });
   };
 
   const form = formFields.map((el, i) => (

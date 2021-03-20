@@ -7,11 +7,9 @@ import {
 } from '../actions/actionsTypes';
 
 const initalState = {
-  token: null,
-  userId: null,
   error: null,
   loading: false,
-  isUser: false,
+  user: null,
 };
 
 const authStart = (state, action) =>
@@ -19,8 +17,7 @@ const authStart = (state, action) =>
 
 const authSuccess = (state, action) =>
   updateObject(state, {
-    token: action.tokenId,
-    userId: action.userId,
+    user: action.user,
     error: null,
     loading: false,
   });
@@ -28,19 +25,14 @@ const authSuccess = (state, action) =>
 const authFail = (state, action) =>
   updateObject(state, { error: action.error, loading: false });
 
-const authLogout = (state, action) =>
-  updateObject(state, { token: null, userId: null });
+const authLogout = (state, action) => updateObject(state, { user: null });
 
-const updateAuthState = (state, action) =>
-  updateObject(state, { isUser: true });
 const reducer = (state = initalState, action) => {
   switch (action.type) {
     case AUTH_START:
       return authStart(state, action);
-    // case AUTH_SUCCESS:
-    //   return authSuccess(state, action);
     case AUTH_SUCCESS:
-      return updateAuthState(state, action);
+      return authSuccess(state, action);
     case AUTH_FAIL:
       return authFail(state, action);
     case AUTH_LOGOUT:

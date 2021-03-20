@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
+import { login } from '../../../store/actions/index';
 import Input from '../../../components/UI/Input/Input';
 
 const Register = (props) => {
@@ -51,7 +52,7 @@ const Register = (props) => {
 
   const loading = useSelector((state) => state.auth.loading);
   const error = useSelector((state) => state.auth.error);
-  const isAuthenticated = useSelector((state) => state.auth.token !== null);
+  const isAuthenticated = useSelector((state) => state.auth.user !== null);
   const dispatch = useDispatch();
 
   const updateEmail = (e) => {
@@ -69,17 +70,13 @@ const Register = (props) => {
   const updateFunctions = [updateEmail, updatePassword, updateConfirmPW];
   const formFields = [emailInput, passwordInput, confirmPWInput];
 
-  // const submitRegister = () => {
-  //   if (passwordInput.value === confirmPWInput.value)
-  //     dispatch(register(emailInput.value, passwordInput.value));
-  //   else throw new Error();
-  // };
-
   const submitRegister = () => {
-    props.firebase.doCreateUserWithEmailAndPassword(
-      emailInput.value,
-      passwordInput.value
-    );
+    props.firebase
+      .doCreateUserWithEmailAndPassword(emailInput.value, passwordInput.value)
+      .then((userCredential) => {
+        console.log(userCredential);
+        dispatch(login(userCredential.user));
+      });
   };
 
   const form = formFields.map((el, i) => (
