@@ -3,12 +3,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import Input from '../../../components/UI/Input/Input';
-// import {
-//   AUTH_START,
-//   AUTH_SUCCESS,
-//   AUTH_FAIL,
-//   AUTH_LOGOUT,
-// } from '../../../store/actions/actionsTypes';
 import { login } from '../../../store/actions/index';
 
 const Login = (props) => {

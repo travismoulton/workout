@@ -1,4 +1,3 @@
-import claases from './Layout.module.css';
 import Nav from '../Nav/Nav';
 import classes from './Layout.module.css';
 

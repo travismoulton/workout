@@ -1,7 +1,11 @@
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { login } from '../../../store/actions/index';
+import {
+  authFail,
+  beginRegisterState,
+  endRegisterState,
+} from '../../../store/actions/index';
 import Input from '../../../components/UI/Input/Input';
 
 const Register = (props) => {
@@ -20,6 +24,21 @@ const Register = (props) => {
     id: 1,
   });
 
+  const [userNameInput, setUserNameInput] = useState({
+    elementType: 'input',
+    elementConfig: {
+      type: 'text',
+      placeholder: 'Your User Name',
+    },
+    value: '',
+    validation: {
+      required: true,
+    },
+    valid: false,
+    touched: false,
+    id: 2,
+  });
+
   const [passwordInput, setPasswordInput] = useState({
     elementType: 'input',
     elementConfig: {
@@ -32,7 +51,7 @@ const Register = (props) => {
     },
     valid: false,
     touched: false,
-    id: 2,
+    id: 3,
   });
 
   const [confirmPWInput, setConfirmPW] = useState({
@@ -47,8 +66,10 @@ const Register = (props) => {
     },
     valid: false,
     touched: false,
-    id: 2,
+    id: 4,
   });
+
+  const [errorMessage, setErrorMessage] = useState('');
 
   const loading = useSelector((state) => state.auth.loading);
   const error = useSelector((state) => state.auth.error);
@@ -59,6 +80,10 @@ const Register = (props) => {
     setEmailInput({ ...emailInput, value: e.target.value });
   };
 
+  const updateUserName = (e) => {
+    setUserNameInput({ ...userNameInput, value: e.target.value });
+  };
+
   const updatePassword = (e) => {
     setPasswordInput({ ...passwordInput, value: e.target.value });
   };
@@ -67,16 +92,35 @@ const Register = (props) => {
     setConfirmPW({ ...confirmPWInput, value: e.target.value });
   };
 
-  const updateFunctions = [updateEmail, updatePassword, updateConfirmPW];
-  const formFields = [emailInput, passwordInput, confirmPWInput];
+  const updateFunctions = [
+    updateEmail,
+    updateUserName,
+    updatePassword,
+    updateConfirmPW,
+  ];
+  const formFields = [emailInput, userNameInput, passwordInput, confirmPWInput];
 
   const submitRegister = () => {
-    props.firebase
-      .doCreateUserWithEmailAndPassword(emailInput.value, passwordInput.value)
-      .then((userCredential) => {
-        console.log(userCredential);
-        dispatch(login(userCredential.user));
-      });
+    if (passwordInput.value === confirmPWInput.value) {
+      setErrorMessage('');
+      dispatch(beginRegisterState());
+
+      props.firebase
+        .doCreateUserWithEmailAndPassword(emailInput.value, passwordInput.value)
+        .then(() => {
+          props.firebase
+            .updateUserProfile(userNameInput.value)
+            .then(() => dispatch(endRegisterState()));
+        })
+        .catch((err) => {
+          dispatch(authFail(err));
+          setErrorMessage(err.message);
+        });
+
+      props.history.push('/');
+    } else {
+      setErrorMessage('Passwords do not match');
+    }
   };
 
   const form = formFields.map((el, i) => (
@@ -91,6 +135,7 @@ const Register = (props) => {
 
   return (
     <div>
+      {errorMessage ? <p>{errorMessage}</p> : null}
       {form}
       <button onClick={submitRegister}>Register</button>
     </div>

@@ -4,12 +4,15 @@ import {
   AUTH_SUCCESS,
   AUTH_FAIL,
   AUTH_LOGOUT,
+  AUTH_REGISTER_START,
+  AUTH_REGISTER_DONE,
 } from '../actions/actionsTypes';
 
 const initalState = {
   error: null,
   loading: false,
   user: null,
+  inRegistration: false,
 };
 
 const authStart = (state, action) =>
@@ -27,6 +30,12 @@ const authFail = (state, action) =>
 
 const authLogout = (state, action) => updateObject(state, { user: null });
 
+const startRegisterState = (state, action) =>
+  updateObject(state, { inRegistration: true });
+
+const endRegisterState = (state, action) =>
+  updateObject(state, { inRegistration: false });
+
 const reducer = (state = initalState, action) => {
   switch (action.type) {
     case AUTH_START:
@@ -37,6 +46,10 @@ const reducer = (state = initalState, action) => {
       return authFail(state, action);
     case AUTH_LOGOUT:
       return authLogout(state, action);
+    case AUTH_REGISTER_START:
+      return startRegisterState(state, action);
+    case AUTH_REGISTER_DONE:
+      return endRegisterState(state, action);
     default:
       return state;
   }
