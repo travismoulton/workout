@@ -1,6 +1,5 @@
 import axios from 'axios';
-import { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useState } from 'react';
 
 import classes from './Search.module.css';
 import SearchCategory from '../../components/SearchCategory/SearchCategory';

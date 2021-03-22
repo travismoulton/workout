@@ -5,6 +5,11 @@
   margin-bottom: 0.5rem;
   background-color: #b3ffff;
   display: flex;
+  flex-direction: column;
+}
+
+.ExerciseResult div {
+  display: flex;
   justify-content: space-between;
 }
 
@@ -15,4 +20,8 @@
 
 .ExerciseResult button.favorite {
   background-color: #fff;
+}
+
+.Mb1 {
+  margin-bottom: 0.5rem;
 }

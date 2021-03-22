@@ -8,6 +8,7 @@ const Results = (props) => {
   const [exercises, setExercises] = useState([]);
   const [favorites, setFavorites] = useState([]);
   const user = useSelector((state) => state.auth.user);
+  const wgerDict = useSelector((state) => state.wgerDict);
 
   useEffect(() => {
     const param =
@@ -40,7 +41,10 @@ const Results = (props) => {
       key={exercise.name}
       name={exercise.name}
       wgerId={exercise.uuid}
+      category={wgerDict.exerciseCategoryList[exercise.category]}
+      equipment={wgerDict.equipment[exercise.equipment[0]]}
       isFavorite={favorites.includes(exercise.uuid)}
+      id={exercise.id}
     />
   ));
 

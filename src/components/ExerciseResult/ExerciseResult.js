@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
+import slugify from 'slugify';
 
 import classes from './ExerciseResult.module.css';
 
@@ -48,8 +49,23 @@ const ExerciseResult = (props) => {
 
   return (
     <li className={classes.ExerciseResult}>
-      <Link to="/">{props.name}</Link>
-      {user ? btn : null}
+      <div className={classes.Mb1}>
+        <Link
+          to={{
+            pathname: `/exercise/${slugify(props.name)}`,
+            state: {
+              id: props.id,
+            },
+          }}
+        >
+          {props.name}
+        </Link>
+        {user ? btn : null}
+      </div>
+      <div>
+        <span>{props.category}</span>
+        <span>{props.equipment}</span>
+      </div>
     </li>
   );
 };
