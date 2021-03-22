@@ -1,11 +1,7 @@
 import { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
-import {
-  authFail,
-  beginRegisterState,
-  endRegisterState,
-} from '../../../store/actions/index';
+import { authFail, authStart, authReset } from '../../../store/actions/index';
 import Input from '../../../components/UI/Input/Input';
 
 const Register = (props) => {
@@ -71,9 +67,9 @@ const Register = (props) => {
 
   const [errorMessage, setErrorMessage] = useState('');
 
-  const loading = useSelector((state) => state.auth.loading);
-  const error = useSelector((state) => state.auth.error);
-  const isAuthenticated = useSelector((state) => state.auth.user !== null);
+  // const loading = useSelector((state) => state.auth.loading);
+  // const error = useSelector((state) => state.auth.error);
+  // const isAuthenticated = useSelector((state) => state.auth.user !== null);
   const dispatch = useDispatch();
 
   const updateEmail = (e) => {
@@ -103,17 +99,18 @@ const Register = (props) => {
   const submitRegister = () => {
     if (passwordInput.value === confirmPWInput.value) {
       setErrorMessage('');
-      dispatch(beginRegisterState());
+      dispatch(authStart());
 
       props.firebase
         .doCreateUserWithEmailAndPassword(emailInput.value, passwordInput.value)
-        .then(() => {
-          props.firebase
-            .updateUserProfile(userNameInput.value)
-            .then(() => dispatch(endRegisterState()));
+        .then((userCredential) => {
+          props.firebase.updateUserProfile(userNameInput.value).then(() => {
+            dispatch(authReset());
+          });
         })
         .catch((err) => {
           dispatch(authFail(err));
+          dispatch(authReset());
           setErrorMessage(err.message);
         });
 

@@ -10,8 +10,8 @@ const Search = () => {
   const [subCategories, setSubCategories] = useState([]);
   const [categoryOpen, setCategoryOpen] = useState('');
 
-  const getSubCategories = (query) => {
-    axios.get(`https://wger.de/api/v2/${query}`).then((res) => {
+  const getSubCategories = (category) => {
+    axios.get(`https://wger.de/api/v2/${category}`).then((res) => {
       setSubCategories(res.data.results);
     });
   };
@@ -26,16 +26,13 @@ const Search = () => {
     }
   };
 
-  // useEffect(() => {
-  //   const displaySubCategoires = subCategories.map((subCat) => (
-  //     <SearchSubCategory subCategoryName={subCat['name']} />
-  //   ));
-
-  //   console.log(displaySubCategoires);
-  // }, [subCategories]);
-
   const displaySubCategoires = subCategories.map((subCat) => (
-    <SearchSubCategory subCategoryName={subCat['name']} key={subCat['id']} />
+    <SearchSubCategory
+      subCategoryName={subCat['name']}
+      key={subCat['id']}
+      id={subCat['id']}
+      category={categoryOpen}
+    />
   ));
 
   return (

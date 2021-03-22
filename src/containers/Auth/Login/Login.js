@@ -1,9 +1,14 @@
 import { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import Input from '../../../components/UI/Input/Input';
-import { login } from '../../../store/actions/index';
+import {
+  authFail,
+  authStart,
+  authReset,
+  authSuccess,
+} from '../../../store/actions/index';
 
 const Login = (props) => {
   const [emailInput, setEmailInput] = useState({
@@ -36,6 +41,8 @@ const Login = (props) => {
     id: 2,
   });
 
+  const [errorMessage, setErrorMessage] = useState('');
+
   // const loading = useSelector((state) => state.auth.loading);
   // const error = useSelector((state) => state.auth.error);
   // const isAuthenticated = useSelector((state) => state.auth.user !== null);
@@ -53,10 +60,17 @@ const Login = (props) => {
   const formFields = [emailInput, passwordInput];
 
   const submitLogin = () => {
+    dispatch(authStart());
     props.firebase
       .doSignInWithEmailAndPassword(emailInput.value, passwordInput.value)
       .then((userCredential) => {
-        dispatch(login(userCredential.user));
+        dispatch(authSuccess(userCredential.user));
+        setErrorMessage('');
+      })
+      .catch((err) => {
+        dispatch(authFail(err));
+        dispatch(authReset());
+        setErrorMessage(err.message);
       });
   };
 
@@ -73,6 +87,7 @@ const Login = (props) => {
   return (
     <>
       <div>
+        {errorMessage ? <p>{errorMessage}</p> : null}
         {form}
         <button onClick={submitLogin}>Login</button>
       </div>

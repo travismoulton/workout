@@ -1,9 +1,1 @@
-export {
-  authStart,
-  authSuccess,
-  authFail,
-  logout,
-  login,
-  beginRegisterState,
-  endRegisterState,
-} from './auth';
+export { authStart, authSuccess, authFail, logout, authReset } from './auth';

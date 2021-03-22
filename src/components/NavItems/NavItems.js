@@ -12,7 +12,7 @@ const NavItems = (props) => {
       {props.isAuthenticated ? (
         <>
           <NavItem link="/profile">
-            {user ? user.authUser.displayName : null}
+            {user.authUser ? user.authUser.displayName : null}
           </NavItem>
           <NavItem link="/logout">Logout</NavItem>
         </>

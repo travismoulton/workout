@@ -4,25 +4,25 @@ import {
   AUTH_SUCCESS,
   AUTH_FAIL,
   AUTH_LOGOUT,
-  AUTH_REGISTER_START,
-  AUTH_REGISTER_DONE,
+  AUTH_RESET,
 } from '../actions/actionsTypes';
 
 const initalState = {
   error: null,
   loading: false,
   user: null,
-  inRegistration: false,
+  inAuth: false,
 };
 
 const authStart = (state, action) =>
-  updateObject(state, { error: false, loading: true });
+  updateObject(state, { error: false, loading: true, inAuth: true });
 
 const authSuccess = (state, action) =>
   updateObject(state, {
     user: action.user,
     error: null,
     loading: false,
+    inAuth: false,
   });
 
 const authFail = (state, action) =>
@@ -30,11 +30,12 @@ const authFail = (state, action) =>
 
 const authLogout = (state, action) => updateObject(state, { user: null });
 
-const startRegisterState = (state, action) =>
-  updateObject(state, { inRegistration: true });
-
-const endRegisterState = (state, action) =>
-  updateObject(state, { inRegistration: false });
+const authReset = (state, action) =>
+  updateObject(state, {
+    loading: false,
+    user: null,
+    inAuth: false,
+  });
 
 const reducer = (state = initalState, action) => {
   switch (action.type) {
@@ -46,10 +47,8 @@ const reducer = (state = initalState, action) => {
       return authFail(state, action);
     case AUTH_LOGOUT:
       return authLogout(state, action);
-    case AUTH_REGISTER_START:
-      return startRegisterState(state, action);
-    case AUTH_REGISTER_DONE:
-      return endRegisterState(state, action);
+    case AUTH_RESET:
+      return authReset(state, action);
     default:
       return state;
   }

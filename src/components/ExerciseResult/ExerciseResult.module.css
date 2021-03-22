@@ -1,0 +1,18 @@
+.ExerciseResult {
+  list-style: none;
+  border: 1px solid #eee;
+  padding: 1rem;
+  margin-bottom: 0.5rem;
+  background-color: #b3ffff;
+  display: flex;
+  justify-content: space-between;
+}
+
+.ExerciseResult a {
+  text-decoration: none;
+  color: #000;
+}
+
+.ExerciseResult button.favorite {
+  background-color: #fff;
+}
