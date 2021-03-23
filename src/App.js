@@ -11,6 +11,7 @@ import Layout from './components/Layout/Layout';
 import Results from './containers/Results/Results';
 import ExerciseDetail from './containers/ExerciseDetail/ExerciseDetail';
 import { logout, authSuccess } from './store/actions';
+import { getFavorites } from './store/actions';
 import { FirebaseContext } from './components/Firebase/index';
 
 function App(props) {
@@ -33,6 +34,10 @@ function App(props) {
 
     if (!authUser) dispatch(logout());
   }, [authUser, isAuthenticated, dispatch, inAuth]);
+
+  useEffect(() => {
+    if (authUser) dispatch(getFavorites(authUser.authUser.uid));
+  }, [authUser, dispatch]);
 
   const routes = (
     <Switch>

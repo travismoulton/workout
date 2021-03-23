@@ -1,22 +1,48 @@
 import axios from 'axios';
 import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import ExerciseDetailCategory from '../../components/ExerciseDetails/ExerciseDetailCategory/ExerciseDetailCategory';
 import ExerciseDetailEquipment from '../../components/ExerciseDetails/ExerciseDetailEquipment/ExerciseDetailEquipment';
 import ExerciseDetailDescription from '../../components/ExerciseDetails/ExerciseDetailDescription/ExerciseDetailDescription';
 import ExerciseDetailMuscles from '../../components/ExerciseDetails/ExerciseDetailMuscles/ExerciseDetailMuscles';
+import classes from './ExerciseDetail.module.css';
+import { addToFavorites, removeFromFavorites } from '../../store/actions';
 
 const ExerciseDetail = (props) => {
   const [exercise, setExercise] = useState();
-
+  const [isFavorite, setIsFavorite] = useState(false);
+  const [description, setDescription] = useState('');
+  const user = useSelector((state) => state.auth.user);
   const wgerDict = useSelector((state) => state.wgerDict);
+  const favorites = useSelector((state) => state.favorites.favorites);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     axios
       .get(`https://wger.de/api/v2/exercise/${props.location.state.id}`)
       .then((res) => setExercise(res.data));
   }, [props.location.state.id]);
+
+  useEffect(() => {
+    if (exercise) {
+      const div = document.createElement('div');
+      div.innerHTML = exercise.description;
+      setDescription(div.textContent || div.innerText);
+    }
+  }, [exercise]);
+
+  useEffect(() => {
+    if (exercise && favorites)
+      favorites.forEach((fav) => {
+        if (fav === exercise.uuid) setIsFavorite(true);
+      });
+  }, [favorites, exercise]);
+
+  const onSubmit = () =>
+    isFavorite
+      ? dispatch(removeFromFavorites(user.authUser.uid))
+      : dispatch(addToFavorites(user.authUser.uid));
 
   const display = exercise ? (
     <div>
@@ -27,18 +53,19 @@ const ExerciseDetail = (props) => {
       <ExerciseDetailEquipment
         equipment={exercise.equipment.map((el) => wgerDict.equipment[el])}
       />
-      <ExerciseDetailDescription
-        description={exercise.description.substring(
-          3,
-          exercise.description.length - 4
-        )}
-      />
+      <ExerciseDetailDescription description={description} />
       <ExerciseDetailMuscles
         muscles={exercise.muscles.map((muscle) => wgerDict.muscles[muscle])}
         secondary={exercise.muscles_secondary.map(
           (muscle) => wgerDict.muscles[muscle]
         )}
       />
+      <button
+        className={isFavorite ? classes.Favorite : null}
+        onClick={onSubmit}
+      >
+        Favorite
+      </button>
     </div>
   ) : null;
 

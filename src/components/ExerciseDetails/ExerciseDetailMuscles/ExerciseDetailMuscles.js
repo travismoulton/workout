@@ -1,6 +1,4 @@
 const ExerciseDetailMuscles = (props) => {
-  console.log(props);
-
   const primary = props.muscles.map((muscle) => (
     <li key={muscle.name}>{muscle.name}</li>
   ));
