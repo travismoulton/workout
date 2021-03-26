@@ -1,48 +1,34 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
 import slugify from 'slugify';
 
+import { addToFavorites, removeFromFavorites } from '../../store/actions/';
 import classes from './ExerciseResult.module.css';
 
 const ExerciseResult = (props) => {
   const user = useSelector((state) => state.auth.user);
-  const [isFavorite, setIsFavorite] = useState(false);
+  const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (props.isFavorite) setIsFavorite(true);
-  }, [props.isFavorite]);
-
-  const addToFavorites = () => {
-    if (user)
-      axios.post(
-        `https://workout-81691-default-rtdb.firebaseio.com/favorites/${user.authUser.uid}.json`,
-        {
-          exercise: props.wgerId,
-        }
-      );
-
-    setIsFavorite(true);
-  };
-
-  const removeFromFavorites = () => {
-    if (user)
-      axios.delete(
-        `https://workout-81691-default-rtdb.firebaseio.com/favorites/${user.authUser.uid}.json`,
-        {
-          exercise: props.wgerId,
-        }
-      );
-
-    setIsFavorite(false);
-  };
+  console.log(props.firebaseId);
 
   const onSubmit = () =>
-    isFavorite ? removeFromFavorites() : addToFavorites();
+    props.isFavorite
+      ? dispatch(
+          removeFromFavorites(
+            user.authUser.uuid,
+            props.firebaseId,
+            props.wgerId
+          )
+        )
+      : dispatch(addToFavorites(user.authUser.uuid, props.exerciseId));
 
   const btn = (
-    <button className={isFavorite ? classes.favorite : null} onClick={onSubmit}>
+    <button
+      className={props.isFavorite ? classes.favorite : null}
+      onClick={onSubmit}
+    >
       Favorite
     </button>
   );
@@ -54,7 +40,7 @@ const ExerciseResult = (props) => {
           to={{
             pathname: `/exercise/${slugify(props.name)}`,
             state: {
-              id: props.id,
+              id: props.exerciseId,
             },
           }}
         >

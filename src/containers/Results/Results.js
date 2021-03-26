@@ -6,8 +6,10 @@ import ExerciseResult from '../../components/ExerciseResult/ExerciseResult';
 
 const Results = (props) => {
   const [exercises, setExercises] = useState([]);
-  const [favorites, setFavorites] = useState([]);
-  const user = useSelector((state) => state.auth.user);
+  const [favoriteExerciseIds, setFavoriteExerciseIds] = useState([]);
+  // const [firebaseIds, setFirebaseIds] = useState([]);
+
+  const favorites = useSelector((state) => state.favorites.favorites);
   const wgerDict = useSelector((state) => state.wgerDict);
 
   useEffect(() => {
@@ -24,17 +26,13 @@ const Results = (props) => {
   }, [props.location.state.id, props.location.state.category]);
 
   useEffect(() => {
-    if (user)
-      axios
-        .get(
-          `https://workout-81691-default-rtdb.firebaseio.com/favorites/${user.authUser.uid}.json`
-        )
-        .then((res) => {
-          let arr = [];
-          for (const key in res.data) arr.push(res.data[key].exercise);
-          setFavorites(arr);
-        });
-  }, [user]);
+    if (favorites.length) {
+      console.log('what the fuck');
+      setFavoriteExerciseIds(favorites.map((favorite) => favorite.exercise));
+    }
+  }, [favorites]);
+
+  console.log(favoriteExerciseIds);
 
   const displayResults = exercises.map((exercise) => (
     <ExerciseResult
@@ -43,8 +41,15 @@ const Results = (props) => {
       wgerId={exercise.uuid}
       category={wgerDict.exerciseCategoryList[exercise.category]}
       equipment={wgerDict.equipment[exercise.equipment[0]]}
-      isFavorite={favorites.includes(exercise.uuid)}
-      id={exercise.id}
+      isFavorite={favoriteExerciseIds.includes(exercise.uuid)}
+      firebaseId={
+        favoriteExerciseIds.includes(exercise.uuid)
+          ? favorites.filter(
+              (favorite) => favorite.exercise === exercise.uuid
+            )[0].firebaseId
+          : null
+      }
+      exerciseId={exercise.id}
     />
   ));
 

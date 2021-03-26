@@ -13,6 +13,7 @@ const ExerciseDetail = (props) => {
   const [exercise, setExercise] = useState();
   const [isFavorite, setIsFavorite] = useState(false);
   const [description, setDescription] = useState('');
+  const [firebaseId, setFirebaseId] = useState('');
   const user = useSelector((state) => state.auth.user);
   const wgerDict = useSelector((state) => state.wgerDict);
   const favorites = useSelector((state) => state.favorites.favorites);
@@ -35,14 +36,19 @@ const ExerciseDetail = (props) => {
   useEffect(() => {
     if (exercise && favorites)
       favorites.forEach((fav) => {
-        if (fav === exercise.uuid) setIsFavorite(true);
+        if (fav.exercise === exercise.uuid) {
+          setIsFavorite(true);
+          setFirebaseId(fav.firebaseId);
+        }
       });
   }, [favorites, exercise]);
 
+  console.log(favorites.length);
+
   const onSubmit = () =>
     isFavorite
-      ? dispatch(removeFromFavorites(user.authUser.uid))
-      : dispatch(addToFavorites(user.authUser.uid));
+      ? dispatch(removeFromFavorites(user.authUser.uid, firebaseId))
+      : dispatch(addToFavorites(user.authUser.uid, exercise.uuid));
 
   const display = exercise ? (
     <div>

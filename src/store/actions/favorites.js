@@ -9,7 +9,8 @@ export const getFavorites = (userId) => {
       `https://workout-81691-default-rtdb.firebaseio.com/favorites/${userId}.json`
     )
     .then((res) => {
-      for (const key in res.data) favorites.push(res.data[key].exercise);
+      for (const key in res.data)
+        favorites.push({ firebaseId: key, exercise: res.data[key].exercise });
     });
 
   return { type: CHECK_FAVORITES, favorites };
@@ -17,7 +18,7 @@ export const getFavorites = (userId) => {
 
 export const addToFavorites = (userId, exercise) => {
   return (dispatch) => {
-    console.log('addToFavorites');
+    console.log('addToFavorites', exercise);
     axios
       .post(
         `https://workout-81691-default-rtdb.firebaseio.com/favorites/${userId}.json`,
@@ -29,12 +30,12 @@ export const addToFavorites = (userId, exercise) => {
   };
 };
 
-export const removeFromFavorites = (userId, exercise) => {
-  console.log('removeFromFavorites');
+export const removeFromFavorites = (userId, firebaseId, exercise) => {
+  console.log('removeFromFavorites', firebaseId);
   return (dispatch) => {
     axios
       .delete(
-        `https://workout-81691-default-rtdb.firebaseio.com/favorites/${userId}.json`,
+        `https://workout-81691-default-rtdb.firebaseio.com/favorites/${userId}/${firebaseId}.json`,
         {
           exercise,
         }
