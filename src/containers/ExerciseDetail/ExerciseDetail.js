@@ -43,12 +43,10 @@ const ExerciseDetail = (props) => {
       });
   }, [favorites, exercise]);
 
-  console.log(favorites.length);
-
   const onSubmit = () =>
     isFavorite
       ? dispatch(removeFromFavorites(user.authUser.uid, firebaseId))
-      : dispatch(addToFavorites(user.authUser.uid, exercise.uuid));
+      : dispatch(addToFavorites(user.authUser.uid, exercise.id));
 
   const display = exercise ? (
     <div>

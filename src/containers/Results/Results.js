@@ -32,8 +32,6 @@ const Results = (props) => {
     }
   }, [favorites]);
 
-  console.log(favoriteExerciseIds);
-
   const displayResults = exercises.map((exercise) => (
     <ExerciseResult
       key={exercise.name}
@@ -41,12 +39,11 @@ const Results = (props) => {
       wgerId={exercise.uuid}
       category={wgerDict.exerciseCategoryList[exercise.category]}
       equipment={wgerDict.equipment[exercise.equipment[0]]}
-      isFavorite={favoriteExerciseIds.includes(exercise.uuid)}
+      isFavorite={favoriteExerciseIds.includes(exercise.id)}
       firebaseId={
-        favoriteExerciseIds.includes(exercise.uuid)
-          ? favorites.filter(
-              (favorite) => favorite.exercise === exercise.uuid
-            )[0].firebaseId
+        favoriteExerciseIds.includes(exercise.id)
+          ? favorites.filter((favorite) => favorite.exercise === exercise.id)[0]
+              .firebaseId
           : null
       }
       exerciseId={exercise.id}

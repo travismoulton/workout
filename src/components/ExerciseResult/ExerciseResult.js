@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import axios from 'axios';
 import slugify from 'slugify';
 
 import { addToFavorites, removeFromFavorites } from '../../store/actions/';
@@ -11,18 +10,12 @@ const ExerciseResult = (props) => {
   const user = useSelector((state) => state.auth.user);
   const dispatch = useDispatch();
 
-  console.log(props.firebaseId);
+  console.log('exerciseResult');
 
   const onSubmit = () =>
     props.isFavorite
-      ? dispatch(
-          removeFromFavorites(
-            user.authUser.uuid,
-            props.firebaseId,
-            props.wgerId
-          )
-        )
-      : dispatch(addToFavorites(user.authUser.uuid, props.exerciseId));
+      ? dispatch(removeFromFavorites(user.authUser.uid, props.firebaseId))
+      : dispatch(addToFavorites(user.authUser.uid, props.exerciseId));
 
   const btn = (
     <button

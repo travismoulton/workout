@@ -11,7 +11,7 @@ import Layout from './components/Layout/Layout';
 import Results from './containers/Results/Results';
 import ExerciseDetail from './containers/ExerciseDetail/ExerciseDetail';
 import { logout, authSuccess } from './store/actions';
-import { getFavorites } from './store/actions';
+import { getFavorites, setFavorites } from './store/actions';
 import { FirebaseContext } from './components/Firebase/index';
 
 function App(props) {
@@ -36,7 +36,7 @@ function App(props) {
   }, [authUser, isAuthenticated, dispatch, inAuth]);
 
   useEffect(() => {
-    if (authUser) dispatch(getFavorites(authUser.authUser.uid));
+    if (authUser) dispatch(setFavorites(authUser.authUser.uid));
   }, [authUser, dispatch]);
 
   const routes = (
