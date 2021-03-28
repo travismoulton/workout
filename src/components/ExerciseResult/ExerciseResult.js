@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+// import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import slugify from 'slugify';
@@ -9,8 +9,6 @@ import classes from './ExerciseResult.module.css';
 const ExerciseResult = (props) => {
   const user = useSelector((state) => state.auth.user);
   const dispatch = useDispatch();
-
-  console.log('exerciseResult');
 
   const onSubmit = () =>
     props.isFavorite

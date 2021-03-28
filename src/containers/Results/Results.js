@@ -7,8 +7,6 @@ import ExerciseResult from '../../components/ExerciseResult/ExerciseResult';
 const Results = (props) => {
   const [exercises, setExercises] = useState([]);
   const [favoriteExerciseIds, setFavoriteExerciseIds] = useState([]);
-  // const [firebaseIds, setFirebaseIds] = useState([]);
-
   const favorites = useSelector((state) => state.favorites.favorites);
   const wgerDict = useSelector((state) => state.wgerDict);
 
@@ -26,22 +24,21 @@ const Results = (props) => {
   }, [props.location.state.id, props.location.state.category]);
 
   useEffect(() => {
-    if (favorites.length) {
-      console.log('what the fuck');
+    if (favorites)
       setFavoriteExerciseIds(favorites.map((favorite) => favorite.exercise));
-    }
   }, [favorites]);
 
   const displayResults = exercises.map((exercise) => (
     <ExerciseResult
       key={exercise.name}
       name={exercise.name}
-      wgerId={exercise.uuid}
       category={wgerDict.exerciseCategoryList[exercise.category]}
       equipment={wgerDict.equipment[exercise.equipment[0]]}
       isFavorite={favoriteExerciseIds.includes(exercise.id)}
       firebaseId={
-        favoriteExerciseIds.includes(exercise.id)
+        // Only run once setFavoriteExerciseIds has been triggered by favorites updating
+        favoriteExerciseIds.includes(exercise.id) &&
+        favorites.length === favoriteExerciseIds.length
           ? favorites.filter((favorite) => favorite.exercise === exercise.id)[0]
               .firebaseId
           : null

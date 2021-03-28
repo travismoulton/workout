@@ -34,14 +34,19 @@ const ExerciseDetail = (props) => {
   }, [exercise]);
 
   useEffect(() => {
+    setIsFavorite(false);
+    setFirebaseId('');
+
     if (exercise && favorites)
       favorites.forEach((fav) => {
-        if (fav.exercise === exercise.uuid) {
+        if (fav.exercise === exercise.id) {
           setIsFavorite(true);
           setFirebaseId(fav.firebaseId);
         }
       });
   }, [favorites, exercise]);
+
+  console.log('render');
 
   const onSubmit = () =>
     isFavorite

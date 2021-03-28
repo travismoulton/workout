@@ -11,7 +11,7 @@ import Layout from './components/Layout/Layout';
 import Results from './containers/Results/Results';
 import ExerciseDetail from './containers/ExerciseDetail/ExerciseDetail';
 import { logout, authSuccess } from './store/actions';
-import { getFavorites, setFavorites } from './store/actions';
+import { setFavorites } from './store/actions';
 import { FirebaseContext } from './components/Firebase/index';
 
 function App(props) {

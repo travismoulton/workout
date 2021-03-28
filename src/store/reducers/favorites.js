@@ -1,14 +1,11 @@
 import { updateObject } from '../../shared/utility';
-import {
-  ADD_FAVROITE,
-  REMOVE_FAVORITE,
-  CHECK_FAVORITES,
-} from '../actions/actionsTypes';
+import { CHECK_FAVORITES } from '../actions/actionsTypes';
 
 const initialState = {};
 
-const setFavorites = (state, action) =>
-  updateObject(state, { favorites: action.favorites });
+const setFavorites = (state, action) => {
+  return updateObject(state, { favorites: action.favorites });
+};
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
