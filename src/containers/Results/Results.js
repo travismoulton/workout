@@ -18,6 +18,8 @@ const Results = (props) => {
         ? `muscles=${props.location.state.id}`
         : `equipment=${props.location.state.id}`;
 
+    console.log(`https://wger.de/api/v2/exercise/?language=2&${param}`);
+
     axios
       .get(`https://wger.de/api/v2/exercise/?language=2&${param}`)
       .then((res) => setExercises(res.data.results));

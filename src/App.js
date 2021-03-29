@@ -10,6 +10,7 @@ import Search from './containers/Search/Search';
 import Layout from './components/Layout/Layout';
 import Results from './containers/Results/Results';
 import ExerciseDetail from './containers/ExerciseDetail/ExerciseDetail';
+import CreateWorkout from './containers/CreateWorkout/CreateWorkout';
 import { logout, authSuccess } from './store/actions';
 import { setFavorites } from './store/actions';
 import { FirebaseContext } from './components/Firebase/index';
@@ -56,6 +57,7 @@ function App(props) {
       <Route path="/search" component={Search} />
       <Route path="/results/:category/:query" component={Results} />
       <Route path="/exercise/:name" component={ExerciseDetail} />
+      <Route path="/create-workout" component={CreateWorkout} />
       <Route path="/">
         <FirebaseContext.Consumer>
           {(firebase) => <Login firebase={firebase} />}
