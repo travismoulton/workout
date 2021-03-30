@@ -1,0 +1,14 @@
+.WorkoutListItem {
+  border: 1px solid #eee;
+  padding: 1rem;
+  width: 75rem;
+  height: 10rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.Form {
+  display: flex;
+  justify-content: space-between;
+}

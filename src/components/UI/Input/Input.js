@@ -1,3 +1,5 @@
+import classes from './Input.module.css';
+
 const Input = (props) => {
   let inputElement = null;
 
@@ -11,6 +13,7 @@ const Input = (props) => {
             value={props.value}
             onChange={props.changed}
             autoComplete="false"
+            className={classes[props.classname]}
           />
         </div>
       );

@@ -3,6 +3,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
 
 import Input from '../../components/UI/Input/Input';
+import WorkoutListItem from '../WorkoutListItem/WorkoutListItem';
+import WorkoutInProgress from '../WorkoutInProgress/WorkoutInProgress';
+import AddExerciseBtn from '../../components/AddExerciseBtn/AddExerciseBtn';
 
 const CreateWorkout = (props) => {
   const user = useSelector((state) => state.auth.user);
@@ -11,6 +14,7 @@ const CreateWorkout = (props) => {
   const dispatch = useDispatch();
   const [favoritesAsExercies, setFavoritesAsExercies] = useState([]);
   const [favoritesAsSelectOptions, setFavoritesAsSelectOptions] = useState([]);
+  const [exercises, setExercies] = useState([]);
 
   useEffect(() => {
     let arr = [];
@@ -160,7 +164,7 @@ const CreateWorkout = (props) => {
     setSecondaryTargetAreaValue,
   ];
 
-  const form = formFields.map((field, i) => (
+  const titleForm = formFields.map((field, i) => (
     <Input
       elementType={field.elementType}
       elementConfig={field.elementConfig}
@@ -171,18 +175,33 @@ const CreateWorkout = (props) => {
     />
   ));
 
+  const addExerciseFromFavorites = (e) => {
+    setAddFromFavorites({ ...addFromFavorites, value: e.target.value });
+
+    const exercise = favoritesAsExercies.filter(
+      (fav) => fav.id === e.target.value * 1
+    )[0];
+
+    setExercies(exercises.concat([{ name: exercise.name, id: exercise.id }]));
+  };
+
   return (
     <>
-      {form}
+      {titleForm}
       <Input
         elementType={addFromFavorites.elementType}
         elementConfig={addFromFavorites.elementConfig}
         label={addFromFavorites.label}
         value={addFromFavorites.value}
-        changed={(e) =>
-          setAddFromFavorites({ ...addFromFavorites, value: e.target.value })
-        }
+        changed={(e) => addExerciseFromFavorites(e)}
       />
+      {exercises.length ? (
+        <ul style={{ listStyle: 'none' }}>
+          {exercises.map((exercise) => (
+            <WorkoutListItem name={exercise.name} key={exercise.id} />
+          ))}
+        </ul>
+      ) : null}
     </>
   );
 };
