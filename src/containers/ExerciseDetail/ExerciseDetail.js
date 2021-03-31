@@ -6,6 +6,7 @@ import ExerciseDetailCategory from '../../components/ExerciseDetails/ExerciseDet
 import ExerciseDetailEquipment from '../../components/ExerciseDetails/ExerciseDetailEquipment/ExerciseDetailEquipment';
 import ExerciseDetailDescription from '../../components/ExerciseDetails/ExerciseDetailDescription/ExerciseDetailDescription';
 import ExerciseDetailMuscles from '../../components/ExerciseDetails/ExerciseDetailMuscles/ExerciseDetailMuscles';
+import AddToWorkoutBtn from '../../components/AddToWorkoutBtn/AddToWorkoutBtn';
 import classes from './ExerciseDetail.module.css';
 import { addToFavorites, removeFromFavorites } from '../../store/actions';
 
@@ -17,6 +18,7 @@ const ExerciseDetail = (props) => {
   const user = useSelector((state) => state.auth.user);
   const wgerDict = useSelector((state) => state.wgerDict);
   const favorites = useSelector((state) => state.favorites.favorites);
+  const buildingWorkout = useSelector((state) => state.workout.buildingWorkout);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -46,8 +48,6 @@ const ExerciseDetail = (props) => {
       });
   }, [favorites, exercise]);
 
-  console.log('render');
-
   const onSubmit = () =>
     isFavorite
       ? dispatch(removeFromFavorites(user.authUser.uid, firebaseId))
@@ -75,6 +75,13 @@ const ExerciseDetail = (props) => {
       >
         Favorite
       </button>
+      {buildingWorkout ? (
+        <AddToWorkoutBtn
+          history={props.history}
+          id={exercise.id}
+          name={exercise.name}
+        />
+      ) : null}
     </div>
   ) : null;
 

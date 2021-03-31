@@ -86,6 +86,8 @@ const WorkoutListItem = (props) => {
     </div>
   );
 
+  const moveUpInOrderBtn = <button onClick>Up</button>;
+
   return (
     <li className={classes.WorkoutListItem}>
       <div>{props.name}</div>

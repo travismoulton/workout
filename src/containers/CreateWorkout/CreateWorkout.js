@@ -47,6 +47,7 @@ const CreateWorkout = (props) => {
       );
   }, [favoritesAsExercies, favoritesAsSelectOptions]);
 
+  // *******************
   useEffect(() => {
     if (storedExercises.length && !exercises.length) {
       setExercies(storedExercises);
@@ -149,6 +150,7 @@ const CreateWorkout = (props) => {
       });
   }, [addFromFavorites, favoritesAsSelectOptions]);
 
+  // ********************
   useEffect(() => {
     if (exercises.length) dispatch(storeExercises(exercises));
   }, [exercises, dispatch]);
@@ -197,16 +199,16 @@ const CreateWorkout = (props) => {
       (fav) => fav.id === e.target.value * 1
     )[0];
 
-    setExercies(
-      exercises.concat([
-        { name: exercise.name, id: exercise.id, weight: 0, sets: 1, reps: 1 },
-      ])
-    );
+    if (exercise)
+      setExercies(
+        exercises.concat([
+          { name: exercise.name, id: exercise.id, weight: 0, sets: 1, reps: 1 },
+        ])
+      );
   };
 
   const onAddExerciseBySearchClick = () => {
     dispatch(startSearchMode());
-
     props.history.push('/search');
   };
 
@@ -222,14 +224,15 @@ const CreateWorkout = (props) => {
       exercises.filter((exercise) => exercise.id === exerciseId)[0]
     );
 
-    console.log(exercises.length > 1);
-
-    exercises.length > 1
-      ? setExercies([
-          ...exercises.slice(0, index),
-          ...exercises.slice(index + 1),
-        ])
-      : setExercies([]);
+    if (exercises.length > 1) {
+      setExercies([
+        ...exercises.slice(0, index),
+        ...exercises.slice(index + 1),
+      ]);
+    } else {
+      dispatch(storeExercises([]));
+      setExercies([]);
+    }
   };
 
   return (
