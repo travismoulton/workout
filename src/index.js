@@ -9,6 +9,7 @@ import './index.css';
 import App from './App';
 import authReducer from './store/reducers/auth';
 import favoritesReducer from './store/reducers/favorites';
+import workoutReducer from './store/reducers/workout';
 import wgerDict from './store/reducers/wgerDict';
 import Firebase, { FirebaseContext } from './components/Firebase/index';
 import reportWebVitals from './reportWebVitals';
@@ -21,6 +22,7 @@ const composeEnhancers =
 const rootReducer = combineReducers({
   auth: authReducer,
   favorites: favoritesReducer,
+  workout: workoutReducer,
   wgerDict,
 });
 

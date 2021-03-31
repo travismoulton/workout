@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 import classes from './WorkoutListItem.module.css';
 import Input from '../../components/UI/Input/Input';
@@ -14,12 +14,7 @@ const WorkoutListItem = (props) => {
         return arr;
       })(),
     },
-    value: 0,
-    validation: {
-      required: true,
-    },
-    valid: true,
-    touched: false,
+    value: props.weight,
     label: 'Weight',
     id: 1,
   });
@@ -33,12 +28,7 @@ const WorkoutListItem = (props) => {
         return arr;
       })(),
     },
-    value: 0,
-    validation: {
-      required: true,
-    },
-    valid: true,
-    touched: false,
+    value: props.sets,
     label: 'Number of sets',
     id: 2,
   });
@@ -52,32 +42,24 @@ const WorkoutListItem = (props) => {
         return arr;
       })(),
     },
-    value: 0,
-    validation: {
-      required: true,
-    },
-    valid: true,
-    touched: false,
+    value: props.reps,
     label: 'Number of reps',
     id: 3,
   });
 
-  useEffect(() => {
-    let arr = [];
-    for (let i = 0; i < 100; i++) arr.push(i * 5);
-    console.log(arr);
-  });
-
   const setWeight = (e) => {
     setWeightInput({ ...weightInput, value: e.target.value * 1 });
+    props.updateExerciseData(props.id, 'weight', e.target.value * 1);
   };
 
   const setNumSets = (e) => {
     setSetsInput({ ...setsInput, value: e.target.value * 1 });
+    props.updateExerciseData(props.id, 'sets', e.target.value * 1);
   };
 
   const setNumReps = (e) => {
     setRepsInput({ ...repsInput, value: e.target.value * 1 });
+    props.updateExerciseData(props.id, 'reps', e.target.value * 1);
   };
 
   const formFields = [weightInput, setsInput, repsInput];
@@ -95,10 +77,20 @@ const WorkoutListItem = (props) => {
     />
   ));
 
+  const closeWorkoutBtn = (
+    <div
+      className={classes.CloseWorkoutBtn}
+      onClick={() => props.removeExercise(props.id)}
+    >
+      &times;
+    </div>
+  );
+
   return (
     <li className={classes.WorkoutListItem}>
       <div>{props.name}</div>
       <div className={classes.Form}>{form}</div>
+      {closeWorkoutBtn}
     </li>
   );
 };

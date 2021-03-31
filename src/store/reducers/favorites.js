@@ -3,9 +3,8 @@ import { CHECK_FAVORITES } from '../actions/actionsTypes';
 
 const initialState = {};
 
-const setFavorites = (state, action) => {
-  return updateObject(state, { favorites: action.favorites });
-};
+const setFavorites = (state, action) =>
+  updateObject(state, { favorites: action.favorites });
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {

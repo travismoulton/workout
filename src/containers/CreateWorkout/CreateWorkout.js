@@ -4,13 +4,17 @@ import axios from 'axios';
 
 import Input from '../../components/UI/Input/Input';
 import WorkoutListItem from '../WorkoutListItem/WorkoutListItem';
-import WorkoutInProgress from '../WorkoutInProgress/WorkoutInProgress';
-import AddExerciseBtn from '../../components/AddExerciseBtn/AddExerciseBtn';
+import {
+  startSearchMode,
+  storeExercises,
+  endSearchMode,
+} from '../../store/actions';
 
 const CreateWorkout = (props) => {
-  const user = useSelector((state) => state.auth.user);
+  // const user = useSelector((state) => state.auth.user);
   const favorites = useSelector((state) => state.favorites.favorites);
-  const wgerDict = useSelector((state) => state.wgerDict);
+  // const wgerDict = useSelector((state) => state.wgerDict);
+  const storedExercises = useSelector((state) => state.workout.exercises);
   const dispatch = useDispatch();
   const [favoritesAsExercies, setFavoritesAsExercies] = useState([]);
   const [favoritesAsSelectOptions, setFavoritesAsSelectOptions] = useState([]);
@@ -42,6 +46,13 @@ const CreateWorkout = (props) => {
         }))
       );
   }, [favoritesAsExercies, favoritesAsSelectOptions]);
+
+  useEffect(() => {
+    if (storedExercises.length && !exercises.length) {
+      setExercies(storedExercises);
+      dispatch(endSearchMode());
+    }
+  }, [storedExercises, dispatch, exercises]);
 
   const [workoutNameInput, setWorkoutNameInput] = useState({
     elementType: 'input',
@@ -138,6 +149,10 @@ const CreateWorkout = (props) => {
       });
   }, [addFromFavorites, favoritesAsSelectOptions]);
 
+  useEffect(() => {
+    if (exercises.length) dispatch(storeExercises(exercises));
+  }, [exercises, dispatch]);
+
   const setWorkoutNameValue = (e) => {
     setWorkoutNameInput({ ...workoutNameInput, value: e.target.value });
   };
@@ -182,7 +197,39 @@ const CreateWorkout = (props) => {
       (fav) => fav.id === e.target.value * 1
     )[0];
 
-    setExercies(exercises.concat([{ name: exercise.name, id: exercise.id }]));
+    setExercies(
+      exercises.concat([
+        { name: exercise.name, id: exercise.id, weight: 0, sets: 1, reps: 1 },
+      ])
+    );
+  };
+
+  const onAddExerciseBySearchClick = () => {
+    dispatch(startSearchMode());
+
+    props.history.push('/search');
+  };
+
+  const updateExerciseData = (exerciseId, param, val) => {
+    const newExercises = exercises.map((exercise) =>
+      exercise.id === exerciseId ? { ...exercise, [param]: val } : exercise
+    );
+    setExercies(newExercises);
+  };
+
+  const removeExercise = (exerciseId) => {
+    const index = exercises.indexOf(
+      exercises.filter((exercise) => exercise.id === exerciseId)[0]
+    );
+
+    console.log(exercises.length > 1);
+
+    exercises.length > 1
+      ? setExercies([
+          ...exercises.slice(0, index),
+          ...exercises.slice(index + 1),
+        ])
+      : setExercies([]);
   };
 
   return (
@@ -195,10 +242,23 @@ const CreateWorkout = (props) => {
         value={addFromFavorites.value}
         changed={(e) => addExerciseFromFavorites(e)}
       />
+
+      <button onClick={onAddExerciseBySearchClick}>
+        Add from exercise search menu
+      </button>
       {exercises.length ? (
         <ul style={{ listStyle: 'none' }}>
           {exercises.map((exercise) => (
-            <WorkoutListItem name={exercise.name} key={exercise.id} />
+            <WorkoutListItem
+              name={exercise.name}
+              key={exercise.id}
+              id={exercise.id}
+              updateExerciseData={updateExerciseData}
+              weight={exercise.weight}
+              sets={exercise.sets}
+              reps={exercise.reps}
+              removeExercise={removeExercise}
+            />
           ))}
         </ul>
       ) : null}

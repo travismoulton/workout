@@ -3,11 +3,17 @@ import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import slugify from 'slugify';
 
-import { addToFavorites, removeFromFavorites } from '../../store/actions/';
+import AddToWorkoutBtn from '../AddToWorkoutBtn/AddToWorkoutBtn';
+import {
+  addToFavorites,
+  removeFromFavorites,
+  // addExercise,
+} from '../../store/actions/';
 import classes from './ExerciseResult.module.css';
 
 const ExerciseResult = (props) => {
   const user = useSelector((state) => state.auth.user);
+  const buildingWorkout = useSelector((state) => state.workout.buildingWorkout);
   const dispatch = useDispatch();
 
   const onSubmit = () =>
@@ -38,6 +44,13 @@ const ExerciseResult = (props) => {
           {props.name}
         </Link>
         {user ? btn : null}
+        {buildingWorkout ? (
+          <AddToWorkoutBtn
+            name={props.name}
+            id={props.exerciseId}
+            history={props.history}
+          />
+        ) : null}
       </div>
       <div>
         <span>{props.category}</span>

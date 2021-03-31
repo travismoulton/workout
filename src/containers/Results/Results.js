@@ -18,8 +18,6 @@ const Results = (props) => {
         ? `muscles=${props.location.state.id}`
         : `equipment=${props.location.state.id}`;
 
-    console.log(`https://wger.de/api/v2/exercise/?language=2&${param}`);
-
     axios
       .get(`https://wger.de/api/v2/exercise/?language=2&${param}`)
       .then((res) => setExercises(res.data.results));
@@ -32,6 +30,7 @@ const Results = (props) => {
 
   const displayResults = exercises.map((exercise) => (
     <ExerciseResult
+      history={props.history}
       key={exercise.name}
       name={exercise.name}
       category={wgerDict.exerciseCategoryList[exercise.category]}
