@@ -4,21 +4,17 @@ import axios from 'axios';
 
 import Input from '../../components/UI/Input/Input';
 import WorkoutListItem from '../WorkoutListItem/WorkoutListItem';
-import {
-  startSearchMode,
-  storeExercises,
-  endSearchMode,
-} from '../../store/actions';
+import SubmitWorkoutBtn from '../../components/SubmitWorkoutBtn/SubmitWorkoutBtn';
+import { startSearchMode, addExercise } from '../../store/actions';
+import { updateObject, checkValidityHandler } from '../../shared/utility';
 
 const CreateWorkout = (props) => {
-  // const user = useSelector((state) => state.auth.user);
-  const favorites = useSelector((state) => state.favorites.favorites);
-  // const wgerDict = useSelector((state) => state.wgerDict);
-  const storedExercises = useSelector((state) => state.workout.exercises);
+  const { favorites } = useSelector((state) => state.favorites);
+  const { exercises } = useSelector((state) => state.workout);
   const dispatch = useDispatch();
   const [favoritesAsExercies, setFavoritesAsExercies] = useState([]);
   const [favoritesAsSelectOptions, setFavoritesAsSelectOptions] = useState([]);
-  const [exercises, setExercies] = useState([]);
+  const [formIsValid, setFormIsValid] = useState(false);
 
   useEffect(() => {
     let arr = [];
@@ -47,14 +43,6 @@ const CreateWorkout = (props) => {
       );
   }, [favoritesAsExercies, favoritesAsSelectOptions]);
 
-  // *******************
-  useEffect(() => {
-    if (storedExercises.length && !exercises.length) {
-      setExercies(storedExercises);
-      dispatch(endSearchMode());
-    }
-  }, [storedExercises, dispatch, exercises]);
-
   const [workoutNameInput, setWorkoutNameInput] = useState({
     elementType: 'input',
     elementConfig: {
@@ -67,7 +55,7 @@ const CreateWorkout = (props) => {
     },
     valid: false,
     touched: false,
-    id: 1,
+    id: 'workoutNameInput',
   });
 
   const [targetAreaInput, setTargetAreaInput] = useState({
@@ -87,11 +75,11 @@ const CreateWorkout = (props) => {
     value: '',
     label: 'Target Muscle Area',
     validation: {
-      required: true,
+      required: false,
     },
-    valid: false,
+    valid: true,
     touched: false,
-    id: 2,
+    id: 'targetAreaInput',
   });
 
   const [secondaryTargetAreaInput, setSecondaryTargetAreaInput] = useState({
@@ -111,11 +99,11 @@ const CreateWorkout = (props) => {
     value: '',
     label: ' Secondary Target',
     validation: {
-      required: true,
+      required: false,
     },
-    valid: false,
+    valid: true,
     touched: false,
-    id: 3,
+    id: 'secondaryTargetArea',
   });
 
   const [addFromFavorites, setAddFromFavorites] = useState({
@@ -150,61 +138,55 @@ const CreateWorkout = (props) => {
       });
   }, [addFromFavorites, favoritesAsSelectOptions]);
 
-  // ********************
-  useEffect(() => {
-    if (exercises.length) dispatch(storeExercises(exercises));
-  }, [exercises, dispatch]);
-
-  const setWorkoutNameValue = (e) => {
-    setWorkoutNameInput({ ...workoutNameInput, value: e.target.value });
-  };
-
-  const setTargetAreaValue = (e) => {
-    setTargetAreaInput({ ...targetAreaInput, value: e.target.value });
-  };
-
-  const setSecondaryTargetAreaValue = (e) => {
-    setSecondaryTargetAreaInput({
-      ...secondaryTargetAreaInput,
-      value: e.target.value,
-    });
-  };
-
   const formFields = [
     workoutNameInput,
     targetAreaInput,
     secondaryTargetAreaInput,
   ];
-  const updateFunctions = [
-    setWorkoutNameValue,
-    setTargetAreaValue,
-    setSecondaryTargetAreaValue,
-  ];
 
-  const titleForm = formFields.map((field, i) => (
+  const inputChangedHandler = (e, input) => {
+    const updatedInput = updateObject(input, {
+      value: e.target.value,
+      valid: checkValidityHandler(e.target.value, input.validation),
+      touched: true,
+    });
+
+    if (input.id === 'workoutNameInput') setFormIsValid(updatedInput.valid);
+
+    input.id === 'workoutNameInput'
+      ? setWorkoutNameInput(updatedInput)
+      : input.id === 'targetAreaInput'
+      ? setTargetAreaInput(updatedInput)
+      : setSecondaryTargetAreaInput(updatedInput);
+  };
+
+  const titleForm = formFields.map((field) => (
     <Input
       elementType={field.elementType}
       elementConfig={field.elementConfig}
       key={field.id}
       value={field.value}
-      changed={updateFunctions[i]}
+      changed={(e) => inputChangedHandler(e, field)}
       label={field.label}
+      touched={field.touched}
+      invalid={!field.valid}
     />
   ));
 
   const addExerciseFromFavorites = (e) => {
-    setAddFromFavorites({ ...addFromFavorites, value: e.target.value });
-
     const exercise = favoritesAsExercies.filter(
       (fav) => fav.id === e.target.value * 1
     )[0];
 
-    if (exercise)
-      setExercies(
-        exercises.concat([
-          { name: exercise.name, id: exercise.id, weight: 0, sets: 1, reps: 1 },
-        ])
-      );
+    dispatch(
+      addExercise({
+        name: exercise.name,
+        id: exercise.id,
+        weight: 0,
+        sets: 1,
+        reps: 1,
+      })
+    );
   };
 
   const onAddExerciseBySearchClick = () => {
@@ -212,27 +194,8 @@ const CreateWorkout = (props) => {
     props.history.push('/search');
   };
 
-  const updateExerciseData = (exerciseId, param, val) => {
-    const newExercises = exercises.map((exercise) =>
-      exercise.id === exerciseId ? { ...exercise, [param]: val } : exercise
-    );
-    setExercies(newExercises);
-  };
-
-  const removeExercise = (exerciseId) => {
-    const index = exercises.indexOf(
-      exercises.filter((exercise) => exercise.id === exerciseId)[0]
-    );
-
-    if (exercises.length > 1) {
-      setExercies([
-        ...exercises.slice(0, index),
-        ...exercises.slice(index + 1),
-      ]);
-    } else {
-      dispatch(storeExercises([]));
-      setExercies([]);
-    }
+  const setInputAsTouched = () => {
+    setWorkoutNameInput({ ...workoutNameInput, touched: true });
   };
 
   return (
@@ -250,20 +213,29 @@ const CreateWorkout = (props) => {
         Add from exercise search menu
       </button>
       {exercises.length ? (
-        <ul style={{ listStyle: 'none' }}>
-          {exercises.map((exercise) => (
-            <WorkoutListItem
-              name={exercise.name}
-              key={exercise.id}
-              id={exercise.id}
-              updateExerciseData={updateExerciseData}
-              weight={exercise.weight}
-              sets={exercise.sets}
-              reps={exercise.reps}
-              removeExercise={removeExercise}
-            />
-          ))}
-        </ul>
+        <>
+          <ul style={{ listStyle: 'none' }}>
+            {exercises.map((exercise, i) => (
+              <WorkoutListItem
+                name={exercise.name}
+                key={exercise.id}
+                id={exercise.id}
+                weight={exercise.weight}
+                sets={exercise.sets}
+                reps={exercise.reps}
+                firstExercise={i === 0}
+                lastExercise={i === exercises.length - 1}
+              />
+            ))}
+          </ul>
+          <SubmitWorkoutBtn
+            title={workoutNameInput.value}
+            targetArea={targetAreaInput.value}
+            secondaryTarget={secondaryTargetAreaInput.value}
+            formIsValid={formIsValid}
+            setInputAsTouched={setInputAsTouched}
+          />
+        </>
       ) : null}
     </>
   );

@@ -2,9 +2,12 @@ import classes from './Input.module.css';
 
 const Input = (props) => {
   let inputElement = null;
+  const inputClasses = [classes[props.className]];
+  if (props.invalid && props.touched) inputClasses.push(classes.Invalid);
 
   switch (props.elementType) {
     case 'input':
+      inputClasses.push(classes.TextInput);
       inputElement = (
         <div>
           {props.label ? <label>{props.label}</label> : null}
@@ -13,7 +16,7 @@ const Input = (props) => {
             value={props.value}
             onChange={props.changed}
             autoComplete="false"
-            className={classes[props.classname]}
+            className={inputClasses.join(' ')}
           />
         </div>
       );

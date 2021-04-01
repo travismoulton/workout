@@ -10,5 +10,5 @@ export const REMOVE_FAVORITE = 'REMOVE_FAVORITE';
 
 export const START_SEARCH = 'START_SEARCH';
 export const END_SEARCH = 'END_SEARCH';
-export const STORE_EXERCISES = 'STORE_EXERCISES';
+export const SET_EXERCISES = 'SET_EXERCISES';
 export const ADD_EXERCISE = 'ADD_EXERCISE';

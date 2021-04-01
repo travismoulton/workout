@@ -1,7 +1,7 @@
 import {
   START_SEARCH,
   END_SEARCH,
-  STORE_EXERCISES,
+  SET_EXERCISES,
   ADD_EXERCISE,
 } from '../actions/actionsTypes';
 import { updateObject } from '../../shared/utility';
@@ -14,11 +14,14 @@ const enterSearchMode = (state, action) =>
 const exitSearchMode = (state, action) =>
   updateObject(state, { buildingWorkout: false, exercises: [] });
 
-const storeExercises = (state, action) =>
-  updateObject(state, { exercises: action.exercises });
+const setExercises = (state, action) =>
+  updateObject(state, { exercises: action.exercises, buildingWorkout: false });
 
 const addExercise = (state, action) =>
-  updateObject(state, { exercises: state.exercises.concat(action.exercise) });
+  updateObject(state, {
+    exercises: state.exercises.concat(action.exercise),
+    buildingWorkout: false,
+  });
 
 const reducer = (state = intialState, action) => {
   switch (action.type) {
@@ -26,8 +29,8 @@ const reducer = (state = intialState, action) => {
       return enterSearchMode(state, action);
     case END_SEARCH:
       return exitSearchMode(state, action);
-    case STORE_EXERCISES:
-      return storeExercises(state, action);
+    case SET_EXERCISES:
+      return setExercises(state, action);
     case ADD_EXERCISE:
       return addExercise(state, action);
     default:

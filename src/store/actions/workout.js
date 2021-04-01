@@ -1,17 +1,43 @@
-import {
-  START_SEARCH,
-  END_SEARCH,
-  STORE_EXERCISES,
-  ADD_EXERCISE,
-} from './actionsTypes';
+import { START_SEARCH, SET_EXERCISES, ADD_EXERCISE } from './actionsTypes';
 
 export const startSearchMode = () => ({ type: START_SEARCH });
 
-export const endSearchMode = () => ({ type: END_SEARCH });
-
-export const storeExercises = (exercises) => ({
-  type: STORE_EXERCISES,
-  exercises,
-});
-
 export const addExercise = (exercise) => ({ type: ADD_EXERCISE, exercise });
+
+export const changeExerciseOrder = (exercises, exerciseId, direction) => {
+  const index = exercises.indexOf(
+    exercises.filter((exercise) => exercise.id === exerciseId)[0]
+  );
+
+  const swap = (arr, i, j) => ([arr[i], arr[j]] = [arr[j], arr[i]]);
+
+  direction === 'up'
+    ? swap(exercises, index, index - 1)
+    : swap(exercises, index, index + 1);
+
+  return { type: SET_EXERCISES, exercises };
+};
+
+export const removeExercise = (exercises, exerciseId) => {
+  const index = exercises.indexOf(
+    exercises.filter((exercise) => exercise.id === exerciseId)[0]
+  );
+
+  return exercises.length > 1
+    ? {
+        type: SET_EXERCISES,
+        exercises: [
+          ...exercises.slice(0, index),
+          ...exercises.slice(index + 1),
+        ],
+      }
+    : { type: SET_EXERCISES, exercises: [] };
+};
+
+export const updateExerciseData = (exercises, exerciseId, param, val) => {
+  const newExercises = exercises.map((exercise) =>
+    exercise.id === exerciseId ? { ...exercise, [param]: val } : exercise
+  );
+
+  return { type: SET_EXERCISES, exercises: newExercises };
+};
