@@ -6,4 +6,6 @@ export {
   removeExercise,
   addExercise,
   updateExerciseData,
+  clearExercises,
+  setFormData,
 } from './workout';

@@ -5,12 +5,13 @@ import axios from 'axios';
 import Input from '../../components/UI/Input/Input';
 import WorkoutListItem from '../WorkoutListItem/WorkoutListItem';
 import SubmitWorkoutBtn from '../../components/SubmitWorkoutBtn/SubmitWorkoutBtn';
-import { startSearchMode, addExercise } from '../../store/actions';
+import { startSearchMode, addExercise, setFormData } from '../../store/actions';
 import { updateObject, checkValidityHandler } from '../../shared/utility';
 
 const CreateWorkout = (props) => {
   const { favorites } = useSelector((state) => state.favorites);
   const { exercises } = useSelector((state) => state.workout);
+  const { formData } = useSelector((state) => state.workout);
   const dispatch = useDispatch();
   const [favoritesAsExercies, setFavoritesAsExercies] = useState([]);
   const [favoritesAsSelectOptions, setFavoritesAsSelectOptions] = useState([]);
@@ -49,13 +50,13 @@ const CreateWorkout = (props) => {
       type: 'text',
       placeholder: 'Workout name',
     },
-    value: '',
+    value: formData.workoutName,
     validation: {
       required: true,
     },
     valid: false,
     touched: false,
-    id: 'workoutNameInput',
+    id: 'workoutName',
   });
 
   const [targetAreaInput, setTargetAreaInput] = useState({
@@ -72,14 +73,14 @@ const CreateWorkout = (props) => {
         { value: 13, displayValue: 'Shoulders' },
       ],
     },
-    value: '',
+    value: formData.targetArea,
     label: 'Target Muscle Area',
     validation: {
       required: false,
     },
     valid: true,
     touched: false,
-    id: 'targetAreaInput',
+    id: 'targetArea',
   });
 
   const [secondaryTargetAreaInput, setSecondaryTargetAreaInput] = useState({
@@ -96,14 +97,14 @@ const CreateWorkout = (props) => {
         { value: 13, displayValue: 'Shoulders' },
       ],
     },
-    value: '',
+    value: formData.secondaryTarget,
     label: ' Secondary Target',
     validation: {
       required: false,
     },
     valid: true,
     touched: false,
-    id: 'secondaryTargetArea',
+    id: 'secondaryTarget',
   });
 
   const [addFromFavorites, setAddFromFavorites] = useState({
@@ -153,11 +154,13 @@ const CreateWorkout = (props) => {
 
     if (input.id === 'workoutNameInput') setFormIsValid(updatedInput.valid);
 
-    input.id === 'workoutNameInput'
+    input.id === 'workoutName'
       ? setWorkoutNameInput(updatedInput)
-      : input.id === 'targetAreaInput'
+      : input.id === 'targetArea'
       ? setTargetAreaInput(updatedInput)
       : setSecondaryTargetAreaInput(updatedInput);
+
+    dispatch(setFormData(formData, input.id, e.target.value));
   };
 
   const titleForm = formFields.map((field) => (

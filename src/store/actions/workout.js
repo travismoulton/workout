@@ -1,4 +1,10 @@
-import { START_SEARCH, SET_EXERCISES, ADD_EXERCISE } from './actionsTypes';
+import { updateObject } from '../../shared/utility';
+import {
+  START_SEARCH,
+  SET_EXERCISES,
+  ADD_EXERCISE,
+  SET_WORKOUT_FORM_DATA,
+} from './actionsTypes';
 
 export const startSearchMode = () => ({ type: START_SEARCH });
 
@@ -41,3 +47,12 @@ export const updateExerciseData = (exercises, exerciseId, param, val) => {
 
   return { type: SET_EXERCISES, exercises: newExercises };
 };
+
+export const clearExercises = () => ({ type: SET_EXERCISES, exercises: [] });
+
+export const setFormData = (formData, formEl, val) => ({
+  type: SET_WORKOUT_FORM_DATA,
+  formData,
+  formEl,
+  val,
+});

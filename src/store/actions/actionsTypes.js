@@ -9,6 +9,6 @@ export const ADD_FAVROITE = 'ADD_FAVROITE';
 export const REMOVE_FAVORITE = 'REMOVE_FAVORITE';
 
 export const START_SEARCH = 'START_SEARCH';
-export const END_SEARCH = 'END_SEARCH';
 export const SET_EXERCISES = 'SET_EXERCISES';
 export const ADD_EXERCISE = 'ADD_EXERCISE';
+export const SET_WORKOUT_FORM_DATA = 'SET_WORKOUT_FORM_DATA';
