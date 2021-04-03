@@ -1,9 +1,9 @@
-import { updateObject } from '../../shared/utility';
 import {
   START_SEARCH,
   SET_EXERCISES,
   ADD_EXERCISE,
   SET_WORKOUT_FORM_DATA,
+  CLEAR_WORKOUT_FORM_DATA,
 } from './actionsTypes';
 
 export const startSearchMode = () => ({ type: START_SEARCH });
@@ -56,3 +56,5 @@ export const setFormData = (formData, formEl, val) => ({
   formEl,
   val,
 });
+
+export const clearForm = () => ({ type: CLEAR_WORKOUT_FORM_DATA });

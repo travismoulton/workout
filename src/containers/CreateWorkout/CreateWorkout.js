@@ -15,7 +15,10 @@ const CreateWorkout = (props) => {
   const dispatch = useDispatch();
   const [favoritesAsExercies, setFavoritesAsExercies] = useState([]);
   const [favoritesAsSelectOptions, setFavoritesAsSelectOptions] = useState([]);
-  const [formIsValid, setFormIsValid] = useState(false);
+  // The form should be valid if the component renders with a workoutName coming from redux
+  const [formIsValid, setFormIsValid] = useState(
+    formData.workoutName ? true : false
+  );
 
   useEffect(() => {
     let arr = [];
@@ -54,7 +57,7 @@ const CreateWorkout = (props) => {
     validation: {
       required: true,
     },
-    valid: false,
+    valid: formData.workoutName ? true : false,
     touched: false,
     id: 'workoutName',
   });
@@ -71,6 +74,7 @@ const CreateWorkout = (props) => {
         { value: 11, displayValue: 'Chest' },
         { value: 9, displayValue: 'Legs' },
         { value: 13, displayValue: 'Shoulders' },
+        { value: 1, displayValue: 'All Body' },
       ],
     },
     value: formData.targetArea,
@@ -152,7 +156,7 @@ const CreateWorkout = (props) => {
       touched: true,
     });
 
-    if (input.id === 'workoutNameInput') setFormIsValid(updatedInput.valid);
+    if (input.id === 'workoutName') setFormIsValid(updatedInput.valid);
 
     input.id === 'workoutName'
       ? setWorkoutNameInput(updatedInput)
@@ -201,6 +205,12 @@ const CreateWorkout = (props) => {
     setWorkoutNameInput({ ...workoutNameInput, touched: true });
   };
 
+  const clearAllFormInputs = () => {
+    setWorkoutNameInput({ ...workoutNameInput, value: '' });
+    setTargetAreaInput({ ...targetAreaInput, value: '' });
+    setSecondaryTargetAreaInput({ ...secondaryTargetAreaInput, value: '' });
+  };
+
   return (
     <>
       {titleForm}
@@ -236,6 +246,7 @@ const CreateWorkout = (props) => {
             targetArea={targetAreaInput.value}
             secondaryTarget={secondaryTargetAreaInput.value}
             formIsValid={formIsValid}
+            clearAllFormInputs={clearAllFormInputs}
             setInputAsTouched={setInputAsTouched}
           />
         </>

@@ -3,6 +3,7 @@ import {
   SET_EXERCISES,
   ADD_EXERCISE,
   SET_WORKOUT_FORM_DATA,
+  CLEAR_WORKOUT_FORM_DATA,
 } from '../actions/actionsTypes';
 import { updateObject } from '../../shared/utility';
 
@@ -28,11 +29,23 @@ const addExercise = (state, action) =>
     buildingWorkout: false,
   });
 
-const setFormData = (state, action) =>
-  updateObject(state, {
-    ...action.formData,
+const setFormData = (state, action) => {
+  const updatedForm = updateObject(state.formData, {
     [action.formEl]: action.val,
   });
+
+  return updateObject(state, { formData: updatedForm });
+};
+
+const clearFormData = (state, action) => {
+  const updatedFormData = updateObject(state.formData, {
+    workoutName: '',
+    targetArea: '',
+    secondaryTarget: '',
+  });
+
+  return updateObject(state, { formData: updatedFormData });
+};
 
 const reducer = (state = intialState, action) => {
   switch (action.type) {
@@ -44,6 +57,8 @@ const reducer = (state = intialState, action) => {
       return addExercise(state, action);
     case SET_WORKOUT_FORM_DATA:
       return setFormData(state, action);
+    case CLEAR_WORKOUT_FORM_DATA:
+      return clearFormData(state, action);
     default:
       return state;
   }

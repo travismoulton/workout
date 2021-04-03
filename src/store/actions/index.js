@@ -8,4 +8,5 @@ export {
   updateExerciseData,
   clearExercises,
   setFormData,
+  clearForm,
 } from './workout';
