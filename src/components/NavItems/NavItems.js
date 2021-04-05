@@ -14,8 +14,9 @@ const NavItems = (props) => {
           <NavItem link="/profile">
             {user.authUser ? user.authUser.displayName : null}
           </NavItem>
-          <NavItem link="/logout">Logout</NavItem>
           <NavItem link="/create-workout">Create Workout</NavItem>
+          <NavItem link="/create-routine">Create Routine</NavItem>
+          <NavItem link="/logout">Logout</NavItem>
         </>
       ) : (
         <NavItem link="/login">Login</NavItem>

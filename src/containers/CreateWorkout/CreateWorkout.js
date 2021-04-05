@@ -5,6 +5,7 @@ import axios from 'axios';
 import Input from '../../components/UI/Input/Input';
 import WorkoutListItem from '../WorkoutListItem/WorkoutListItem';
 import SubmitWorkoutBtn from '../../components/SubmitWorkoutBtn/SubmitWorkoutBtn';
+import Spinner from '../../components/UI/Spinner/Spinner';
 import { startSearchMode, addExercise, setFormData } from '../../store/actions';
 import { updateObject, checkValidityHandler } from '../../shared/utility';
 
@@ -15,6 +16,7 @@ const CreateWorkout = (props) => {
   const dispatch = useDispatch();
   const [favoritesAsExercies, setFavoritesAsExercies] = useState([]);
   const [favoritesAsSelectOptions, setFavoritesAsSelectOptions] = useState([]);
+  const [loaded, setLoaded] = useState(false);
   // The form should be valid if the component renders with a workoutName coming from redux
   const [formIsValid, setFormIsValid] = useState(
     formData.workoutName ? true : false
@@ -38,13 +40,16 @@ const CreateWorkout = (props) => {
   }, [favoritesAsExercies, favorites]);
 
   useEffect(() => {
-    if (favoritesAsExercies.length && !favoritesAsSelectOptions.length)
+    if (favoritesAsExercies.length && !favoritesAsSelectOptions.length) {
       setFavoritesAsSelectOptions(
         favoritesAsExercies.map((exercise) => ({
           value: exercise.id,
           displayValue: exercise.name,
         }))
       );
+
+      setLoaded(true);
+    }
   }, [favoritesAsExercies, favoritesAsSelectOptions]);
 
   const [workoutNameInput, setWorkoutNameInput] = useState({
@@ -211,7 +216,7 @@ const CreateWorkout = (props) => {
     setSecondaryTargetAreaInput({ ...secondaryTargetAreaInput, value: '' });
   };
 
-  return (
+  const finalDisplay = (
     <>
       {titleForm}
       <Input
@@ -253,6 +258,8 @@ const CreateWorkout = (props) => {
       ) : null}
     </>
   );
+
+  return loaded ? finalDisplay : <Spinner />;
 };
 
 export default CreateWorkout;
