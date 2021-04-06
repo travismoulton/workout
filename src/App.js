@@ -12,6 +12,8 @@ import Results from './containers/Results/Results';
 import ExerciseDetail from './containers/ExerciseDetail/ExerciseDetail';
 import CreateWorkout from './containers/CreateWorkout/CreateWorkout';
 import CreateRoutine from './containers/CreateRoutine/CreateRoutine';
+import UserProfile from './containers/UserProfile/UserProfile';
+import Workout from './components/Workout/Workout';
 import { logout, authSuccess } from './store/actions';
 import { setFavorites } from './store/actions';
 import { FirebaseContext } from './components/Firebase/index';
@@ -60,6 +62,8 @@ function App(props) {
       <Route path="/exercise/:name" component={ExerciseDetail} />
       <Route path="/create-workout" component={CreateWorkout} />
       <Route path="/create-routine" component={CreateRoutine} />
+      <Route path="/my-profile" component={UserProfile} />
+      <Route path="/workout-detail/:workout" component={CreateWorkout} />
       <Route path="/">
         <FirebaseContext.Consumer>
           {(firebase) => <Login firebase={firebase} />}

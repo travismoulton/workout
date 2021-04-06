@@ -11,7 +11,7 @@ const NavItems = (props) => {
       <NavItem link="/search">Search</NavItem>
       {props.isAuthenticated ? (
         <>
-          <NavItem link="/profile">
+          <NavItem link="/my-profile">
             {user.authUser ? user.authUser.displayName : null}
           </NavItem>
           <NavItem link="/create-workout">Create Workout</NavItem>

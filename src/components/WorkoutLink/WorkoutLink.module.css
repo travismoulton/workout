@@ -1,0 +1,19 @@
+.WorkoutLink {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  border: 1px solid #eee;
+  text-decoration: none;
+  color: #000;
+  width: 75rem;
+}
+
+.TopRow {
+  display: flex;
+  justify-content: center;
+}
+
+.BottomRow {
+  display: flex;
+  justify-content: space-around;
+}

@@ -3,12 +3,15 @@ import {
   SET_EXERCISES,
   ADD_EXERCISE,
   SET_WORKOUT_FORM_DATA,
+  SET_ENTIRE_WORKOUT_FORM,
   CLEAR_WORKOUT_FORM_DATA,
 } from './actionsTypes';
 
 export const startSearchMode = () => ({ type: START_SEARCH });
 
 export const addExercise = (exercise) => ({ type: ADD_EXERCISE, exercise });
+
+export const setExercises = (exercises) => ({ type: SET_EXERCISES, exercises });
 
 export const changeExerciseOrder = (exercises, exerciseId, direction) => {
   const index = exercises.indexOf(
@@ -55,6 +58,13 @@ export const setFormData = (formData, formEl, val) => ({
   formData,
   formEl,
   val,
+});
+
+export const setEntireForm = (workoutName, targetArea, secondaryTarget) => ({
+  type: SET_ENTIRE_WORKOUT_FORM,
+  workoutName,
+  targetArea,
+  secondaryTarget,
 });
 
 export const clearForm = () => ({ type: CLEAR_WORKOUT_FORM_DATA });

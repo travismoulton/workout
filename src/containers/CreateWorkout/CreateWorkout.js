@@ -6,21 +6,45 @@ import Input from '../../components/UI/Input/Input';
 import WorkoutListItem from '../WorkoutListItem/WorkoutListItem';
 import SubmitWorkoutBtn from '../../components/SubmitWorkoutBtn/SubmitWorkoutBtn';
 import Spinner from '../../components/UI/Spinner/Spinner';
-import { startSearchMode, addExercise, setFormData } from '../../store/actions';
+import {
+  startSearchMode,
+  addExercise,
+  setFormData,
+  setExercises,
+  setEntireForm,
+  clearForm,
+} from '../../store/actions';
 import { updateObject, checkValidityHandler } from '../../shared/utility';
 
 const CreateWorkout = (props) => {
   const { favorites } = useSelector((state) => state.favorites);
   const { exercises } = useSelector((state) => state.workout);
   const { formData } = useSelector((state) => state.workout);
+  const wgerDict = useSelector((state) => state.wgerDict);
   const dispatch = useDispatch();
   const [favoritesAsExercies, setFavoritesAsExercies] = useState([]);
   const [favoritesAsSelectOptions, setFavoritesAsSelectOptions] = useState([]);
   const [loaded, setLoaded] = useState(false);
+  const [historyUsed, setHistoryUsed] = useState(false);
   // The form should be valid if the component renders with a workoutName coming from redux
   const [formIsValid, setFormIsValid] = useState(
     formData.workoutName ? true : false
   );
+
+  useEffect(() => {
+    if (props.history.location.state && !historyUsed) {
+      const { workout } = props.history.location.state;
+      dispatch(setExercises(workout.exercises));
+      dispatch(
+        setEntireForm(
+          workout.title,
+          workout.targetArea,
+          workout.secondaryTargetArea
+        )
+      );
+      setHistoryUsed(true);
+    }
+  }, [props.history.location.state, dispatch, historyUsed]);
 
   useEffect(() => {
     let arr = [];
@@ -216,6 +240,16 @@ const CreateWorkout = (props) => {
     setSecondaryTargetAreaInput({ ...secondaryTargetAreaInput, value: '' });
   };
 
+  const clearAllWorkoutData = () => {
+    clearAllFormInputs();
+    dispatch(setExercises([]));
+    dispatch(clearForm());
+  };
+
+  const clearWorkoutBtn = (
+    <button onClick={clearAllWorkoutData}>Clear form</button>
+  );
+
   const finalDisplay = (
     <>
       {titleForm}
@@ -248,12 +282,23 @@ const CreateWorkout = (props) => {
           </ul>
           <SubmitWorkoutBtn
             title={workoutNameInput.value}
-            targetArea={targetAreaInput.value}
-            secondaryTarget={secondaryTargetAreaInput.value}
+            targetAreaCode={targetAreaInput.value}
+            secondaryTargetCode={secondaryTargetAreaInput.value}
+            targetArea={
+              targetAreaInput.value
+                ? wgerDict.exerciseCategoryList[targetAreaInput.value]
+                : null
+            }
+            secondaryTargetArea={
+              secondaryTargetAreaInput.value
+                ? wgerDict.exerciseCategoryList[secondaryTargetAreaInput.value]
+                : null
+            }
             formIsValid={formIsValid}
             clearAllFormInputs={clearAllFormInputs}
             setInputAsTouched={setInputAsTouched}
           />
+          {clearWorkoutBtn}
         </>
       ) : null}
     </>

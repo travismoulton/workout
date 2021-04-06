@@ -62,8 +62,10 @@ const SubmitWorkoutBtn = (props) => {
       `https://workout-81691-default-rtdb.firebaseio.com/workouts/${user.authUser.uid}.json`,
       {
         title: props.title,
+        targetAreaCode: props.targetAreaCode,
+        secondaryTargetCode: props.secondaryTargetCode,
         targetArea: props.targetArea,
-        secondaryTarget: props.secondaryTarget,
+        secondaryTargetArea: props.secondaryTargetArea,
         exercises,
       }
     );
