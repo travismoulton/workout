@@ -117,9 +117,6 @@ const CreateWorkout = (props) => {
     // for each favorite.
     (async () => {
       if (favorites) {
-        const favoriteIds = favorites.map((favorite) => favorite.exercise);
-        console.log(favoriteIds.join(','));
-
         arr = favorites.map((fav) =>
           axios
             .get(`https://wger.de/api/v2/exercise/${fav.exercise}`)
