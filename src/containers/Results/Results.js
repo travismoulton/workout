@@ -10,6 +10,19 @@ const Results = (props) => {
   const favorites = useSelector((state) => state.favorites.favorites);
   const wgerDict = useSelector((state) => state.wgerDict);
 
+  // useEffect(() => {
+  //   const param =
+  //     props.location.state.category === 'exercisecategory'
+  //       ? `category=${props.location.state.id}`
+  //       : props.location.state.category === 'muscle'
+  //       ? `muscles=${props.location.state.id}`
+  //       : `equipment=${props.location.state.id}`;
+
+  //   axios
+  //     .get(`https://wger.de/api/v2/exercise/?language=2&${param}`)
+  //     .then((res) => setExercises(res.data.results));
+  // }, [props.location.state.id, props.location.state.category]);
+
   useEffect(() => {
     const param =
       props.location.state.category === 'exercisecategory'
@@ -18,10 +31,20 @@ const Results = (props) => {
         ? `muscles=${props.location.state.id}`
         : `equipment=${props.location.state.id}`;
 
-    axios
-      .get(`https://wger.de/api/v2/exercise/?language=2&${param}`)
-      .then((res) => setExercises(res.data.results));
-  }, [props.location.state.id, props.location.state.category]);
+    let next = `https://wger.de/api/v2/exercise/?language=2&${param}`;
+    let arr = [];
+
+    (async () => {
+      while (next) {
+        // eslint-disable-next-line no-loop-func
+        await axios.get(next).then((res) => {
+          res.data.results.forEach((result) => arr.push(result));
+          next = res.data.next;
+        });
+      }
+      if (!exercises.length) setExercises(arr);
+    })();
+  }, [props.location.state.id, props.location.state.category, exercises]);
 
   useEffect(() => {
     if (favorites)

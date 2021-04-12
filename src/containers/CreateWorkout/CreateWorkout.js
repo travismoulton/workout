@@ -113,21 +113,28 @@ const CreateWorkout = (props) => {
   useEffect(() => {
     let arr = [];
 
-    // Using the redux favorites array, make ajax calls to wger to get the exercise objects
-    // for each favorite.
     (async () => {
       if (favorites) {
-        arr = favorites.map((fav) =>
-          axios
-            .get(`https://wger.de/api/v2/exercise/${fav.exercise}`)
-            .then((res) => res.data)
-        );
+        await axios
+          .get(
+            `https://workout-81691-default-rtdb.firebaseio.com/masterExerciseList.json`
+          )
+          .then((res) => {
+            for (const key in res.data) {
+              const exercise = favorites.filter(
+                (fav) => fav.exercise * 1 === res.data[key].id
+              )[0];
 
-        if (!favoritesAsExercises.length)
-          setFavoritesAsExercises(await Promise.all(arr));
+              if (exercise) arr.push(res.data[key]);
+            }
+          });
+
+        if (!favoritesAsExercises.length) {
+          setFavoritesAsExercises(arr);
+        }
       }
     })();
-  }, [favoritesAsExercises, favorites]);
+  }, [favorites, favoritesAsExercises]);
 
   useEffect(() => {
     // After favoritesAsExercises has been created, create an array of objects to
