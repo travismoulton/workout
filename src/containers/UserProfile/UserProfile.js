@@ -48,6 +48,7 @@ const UserProfile = () => {
 
   const workoutLinks = workouts.map((workout) => (
     <WorkoutLink
+      key={workout.title}
       title={workout.title}
       targetArea={workout.targetArea}
       secondaryTarget={workout.secondaryTargetArea}

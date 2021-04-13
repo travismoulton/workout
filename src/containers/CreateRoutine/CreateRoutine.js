@@ -2,9 +2,11 @@ import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
+import { updateObject, checkValidityHandler } from '../../shared/utility';
 import Input from '../../components/UI/Input/Input';
+import SubmitRoutineBtn from '../../components/SubmitRoutineBtn/SubmitRoutineBtn';
 
-const CreateRoutine = () => {
+const CreateRoutine = (props) => {
   const [selectedWorkouts, setSelectedWorkouts] = useState([
     'Rest',
     'Rest',
@@ -24,7 +26,7 @@ const CreateRoutine = () => {
     validation: {
       required: true,
     },
-    valid: true,
+    valid: false,
     touched: false,
     id: 'routineName',
   });
@@ -39,6 +41,7 @@ const CreateRoutine = () => {
     },
     valid: true,
   });
+  const [formIsValid, setFormIsValid] = useState(false);
 
   const { user } = useSelector((state) => state.auth);
 
@@ -96,19 +99,28 @@ const CreateRoutine = () => {
     );
   });
 
-  const submitRoutine = () => {
-    axios.post(
-      `https://workout-81691-default-rtdb.firebaseio.com/routines/${user.authUser.uid}.json`,
-      {
-        title: routineNameInput.value,
-        workouts: selectedWorkouts,
-      }
-    );
+  const inputChangedHandler = (e, input) => {
+    const updatedInput = updateObject(input, {
+      value: e.target.value,
+      valid: checkValidityHandler(e.target.value, input.validation),
+      touched: true,
+    });
+
+    updatedInput.valid ? setFormIsValid(true) : setFormIsValid(false);
+
+    setRoutineNameInput(updatedInput);
   };
 
-  const submitRoutineBtn = (
-    <button onClick={submitRoutine}>Create Routine</button>
-  );
+  // Preventing submission of a routine that has no workouts.
+  const checkForWorkouts = () => {
+    let hasWorkout = false;
+
+    selectedWorkouts.forEach((workout) => {
+      if (workout !== 'Rest') hasWorkout = true;
+    });
+
+    return hasWorkout;
+  };
 
   const display = (
     <>
@@ -116,12 +128,17 @@ const CreateRoutine = () => {
         elementType={routineNameInput.elementType}
         elementConfig={routineNameInput.elementConfig}
         value={routineNameInput.value}
-        changed={(e) =>
-          setRoutineNameInput({ ...routineNameInput, value: e.target.value })
-        }
+        changed={(e) => inputChangedHandler(e, routineNameInput)}
       />
       {workoutSelectMenus}
-      {submitRoutineBtn}
+      <SubmitRoutineBtn
+        userId={user.authUser.uid}
+        title={routineNameInput.value}
+        workouts={selectedWorkouts}
+        history={props.history}
+        valid={formIsValid}
+        containsWorkout={() => checkForWorkouts()}
+      />
     </>
   );
 
