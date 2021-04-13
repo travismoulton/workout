@@ -14,8 +14,12 @@ import CreateWorkout from './containers/CreateWorkout/CreateWorkout';
 import CreateRoutine from './containers/CreateRoutine/CreateRoutine';
 import UserProfile from './containers/UserProfile/UserProfile';
 import Workout from './components/Workout/Workout';
-import { logout, authSuccess } from './store/actions';
-import { setFavorites } from './store/actions';
+import {
+  logout,
+  authSuccess,
+  setFavorites,
+  fetchActiveRoutine,
+} from './store/actions';
 import { FirebaseContext } from './components/Firebase/index';
 
 function App(props) {
@@ -41,6 +45,10 @@ function App(props) {
 
   useEffect(() => {
     if (authUser) dispatch(setFavorites(authUser.authUser.uid));
+  }, [authUser, dispatch]);
+
+  useEffect(() => {
+    if (authUser) dispatch(fetchActiveRoutine(authUser.authUser.uid));
   }, [authUser, dispatch]);
 
   const routes = (

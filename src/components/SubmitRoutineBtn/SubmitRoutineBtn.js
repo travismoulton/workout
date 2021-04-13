@@ -63,15 +63,16 @@ const SubmitRoutineBtn = (props) => {
 
     if (await checkForPreviousNameUse()) return;
 
-    axios.post(
+    await axios.post(
       `https://workout-81691-default-rtdb.firebaseio.com/routines/${props.userId}.json`,
       {
         title: props.title,
         workouts: props.workouts,
+        activeRoutine: false,
       }
     );
 
-    props.history.push(`/my-profile`);
+    props.history.push('/my-profile');
   };
 
   return (

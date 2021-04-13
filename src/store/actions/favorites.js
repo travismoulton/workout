@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { CHECK_FAVORITES } from './actionsTypes';
+import { CHECK_FAVORITES, SET_ACTIVE_ROUTINE } from './actionsTypes';
 
 export const setFavorites = (userId) => {
   return async (dispatch) => {
@@ -33,3 +33,26 @@ export const removeFromFavorites = (userId, firebaseId) => async (dispatch) => {
   );
   dispatch(setFavorites(userId));
 };
+
+export const fetchActiveRoutine = (userId) => async (dispatch) => {
+  await axios
+    .get(
+      `https://workout-81691-default-rtdb.firebaseio.com/routines/${userId}.json`
+    )
+    .then((res) => {
+      for (const key in res.data) {
+        if (res.data[key].activeRoutine) {
+          return dispatch({
+            type: SET_ACTIVE_ROUTINE,
+            activeRoutine: { ...res.data[key], firebaseId: key },
+          });
+        }
+      }
+      return dispatch({ type: SET_ACTIVE_ROUTINE, activeRoutine: {} });
+    });
+};
+
+export const setActiveRoutine = (routine) => ({
+  type: SET_ACTIVE_ROUTINE,
+  routine,
+});

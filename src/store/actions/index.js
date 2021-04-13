@@ -1,5 +1,11 @@
 export { authStart, authSuccess, authFail, logout, authReset } from './auth';
-export { addToFavorites, removeFromFavorites, setFavorites } from './favorites';
+export {
+  addToFavorites,
+  removeFromFavorites,
+  setFavorites,
+  fetchActiveRoutine,
+} from // setActiveRoutine,
+'./favorites';
 export {
   startSearchMode,
   changeExerciseOrder,
