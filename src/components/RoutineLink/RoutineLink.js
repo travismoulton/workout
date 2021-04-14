@@ -8,7 +8,14 @@ const RoutineLink = (props) => {
       <div className={classes.TopRow}>{props.title}</div>
       <div>
         <p>Number of workouts: {props.numberOfWorkouts}</p>
-        <button onClick={props.setActiveRoutine}>Set as current routine</button>
+        {props.isActiveRoutine ? (
+          <p>This is your current routine</p>
+        ) : (
+          <button onClick={props.setActiveRoutine}>
+            Set as current routine
+          </button>
+        )}
+        <button onClick={props.deleteRoutine}>Delete this routine</button>
       </div>
     </div>
   );

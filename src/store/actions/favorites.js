@@ -48,11 +48,11 @@ export const fetchActiveRoutine = (userId) => async (dispatch) => {
           });
         }
       }
-      return dispatch({ type: SET_ACTIVE_ROUTINE, activeRoutine: {} });
+      return dispatch({ type: SET_ACTIVE_ROUTINE, activeRoutine: false });
     });
 };
 
 export const setActiveRoutine = (routine) => ({
   type: SET_ACTIVE_ROUTINE,
-  routine,
+  activeRoutine: routine,
 });
