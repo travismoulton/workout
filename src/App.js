@@ -72,6 +72,7 @@ function App(props) {
       <Route path="/create-routine" component={CreateRoutine} />
       <Route path="/my-profile" component={UserProfile} />
       <Route path="/workout-detail/:workout" component={CreateWorkout} />
+      <Route path="/routine-detail/:routine" component={CreateRoutine} />
       <Route path="/">
         <FirebaseContext.Consumer>
           {(firebase) => <Login firebase={firebase} />}

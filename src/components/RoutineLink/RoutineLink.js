@@ -16,6 +16,14 @@ const RoutineLink = (props) => {
           </button>
         )}
         <button onClick={props.deleteRoutine}>Delete this routine</button>
+        <Link
+          to={{
+            pathname: `/create-routine/${props.title}`,
+            state: { routine: props.routine },
+          }}
+        >
+          <button>Edit this routine</button>
+        </Link>
       </div>
     </div>
   );

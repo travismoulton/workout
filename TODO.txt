@@ -1,3 +1,2 @@
-//1: Need to create a modal and backdrop. 
-//2: On the user profile, if you dlete a workout that is contained within a routine, trigger the modal as a warning that it will
-  delete all cascading routines
+//1: If editing a routine, the button needs to send a patch request
+//2: Need to work on SubmitWorkout, same thing

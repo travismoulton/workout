@@ -7,6 +7,7 @@ import Input from '../../components/UI/Input/Input';
 import SubmitRoutineBtn from '../../components/SubmitRoutineBtn/SubmitRoutineBtn';
 
 const CreateRoutine = (props) => {
+  const [historyUsed, setHistoryUsed] = useState(false);
   const [selectedWorkouts, setSelectedWorkouts] = useState([
     'Rest',
     'Rest',
@@ -79,6 +80,22 @@ const CreateRoutine = (props) => {
     'Saturday',
     'Sunday',
   ];
+
+  useEffect(() => {
+    if (props.history.location.state && !historyUsed) {
+      const { routine } = props.history.location.state;
+      setSelectedWorkouts(routine.workouts);
+      setRoutineNameInput({ ...routineNameInput, value: routine.title });
+      setHistoryUsed(true);
+      setFormIsValid(true);
+    }
+  }, [
+    props.history.location.state,
+    historyUsed,
+    selectedWorkouts,
+    routineNameInput,
+    formIsValid,
+  ]);
 
   const workoutSelectMenus = days.map((day, i) => {
     const select = { ...workoutSelectMenu, value: selectedWorkouts[i] };

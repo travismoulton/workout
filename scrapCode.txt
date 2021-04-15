@@ -18,3 +18,18 @@
   const getAllWorkoutsBtn = (
     <button onClick={getAllWorkoutsAndStoreInFirebase}>Get all workouts</button>
   );
+
+
+    const deleteAllRoutinesContainingWorkout = async (firebaseId) => {
+    const routinesToDelete = routines.filter((routine) =>
+      routine.workouts.includes(firebaseId)
+    );
+
+    for (let i = 0; i < routinesToDelete.length; i++) {
+      await axios.delete(
+        `https://workout-81691-default-rtdb.firebaseio.com/routines/${user.authUser.uid}/${routinesToDelete[i].firebaseId}.json`
+      );
+    }
+
+    if (routinesToDelete.length) setRoutineDeleted(true);
+  };

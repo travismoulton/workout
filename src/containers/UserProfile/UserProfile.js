@@ -83,24 +83,26 @@ const UserProfile = (props) => {
       .then(() => setWorkoutDeleted(true));
   };
 
-  const deleteAllRoutinesContainingWorkout = async (firebaseId) => {
-    const routinesToDelete = routines.filter((routine) =>
+  const removeWorkoutFromAllRoutines = (firebaseId) => {
+    const routinesToAlter = routines.filter((routine) =>
       routine.workouts.includes(firebaseId)
     );
 
-    for (let i = 0; i < routinesToDelete.length; i++) {
-      await axios.delete(
-        `https://workout-81691-default-rtdb.firebaseio.com/routines/${user.authUser.uid}/${routinesToDelete[i].firebaseId}.json`
+    for (let i = 0; i < routinesToAlter.length; i++) {
+      const updatedWorkouts = [...routinesToAlter[i].workouts];
+      updatedWorkouts[updatedWorkouts.indexOf(firebaseId)] = 'Rest';
+
+      axios.patch(
+        `https://workout-81691-default-rtdb.firebaseio.com/routines/${user.authUser.uid}/${routinesToAlter[i].firebaseId}.json`,
+        { workouts: updatedWorkouts }
       );
     }
-
-    if (routinesToDelete.length) setRoutineDeleted(true);
   };
 
   // TODO: Need modal to warn about deleting related routines
   const deleteWorkoutHandler = (firebaseId) => {
     deleteWorkout(firebaseId);
-    deleteAllRoutinesContainingWorkout(firebaseId);
+    removeWorkoutFromAllRoutines(firebaseId);
   };
 
   const workoutLinks =
@@ -113,7 +115,15 @@ const UserProfile = (props) => {
           secondaryTarget={workout.secondaryTargetArea}
           exerciseCount={workout.exercises ? workout.exercises.length : null}
           workout={workout}
-          deleteWorkout={() => deleteWorkoutHandler(workout.firebaseId)}
+          belongsToRoutine={
+            routines.filter((routine) =>
+              routine.workouts.includes(workout.firebaseId)
+            ).length > 0
+          }
+          deleteWorkoutAndRemove={() =>
+            deleteWorkoutHandler(workout.firebaseId)
+          }
+          deleteWorkout={() => deleteWorkout(workout.firebaseId)}
         />
       ))
     ) : (
@@ -168,6 +178,7 @@ const UserProfile = (props) => {
               : false
           }
           deleteRoutine={() => deleteRoutine(routine.firebaseId)}
+          routine={routine}
         />
       ))
     ) : (
