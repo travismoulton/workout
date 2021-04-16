@@ -31,7 +31,7 @@ const UserProfile = (props) => {
             tempArr.push({ ...res.data[key], firebaseId: key });
           setRoutines(tempArr);
         } else if (!res.data) {
-          setRoutines(['No routines available']);
+          setRoutines([]);
         }
       });
   }, [user.authUser.uid]);
@@ -48,7 +48,7 @@ const UserProfile = (props) => {
             tempArr.push({ ...res.data[key], firebaseId: key });
           setWorkouts(tempArr);
         } else if (!res.data) {
-          setWorkouts(['No workouts available']);
+          setWorkouts([]);
         }
       });
   }, [user.authUser.uid]);
@@ -105,32 +105,29 @@ const UserProfile = (props) => {
     removeWorkoutFromAllRoutines(firebaseId);
   };
 
-  const workoutLinks =
-    workouts[0] !== 'No workouts available' ? (
-      workouts.map((workout) => (
-        <WorkoutLink
-          key={workout.title}
-          title={workout.title}
-          targetArea={workout.targetArea}
-          secondaryTarget={workout.secondaryTargetArea}
-          exerciseCount={workout.exercises ? workout.exercises.length : null}
-          workout={workout}
-          belongsToRoutine={
-            routines.filter((routine) =>
-              routine.workouts.includes(workout.firebaseId)
-            ).length > 0
-          }
-          deleteWorkoutAndRemove={() =>
-            deleteWorkoutHandler(workout.firebaseId)
-          }
-          deleteWorkout={() => deleteWorkout(workout.firebaseId)}
-        />
-      ))
-    ) : (
-      <Link to="/create-workout">
-        No workouts available, click here to create a workout
-      </Link>
-    );
+  const workoutLinks = workouts.length ? (
+    workouts.map((workout) => (
+      <WorkoutLink
+        key={workout.title}
+        title={workout.title}
+        targetArea={workout.targetArea}
+        secondaryTarget={workout.secondaryTargetArea}
+        exerciseCount={workout.exercises ? workout.exercises.length : null}
+        workout={workout}
+        belongsToRoutine={
+          routines.filter((routine) =>
+            routine.workouts.includes(workout.firebaseId)
+          ).length > 0
+        }
+        deleteWorkoutAndRemove={() => deleteWorkoutHandler(workout.firebaseId)}
+        deleteWorkout={() => deleteWorkout(workout.firebaseId)}
+      />
+    ))
+  ) : (
+    <Link to="/create-workout">
+      No workouts available, click here to create a workout
+    </Link>
+  );
 
   const changeActiveRoutine = (routine, firebaseId) => {
     // If there is a current active routine in firebase, set the active routine property to false
@@ -159,33 +156,32 @@ const UserProfile = (props) => {
       .then(() => setRoutineDeleted(true));
   };
 
-  const routineLinks =
-    routines[0] !== 'No routines available' ? (
-      routines.map((routine) => (
-        <RoutineLink
-          key={routine.title}
-          workouts={routine.workouts}
-          title={routine.title}
-          setActiveRoutine={() =>
-            changeActiveRoutine(routine, routine.firebaseId)
-          }
-          numberOfWorkouts={
-            routine.workouts.filter((workout) => workout !== 'Rest').length
-          }
-          isActiveRoutine={
-            activeRoutine
-              ? routine.firebaseId === activeRoutine.firebaseId
-              : false
-          }
-          deleteRoutine={() => deleteRoutine(routine.firebaseId)}
-          routine={routine}
-        />
-      ))
-    ) : (
-      <Link to="/create-routine">
-        No routines available, click here to create a routine
-      </Link>
-    );
+  const routineLinks = routines.length ? (
+    routines.map((routine) => (
+      <RoutineLink
+        key={routine.title}
+        workouts={routine.workouts}
+        title={routine.title}
+        setActiveRoutine={() =>
+          changeActiveRoutine(routine, routine.firebaseId)
+        }
+        numberOfWorkouts={
+          routine.workouts.filter((workout) => workout !== 'Rest').length
+        }
+        isActiveRoutine={
+          activeRoutine
+            ? routine.firebaseId === activeRoutine.firebaseId
+            : false
+        }
+        deleteRoutine={() => deleteRoutine(routine.firebaseId)}
+        routine={routine}
+      />
+    ))
+  ) : (
+    <Link to="/create-routine">
+      No routines available, click here to create a routine
+    </Link>
+  );
 
   const triggerWorkoutsShowing = () => {
     setWorkoutsShowing(workoutsShowing ? false : true);

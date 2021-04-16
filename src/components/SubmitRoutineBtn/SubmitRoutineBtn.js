@@ -61,23 +61,38 @@ const SubmitRoutineBtn = (props) => {
       return;
     }
 
-    if (await checkForPreviousNameUse()) return;
+    if (
+      props.createNewRoutine ||
+      (props.titleChanged && !props.originalTitleEntact)
+    )
+      if (await checkForPreviousNameUse()) return;
 
-    await axios.post(
-      `https://workout-81691-default-rtdb.firebaseio.com/routines/${props.userId}.json`,
-      {
-        title: props.title,
-        workouts: props.workouts,
-        activeRoutine: false,
-      }
-    );
+    props.createNewRoutine
+      ? await axios.post(
+          `https://workout-81691-default-rtdb.firebaseio.com/routines/${props.userId}.json`,
+          {
+            title: props.title,
+            workouts: props.workouts,
+            activeRoutine: false,
+          }
+        )
+      : await axios.put(
+          `https://workout-81691-default-rtdb.firebaseio.com/routines/${props.userId}/${props.firebaseId}.json`,
+          {
+            title: props.title,
+            workouts: props.workouts,
+            activeRoutine: props.isActiveRoutine,
+          }
+        );
 
     props.history.push('/my-profile');
   };
 
   return (
     <>
-      <button onClick={onSubmit}>Create Routine</button>
+      <button onClick={onSubmit}>
+        {props.createNewRoutine ? 'Create new routine' : 'Edit routine'}
+      </button>
       {error.isError ? error.msg : null}
     </>
   );

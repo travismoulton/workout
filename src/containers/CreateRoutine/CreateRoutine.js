@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import { updateObject, checkValidityHandler } from '../../shared/utility';
 import Input from '../../components/UI/Input/Input';
@@ -43,6 +43,8 @@ const CreateRoutine = (props) => {
     valid: true,
   });
   const [formIsValid, setFormIsValid] = useState(false);
+  const [firebaseId, setFirebaseId] = useState('');
+  const [originalTitle, setOriginalTitle] = useState('');
 
   const { user } = useSelector((state) => state.auth);
 
@@ -86,6 +88,8 @@ const CreateRoutine = (props) => {
       const { routine } = props.history.location.state;
       setSelectedWorkouts(routine.workouts);
       setRoutineNameInput({ ...routineNameInput, value: routine.title });
+      setOriginalTitle(routine.title);
+      setFirebaseId(routine.firebaseId);
       setHistoryUsed(true);
       setFormIsValid(true);
     }
@@ -95,6 +99,7 @@ const CreateRoutine = (props) => {
     selectedWorkouts,
     routineNameInput,
     formIsValid,
+    firebaseId,
   ]);
 
   const workoutSelectMenus = days.map((day, i) => {
@@ -155,6 +160,11 @@ const CreateRoutine = (props) => {
         history={props.history}
         valid={formIsValid}
         containsWorkout={() => checkForWorkouts()}
+        createNewRoutine={firebaseId === ''}
+        firebaseId={firebaseId}
+        isActiveRoutine={props.isActiveRoutine}
+        titleChanged={routineNameInput.touched}
+        originalTitleEntact={originalTitle === routineNameInput.value}
       />
     </>
   );
