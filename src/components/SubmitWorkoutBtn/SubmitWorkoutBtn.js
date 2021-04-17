@@ -56,23 +56,41 @@ const SubmitWorkoutBtn = (props) => {
   };
 
   const submitValidForm = async () => {
-    if (await checkForPreviousNameUse()) return;
+    if (
+      props.createNewWorkout ||
+      (props.titleChanged && !props.originalTitleEntact)
+    )
+      if (await checkForPreviousNameUse()) return;
 
-    axios.post(
-      `https://workout-81691-default-rtdb.firebaseio.com/workouts/${user.authUser.uid}.json`,
-      {
-        title: props.title,
-        targetAreaCode: props.targetAreaCode,
-        secondaryTargetCode: props.secondaryTargetCode,
-        targetArea: props.targetArea,
-        secondaryTargetArea: props.secondaryTargetArea,
-        exercises,
-      }
-    );
+    (await props.createNewWorkout)
+      ? axios.post(
+          `https://workout-81691-default-rtdb.firebaseio.com/workouts/${user.authUser.uid}.json`,
+          {
+            title: props.title,
+            targetAreaCode: props.targetAreaCode,
+            secondaryTargetCode: props.secondaryTargetCode,
+            targetArea: props.targetArea,
+            secondaryTargetArea: props.secondaryTargetArea,
+            exercises,
+          }
+        )
+      : await axios.put(
+          `https://workout-81691-default-rtdb.firebaseio.com/workouts/${user.authUser.uid}/${props.firebaseId}.json`,
+          {
+            title: props.title,
+            targetAreaCode: props.targetAreaCode,
+            secondaryTargetCode: props.secondaryTargetCode,
+            targetArea: props.targetArea,
+            secondaryTargetArea: props.secondaryTargetArea,
+            exercises,
+          }
+        );
 
     dispatch(clearExercises());
     dispatch(clearForm());
     props.clearAllFormInputs();
+
+    props.history.push('/my-profile');
   };
 
   const onSubmit = () =>
@@ -80,7 +98,9 @@ const SubmitWorkoutBtn = (props) => {
 
   return (
     <>
-      <button onClick={onSubmit}>Submit Workout</button>
+      <button onClick={onSubmit}>
+        {props.createNewWorkout ? 'Create Workout' : 'Update workout'}
+      </button>
       {error.isError ? error.msg : null}
     </>
   );

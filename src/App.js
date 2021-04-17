@@ -13,7 +13,6 @@ import ExerciseDetail from './containers/ExerciseDetail/ExerciseDetail';
 import CreateWorkout from './containers/CreateWorkout/CreateWorkout';
 import CreateRoutine from './containers/CreateRoutine/CreateRoutine';
 import UserProfile from './containers/UserProfile/UserProfile';
-import Workout from './components/Workout/Workout';
 import {
   logout,
   authSuccess,
@@ -51,7 +50,7 @@ function App(props) {
     if (authUser) dispatch(fetchActiveRoutine(authUser.authUser.uid));
   }, [authUser, dispatch]);
 
-  const routes = (
+  const routes = isAuthenticated ? (
     <Switch>
       <Route path="/register">
         <FirebaseContext.Consumer>
@@ -73,11 +72,31 @@ function App(props) {
       <Route path="/my-profile" component={UserProfile} />
       <Route path="/workout-detail/:workout" component={CreateWorkout} />
       <Route path="/routine-detail/:routine" component={CreateRoutine} />
-      <Route path="/">
+      <Route path="/login">
         <FirebaseContext.Consumer>
-          {(firebase) => <Login firebase={firebase} />}
+          {(firebase) => <Login firebase={firebase} history={props.history} />}
         </FirebaseContext.Consumer>
       </Route>
+      <Route path="/" component={Search} />
+    </Switch>
+  ) : (
+    <Switch>
+      <Route path="/register">
+        <FirebaseContext.Consumer>
+          {(firebase) => (
+            <Register firebase={firebase} history={props.history} />
+          )}
+        </FirebaseContext.Consumer>
+      </Route>
+      <Route path="/search" component={Search} />
+      <Route path="/results/:category/:query" component={Results} />
+      <Route path="/exercise/:name" component={ExerciseDetail} />
+      <Route path="/login">
+        <FirebaseContext.Consumer>
+          {(firebase) => <Login firebase={firebase} history={props.history} />}
+        </FirebaseContext.Consumer>
+      </Route>
+      <Route path="/" component={Search} />
     </Switch>
   );
 

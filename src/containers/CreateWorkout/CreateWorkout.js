@@ -26,6 +26,8 @@ const CreateWorkout = (props) => {
   const [favoritesAsSelectOptions, setFavoritesAsSelectOptions] = useState([]);
   const [loaded, setLoaded] = useState(false);
   const [historyUsed, setHistoryUsed] = useState(false);
+  const [firebaseId, setFirebaseId] = useState('');
+  const [originalTitle, setOriginalTitle] = useState('');
   // The form should be valid if the component renders with a workoutName coming from redux
   const [formIsValid, setFormIsValid] = useState(
     formData.workoutName ? true : false
@@ -185,6 +187,10 @@ const CreateWorkout = (props) => {
           ...secondaryTargetAreaInput,
           value: workout.secondaryTargetCode,
         });
+
+      setOriginalTitle(workout.title);
+      setFirebaseId(workout.firebaseId);
+      setFormIsValid(true);
       setHistoryUsed(true);
     }
   }, [
@@ -343,6 +349,11 @@ const CreateWorkout = (props) => {
             formIsValid={formIsValid}
             clearAllFormInputs={clearAllFormInputs}
             setInputAsTouched={setInputAsTouched}
+            titleChanged={workoutNameInput.touched}
+            firebaseId={firebaseId}
+            originalTitleEntact={originalTitle === workoutNameInput.value}
+            createNewWorkout={firebaseId === ''}
+            history={props.history}
           />
           {clearWorkoutBtn}
         </>

@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, Redirect } from 'react-router-dom';
 
 import Input from '../../../components/UI/Input/Input';
 import {
@@ -43,10 +43,8 @@ const Login = (props) => {
 
   const [errorMessage, setErrorMessage] = useState('');
 
-  // const loading = useSelector((state) => state.auth.loading);
-  // const error = useSelector((state) => state.auth.error);
-  // const isAuthenticated = useSelector((state) => state.auth.user !== null);
   const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.auth);
 
   const updatePassword = (e) => {
     setPasswordInput({ ...passwordInput, value: e.target.value });
@@ -74,6 +72,14 @@ const Login = (props) => {
       });
   };
 
+  // Redirect by checking for authUser. If there is a user, check for authUser property.
+  // If authUser property, redirect to my-profile
+  const redirect = user ? (
+    user.authUser ? (
+      <Redirect to="/my-profile" />
+    ) : null
+  ) : null;
+
   const form = formFields.map((el, i) => (
     <Input
       elementType={el.elementType}
@@ -86,6 +92,7 @@ const Login = (props) => {
 
   return (
     <>
+      {redirect}
       <div>
         {errorMessage ? <p>{errorMessage}</p> : null}
         {form}
