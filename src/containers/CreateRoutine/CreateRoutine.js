@@ -45,6 +45,7 @@ const CreateRoutine = (props) => {
   const [formIsValid, setFormIsValid] = useState(false);
   const [firebaseId, setFirebaseId] = useState('');
   const [originalTitle, setOriginalTitle] = useState('');
+  const [isActiveRoutine, setIsActiveRoutine] = useState(false);
 
   const { user } = useSelector((state) => state.auth);
 
@@ -86,12 +87,14 @@ const CreateRoutine = (props) => {
   useEffect(() => {
     if (props.history.location.state && !historyUsed) {
       const { routine } = props.history.location.state;
+      console.log(routine);
       setSelectedWorkouts(routine.workouts);
       setRoutineNameInput({ ...routineNameInput, value: routine.title });
       setOriginalTitle(routine.title);
       setFirebaseId(routine.firebaseId);
       setHistoryUsed(true);
       setFormIsValid(true);
+      setIsActiveRoutine(routine.activeRoutine);
     }
   }, [
     props.history.location.state,
@@ -144,6 +147,8 @@ const CreateRoutine = (props) => {
     return hasWorkout;
   };
 
+  console.log(isActiveRoutine);
+
   const display = (
     <>
       <Input
@@ -162,7 +167,7 @@ const CreateRoutine = (props) => {
         containsWorkout={() => checkForWorkouts()}
         createNewRoutine={firebaseId === ''}
         firebaseId={firebaseId}
-        isActiveRoutine={props.isActiveRoutine}
+        isActiveRoutine={isActiveRoutine}
         titleChanged={routineNameInput.touched}
         originalTitleEntact={originalTitle === routineNameInput.value}
       />

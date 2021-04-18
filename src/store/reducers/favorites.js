@@ -1,7 +1,7 @@
 import { updateObject } from '../../shared/utility';
 import { CHECK_FAVORITES, SET_ACTIVE_ROUTINE } from '../actions/actionsTypes';
 
-const initialState = {};
+const initialState = { favorites: null, activeRoutine: null };
 
 const setFavorites = (state, action) =>
   updateObject(state, { favorites: action.favorites });
