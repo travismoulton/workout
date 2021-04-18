@@ -75,6 +75,48 @@ const WorkoutListItem = (props) => {
     );
   };
 
+  const incrementWeight = () => {
+    setWeightInput({ ...weightInput, value: weightInput.value + 5 });
+    dispatch(
+      updateExerciseData(exercises, props.id, 'weight', weightInput.value + 5)
+    );
+  };
+
+  const decrementWeight = () => {
+    setWeightInput({ ...weightInput, value: weightInput.value - 5 });
+    dispatch(
+      updateExerciseData(exercises, props.id, 'weight', weightInput.value - 5)
+    );
+  };
+
+  const incrementSets = () => {
+    setSetsInput({ ...setsInput, value: setsInput.value + 1 });
+    dispatch(
+      updateExerciseData(exercises, props.id, 'sets', setsInput.value + 1)
+    );
+  };
+
+  const decrementSets = () => {
+    setSetsInput({ ...setsInput, value: setsInput.value - 1 });
+    dispatch(
+      updateExerciseData(exercises, props.id, 'sets', setsInput.value - 1)
+    );
+  };
+
+  const incremementReps = () => {
+    setRepsInput({ ...repsInput, value: repsInput.value + 1 });
+    dispatch(
+      updateExerciseData(exercises, props.id, 'reps', repsInput.value + 1)
+    );
+  };
+
+  const decrementReps = () => {
+    setRepsInput({ ...repsInput, value: repsInput.value - 1 });
+    dispatch(
+      updateExerciseData(exercises, props.id, 'reps', repsInput.value - 1)
+    );
+  };
+
   const formFields = [weightInput, setsInput, repsInput];
   const updateFunctions = [setWeight, setNumSets, setNumReps];
 
@@ -115,14 +157,44 @@ const WorkoutListItem = (props) => {
     </button>
   );
 
+  const btnRow = (
+    <div className={classes.ButtonRow}>
+      <span className={classes.ButtonPair}>
+        <button className={classes.DecrementBtn} onClick={decrementWeight}>
+          -
+        </button>
+        <button className={classes.IncrementBtn} onClick={incrementWeight}>
+          +
+        </button>
+      </span>
+      <span className={classes.ButtonPair}>
+        <button className={classes.DecrementBtn} onClick={decrementSets}>
+          -
+        </button>
+        <button className={classes.IncrementBtn} onClick={incrementSets}>
+          +
+        </button>
+      </span>
+      <span className={classes.ButtonPair}>
+        <button className={classes.DecrementBtn} onClick={decrementReps}>
+          -
+        </button>
+        <button className={classes.IncrementBtn} onClick={incremementReps}>
+          +
+        </button>
+      </span>
+    </div>
+  );
+
   return (
     <li className={classes.WorkoutListItem}>
       <div>{props.name}</div>
       <div className={classes.Form}>{form}</div>
       <div>
-        {!props.firstExercise ? moveUpInOrderBtn : null}
-        {!props.lastExercise ? moveDownInOrderBtn : null}
+        {!props.firstExercise && !props.inRecordMode ? moveUpInOrderBtn : null}
+        {!props.lastExercise && !props.inRecordMode ? moveDownInOrderBtn : null}
       </div>
+      {btnRow}
       {closeWorkoutBtn}
     </li>
   );

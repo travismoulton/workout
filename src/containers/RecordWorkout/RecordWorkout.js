@@ -40,6 +40,7 @@ const RecordWorkout = () => {
           reps={exercise.reps}
           firstExercise={i === 0}
           lastExercise={i === suggestedWorkout.exercises.length - 1}
+          inRecordMode={true}
         />
       ))
     : null;

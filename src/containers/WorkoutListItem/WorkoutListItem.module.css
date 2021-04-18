@@ -19,3 +19,27 @@
   top: 1rem;
   right: 1rem;
 }
+
+.ButtonRow {
+  display: flex;
+  justify-content: space-between;
+}
+
+.IncrementBtn {
+  background-color: #66ff66;
+  color: #fff;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 2px;
+}
+
+.DecrementBtn {
+  background-color: #ff1a1a;
+  color: #fff;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 2px;
+}
+
+.ButtonPair {
+}
