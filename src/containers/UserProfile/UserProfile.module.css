@@ -34,3 +34,11 @@
 .SectionHeader h3 {
   margin-right: 1rem;
 }
+
+.Message {
+  color: #80ff80;
+  position: absolute;
+  top: 9rem;
+  left: 44%;
+  font-size: 2rem;
+}

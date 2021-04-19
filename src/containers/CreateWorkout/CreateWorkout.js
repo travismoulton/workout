@@ -164,34 +164,36 @@ const CreateWorkout = (props) => {
     if (props.history.location.state && !historyUsed) {
       const { workout } = props.history.location.state;
 
-      dispatch(setExercises(workout.exercises));
-      dispatch(
-        setEntireForm(
-          workout.title,
-          workout.targetArea,
-          workout.secondaryTargetArea
-        )
-      );
+      if (workout) {
+        dispatch(setExercises(workout.exercises));
+        dispatch(
+          setEntireForm(
+            workout.title,
+            workout.targetArea,
+            workout.secondaryTargetArea
+          )
+        );
 
-      if (workout.title)
-        setWorkoutNameInput({ ...workoutNameInput, value: workout.title });
+        if (workout.title)
+          setWorkoutNameInput({ ...workoutNameInput, value: workout.title });
 
-      if (workout.targetArea)
-        setTargetAreaInput({
-          ...targetAreaInput,
-          value: workout.targetAreaCode,
-        });
+        if (workout.targetArea)
+          setTargetAreaInput({
+            ...targetAreaInput,
+            value: workout.targetAreaCode,
+          });
 
-      if (workout.secondaryTargetArea)
-        setSecondaryTargetAreaInput({
-          ...secondaryTargetAreaInput,
-          value: workout.secondaryTargetCode,
-        });
+        if (workout.secondaryTargetArea)
+          setSecondaryTargetAreaInput({
+            ...secondaryTargetAreaInput,
+            value: workout.secondaryTargetCode,
+          });
 
-      setOriginalTitle(workout.title);
-      setFirebaseId(workout.firebaseId);
-      setFormIsValid(true);
-      setHistoryUsed(true);
+        setOriginalTitle(workout.title);
+        setFirebaseId(workout.firebaseId);
+        setFormIsValid(true);
+        setHistoryUsed(true);
+      }
     }
   }, [
     props.history.location.state,

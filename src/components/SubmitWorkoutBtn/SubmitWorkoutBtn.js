@@ -90,7 +90,12 @@ const SubmitWorkoutBtn = (props) => {
     dispatch(clearForm());
     props.clearAllFormInputs();
 
-    props.history.push('/my-profile');
+    props.history.push({
+      pathname: '/my-profile',
+      state: {
+        message: props.createNewWorkout ? 'Workout created' : 'Workout Updated',
+      },
+    });
   };
 
   const onSubmit = () =>

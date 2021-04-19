@@ -83,10 +83,12 @@ const WorkoutListItem = (props) => {
   };
 
   const decrementWeight = () => {
-    setWeightInput({ ...weightInput, value: weightInput.value - 5 });
-    dispatch(
-      updateExerciseData(exercises, props.id, 'weight', weightInput.value - 5)
-    );
+    if (weightInput.value > 0) {
+      setWeightInput({ ...weightInput, value: weightInput.value - 5 });
+      dispatch(
+        updateExerciseData(exercises, props.id, 'weight', weightInput.value - 5)
+      );
+    }
   };
 
   const incrementSets = () => {
@@ -97,10 +99,12 @@ const WorkoutListItem = (props) => {
   };
 
   const decrementSets = () => {
-    setSetsInput({ ...setsInput, value: setsInput.value - 1 });
-    dispatch(
-      updateExerciseData(exercises, props.id, 'sets', setsInput.value - 1)
-    );
+    if (setsInput.value > 0) {
+      setSetsInput({ ...setsInput, value: setsInput.value - 1 });
+      dispatch(
+        updateExerciseData(exercises, props.id, 'sets', setsInput.value - 1)
+      );
+    }
   };
 
   const incremementReps = () => {
@@ -111,10 +115,12 @@ const WorkoutListItem = (props) => {
   };
 
   const decrementReps = () => {
-    setRepsInput({ ...repsInput, value: repsInput.value - 1 });
-    dispatch(
-      updateExerciseData(exercises, props.id, 'reps', repsInput.value - 1)
-    );
+    if (repsInput.value > 0) {
+      setRepsInput({ ...repsInput, value: repsInput.value - 1 });
+      dispatch(
+        updateExerciseData(exercises, props.id, 'reps', repsInput.value - 1)
+      );
+    }
   };
 
   const formFields = [weightInput, setsInput, repsInput];

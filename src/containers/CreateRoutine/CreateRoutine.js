@@ -87,14 +87,16 @@ const CreateRoutine = (props) => {
   useEffect(() => {
     if (props.history.location.state && !historyUsed) {
       const { routine } = props.history.location.state;
-      console.log(routine);
-      setSelectedWorkouts(routine.workouts);
-      setRoutineNameInput({ ...routineNameInput, value: routine.title });
-      setOriginalTitle(routine.title);
-      setFirebaseId(routine.firebaseId);
-      setHistoryUsed(true);
-      setFormIsValid(true);
-      setIsActiveRoutine(routine.activeRoutine);
+
+      if (routine) {
+        setSelectedWorkouts(routine.workouts);
+        setRoutineNameInput({ ...routineNameInput, value: routine.title });
+        setOriginalTitle(routine.title);
+        setFirebaseId(routine.firebaseId);
+        setHistoryUsed(true);
+        setFormIsValid(true);
+        setIsActiveRoutine(routine.activeRoutine);
+      }
     }
   }, [
     props.history.location.state,

@@ -4,8 +4,7 @@ export {
   removeFromFavorites,
   setFavorites,
   fetchActiveRoutine,
-} from // setActiveRoutine,
-'./favorites';
+} from './favorites';
 export {
   startSearchMode,
   changeExerciseOrder,

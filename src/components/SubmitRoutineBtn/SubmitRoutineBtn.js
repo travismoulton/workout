@@ -85,7 +85,12 @@ const SubmitRoutineBtn = (props) => {
           }
         );
 
-    props.history.push('/my-profile');
+    props.history.push({
+      pathname: '/my-profile',
+      state: {
+        message: props.createNewRoutine ? 'Routine created' : 'Routine Updated',
+      },
+    });
   };
 
   return (

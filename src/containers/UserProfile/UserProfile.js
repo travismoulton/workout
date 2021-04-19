@@ -15,9 +15,26 @@ const UserProfile = (props) => {
   const [workoutDeleted, setWorkoutDeleted] = useState(false);
   const [workoutsShowing, setWorkoutsShowing] = useState(false);
   const [routinesShowing, setRoutinesShowing] = useState(false);
+  const [showMessage, setShowMessage] = useState(null);
+  const [messageFinished, setMessageFinished] = useState(false);
   const { user } = useSelector((state) => state.auth);
   const { activeRoutine } = useSelector((state) => state.favorites);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (props.history.location.state && !messageFinished && !showMessage) {
+      const { message } = props.history.location.state;
+      setShowMessage(<p className={classes.Message}>{message}</p>);
+    }
+  }, [showMessage, messageFinished, props.history.location.state]);
+
+  useEffect(() => {
+    if (showMessage)
+      setTimeout(() => {
+        setShowMessage(null);
+        setMessageFinished(true);
+      }, 3000);
+  }, [showMessage]);
 
   const fetchRoutines = useCallback(() => {
     axios
@@ -99,7 +116,6 @@ const UserProfile = (props) => {
     }
   };
 
-  // TODO: Need modal to warn about deleting related routines
   const deleteWorkoutHandler = (firebaseId) => {
     deleteWorkout(firebaseId);
     removeWorkoutFromAllRoutines(firebaseId);
@@ -195,6 +211,7 @@ const UserProfile = (props) => {
 
   return (
     <>
+      {showMessage}
       <div className={classes.Workouts}>
         <span
           className={classes.SectionHeader}
