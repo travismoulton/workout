@@ -5,6 +5,7 @@ import {
   SET_WORKOUT_FORM_DATA,
   SET_ENTIRE_WORKOUT_FORM,
   CLEAR_WORKOUT_FORM_DATA,
+  RESET_WORKOUT_STORE,
 } from './actionsTypes';
 
 export const startSearchMode = () => ({ type: START_SEARCH });
@@ -39,8 +40,9 @@ export const removeExercise = (exercises, exerciseId) => {
           ...exercises.slice(0, index),
           ...exercises.slice(index + 1),
         ],
+        updated: true,
       }
-    : { type: SET_EXERCISES, exercises: [] };
+    : { type: SET_EXERCISES, exercises: [], updated: true };
 };
 
 export const updateExerciseData = (exercises, exerciseId, param, val) => {
@@ -48,7 +50,7 @@ export const updateExerciseData = (exercises, exerciseId, param, val) => {
     exercise.id === exerciseId ? { ...exercise, [param]: val } : exercise
   );
 
-  return { type: SET_EXERCISES, exercises: newExercises };
+  return { type: SET_EXERCISES, exercises: newExercises, updated: true };
 };
 
 export const clearExercises = () => ({ type: SET_EXERCISES, exercises: [] });
@@ -68,3 +70,5 @@ export const setEntireForm = (workoutName, targetArea, secondaryTarget) => ({
 });
 
 export const clearForm = () => ({ type: CLEAR_WORKOUT_FORM_DATA });
+
+export const resetWorkoutStore = () => ({ type: RESET_WORKOUT_STORE });

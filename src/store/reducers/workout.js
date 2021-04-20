@@ -5,6 +5,7 @@ import {
   SET_WORKOUT_FORM_DATA,
   CLEAR_WORKOUT_FORM_DATA,
   SET_ENTIRE_WORKOUT_FORM,
+  RESET_WORKOUT_STORE,
 } from '../actions/actionsTypes';
 import { updateObject } from '../../shared/utility';
 
@@ -16,13 +17,18 @@ const intialState = {
     targetArea: '',
     secondaryTarget: '',
   },
+  updated: false,
 };
 
 const enterSearchMode = (state, action) =>
   updateObject(state, { buildingWorkout: true });
 
 const setExercises = (state, action) =>
-  updateObject(state, { exercises: action.exercises, buildingWorkout: false });
+  updateObject(state, {
+    exercises: action.exercises,
+    buildingWorkout: false,
+    updated: action.updated,
+  });
 
 const addExercise = (state, action) =>
   updateObject(state, {
@@ -58,6 +64,9 @@ const setEntireForm = (state, action) => {
   return updateObject(state, { formData: updatedFormData });
 };
 
+const resetWorkoutStore = (state, action) =>
+  updateObject(state, { ...intialState });
+
 const reducer = (state = intialState, action) => {
   switch (action.type) {
     case START_SEARCH:
@@ -72,6 +81,8 @@ const reducer = (state = intialState, action) => {
       return clearFormData(state, action);
     case SET_ENTIRE_WORKOUT_FORM:
       return setEntireForm(state, action);
+    case RESET_WORKOUT_STORE:
+      return resetWorkoutStore(state, action);
     default:
       return state;
   }

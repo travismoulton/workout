@@ -29,11 +29,15 @@ const UserProfile = (props) => {
   }, [showMessage, messageFinished, props.history.location.state]);
 
   useEffect(() => {
-    if (showMessage)
-      setTimeout(() => {
+    let timer;
+    if (showMessage) {
+      timer = setTimeout(() => {
         setShowMessage(null);
         setMessageFinished(true);
-      }, 3000);
+      }, 2000);
+    }
+
+    return timer ? () => clearTimeout(timer) : null;
   }, [showMessage]);
 
   const fetchRoutines = useCallback(() => {

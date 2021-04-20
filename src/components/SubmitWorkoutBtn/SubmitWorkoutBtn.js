@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { clearExercises, clearForm } from '../../store/actions';
+import { resetWorkoutStore } from '../../store/actions';
 
 const SubmitWorkoutBtn = (props) => {
   const [error, setError] = useState({
@@ -86,8 +86,7 @@ const SubmitWorkoutBtn = (props) => {
           }
         );
 
-    dispatch(clearExercises());
-    dispatch(clearForm());
+    dispatch(resetWorkoutStore());
     props.clearAllFormInputs();
 
     props.history.push({

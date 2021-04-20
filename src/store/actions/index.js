@@ -16,4 +16,5 @@ export {
   setEntireForm,
   clearForm,
   setExercises,
+  resetWorkoutStore,
 } from './workout';

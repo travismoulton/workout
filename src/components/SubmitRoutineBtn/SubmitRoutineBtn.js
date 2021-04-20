@@ -1,8 +1,12 @@
 import axios from 'axios';
 import { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+
+import { fetchActiveRoutine } from '../../store/actions';
 
 const SubmitRoutineBtn = (props) => {
   const [error, setError] = useState({ isError: false, code: '', msg: '' });
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (props.valid && error.code === 'noRoutineName')
@@ -84,6 +88,9 @@ const SubmitRoutineBtn = (props) => {
             activeRoutine: props.isActiveRoutine,
           }
         );
+
+    // If the active routine was updated, update the redux store
+    if (props.isActiveRoutine) dispatch(fetchActiveRoutine(props.userId));
 
     props.history.push({
       pathname: '/my-profile',

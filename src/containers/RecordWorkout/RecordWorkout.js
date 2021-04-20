@@ -4,26 +4,16 @@ import axios from 'axios';
 
 import WorkoutListItem from '../WorkoutListItem/WorkoutListItem';
 import RecordWorkoutBtn from './RecordWorkoutBtn/RecordWorkoutBtn';
-import { setExercises } from '../../store/actions';
+import { setExercises, resetWorkoutStore } from '../../store/actions';
 
 const RecordWorkout = (props) => {
-  const [today, setToday] = useState(new Date());
+  const [today] = useState(new Date());
   const [suggestedWorkout, setSuggestedWorkout] = useState(null);
   const [exercisesDispatched, setExercisesDispatched] = useState(false);
-  const [lastRecordedWorkout, setLastRecordedWorkout] = useState(null);
   const { user } = useSelector((state) => state.auth);
   const { activeRoutine } = useSelector((state) => state.favorites);
-
-  const days = [
-    'Monday',
-    'Tuesday',
-    'Wednesday',
-    'Thursday',
-    'Friday',
-    'Saturday',
-    'Sunday',
-  ];
-
+  const { exercises } = useSelector((state) => state.workout);
+  const { updated } = useSelector((state) => state.workout);
   const dispatch = useDispatch();
 
   const adjustDateForSunday = useCallback(() => {
@@ -50,32 +40,24 @@ const RecordWorkout = (props) => {
     }
   }, [suggestedWorkout, dispatch, exercisesDispatched]);
 
+  // If an exercise is removed, updated suggested workout and re-render
   useEffect(() => {
-    if (!lastRecordedWorkout)
-      axios
-        .get(
-          `https://workout-81691-default-rtdb.firebaseio.com/recordedWorkouts/${user.authUser.uid}.json`
-        )
-        .then((res) => {
-          if (res.data)
-            setLastRecordedWorkout(
-              res.data[Object.keys(res.data)[Object.keys(res.data).length - 1]]
-            );
-        });
-  }, [lastRecordedWorkout, user.authUser.uid]);
+    if (
+      exercises.length &&
+      suggestedWorkout &&
+      exercises.length !== suggestedWorkout.exercises.length
+    )
+      setSuggestedWorkout({ ...suggestedWorkout, exercises });
+  }, [exercises, suggestedWorkout]);
 
   useEffect(() => {
-    if (lastRecordedWorkout) {
-      const { date } = lastRecordedWorkout;
-      const dayOfWorkout = new Date(date.year, date.month, date.day).getDay();
-      console.log(days[adjustDateForSunday(dayOfWorkout)]);
-      const today = days[adjustDateForSunday(new Date().getDay)];
-
-      console.log(activeRoutine.workouts[adjustDateForSunday(dayOfWorkout)]);
-    }
+    const unlisten = props.history.listen((location, action) => {
+      dispatch(resetWorkoutStore());
+      unlisten();
+    });
   });
 
-  const exercises = suggestedWorkout
+  const displayExercises = suggestedWorkout
     ? suggestedWorkout.exercises.map((exercise, i) => (
         <WorkoutListItem
           name={exercise.name}
@@ -84,22 +66,39 @@ const RecordWorkout = (props) => {
           weight={exercise.weight}
           sets={exercise.sets}
           reps={exercise.reps}
-          firstExercise={i === 0}
-          lastExercise={i === suggestedWorkout.exercises.length - 1}
           inRecordMode={true}
         />
       ))
     : null;
 
+  const updateWorkoutInFirebase = () => {
+    const workoutFirebaseId = activeRoutine.workouts[adjustDateForSunday()];
+    axios.put(
+      `https://workout-81691-default-rtdb.firebaseio.com/workouts/${user.authUser.uid}/${workoutFirebaseId}.json`,
+      {
+        title: suggestedWorkout.title,
+        targetAreaCode: suggestedWorkout.targetAreaCode,
+        secondaryTargetCode: suggestedWorkout.secondaryTargetCode,
+        targetArea: suggestedWorkout.targetArea,
+        secondaryTargetArea: suggestedWorkout.secondaryTargetArea,
+        exercises,
+      }
+    );
+  };
+
   return (
     <>
       <h1>{today.toString().substring(0, 15)}</h1>
-      {suggestedWorkout ? <h3>{suggestedWorkout.title}</h3> : null}
-      {exercises}
+      {suggestedWorkout ? <h3>{suggestedWorkout.title}</h3> : <h3>Rest</h3>}
+      {displayExercises}
       <RecordWorkoutBtn
         workout={suggestedWorkout}
+        exercises={exercises}
         date={today}
         history={props.history}
+        updated={updated}
+        updateWorkoutInFirebase={updateWorkoutInFirebase}
+        userId={user.authUser.uid}
       />
     </>
   );
