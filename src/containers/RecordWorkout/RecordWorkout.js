@@ -3,8 +3,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
 
 import WorkoutListItem from '../WorkoutListItem/WorkoutListItem';
-import RecordWorkoutBtn from './RecordWorkoutBtn/RecordWorkoutBtn';
+import RecordWorkoutBtn from '../../components/RecordWorkoutBtn/RecordWorkoutBtn';
 import Spinner from '../../components/UI/Spinner/Spinner';
+import RecordADifferentWorkout from '../../components/RecordADifferentWorkout/RecordADifferentWorkout';
 import { setExercises, resetWorkoutStore } from '../../store/actions';
 
 const RecordWorkout = (props) => {
@@ -107,6 +108,7 @@ const RecordWorkout = (props) => {
           userId={user.authUser.uid}
         />
       ) : null}
+      <RecordADifferentWorkout userId={user.authUser.uid} show={false} />
     </>
   );
 

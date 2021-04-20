@@ -149,8 +149,6 @@ const CreateRoutine = (props) => {
     return hasWorkout;
   };
 
-  console.log(isActiveRoutine);
-
   const display = (
     <>
       <Input

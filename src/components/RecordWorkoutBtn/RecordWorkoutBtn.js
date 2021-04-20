@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import axios from 'axios';
 
-import Modal from '../../../components/UI/Modal/Modal';
+import Modal from '../UI/Modal/Modal';
 
 const RecordWorkoutBtn = (props) => {
   const [showModal, setShowModal] = useState(false);
@@ -48,7 +48,6 @@ const RecordWorkoutBtn = (props) => {
       <button onClick={closeModalAndSaveWorkout}>Yes</button>
     </Modal>
   );
-
   return (
     <>
       {modal}
