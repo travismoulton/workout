@@ -4,12 +4,14 @@ import axios from 'axios';
 
 import WorkoutListItem from '../WorkoutListItem/WorkoutListItem';
 import RecordWorkoutBtn from './RecordWorkoutBtn/RecordWorkoutBtn';
+import Spinner from '../../components/UI/Spinner/Spinner';
 import { setExercises, resetWorkoutStore } from '../../store/actions';
 
 const RecordWorkout = (props) => {
   const [today] = useState(new Date());
   const [suggestedWorkout, setSuggestedWorkout] = useState(null);
   const [exercisesDispatched, setExercisesDispatched] = useState(false);
+  const [loading, setLoading] = useState(true);
   const { user } = useSelector((state) => state.auth);
   const { activeRoutine } = useSelector((state) => state.favorites);
   const { exercises } = useSelector((state) => state.workout);
@@ -24,12 +26,14 @@ const RecordWorkout = (props) => {
     if (!suggestedWorkout && activeRoutine) {
       const workoutFirebaseId = activeRoutine.workouts[adjustDateForSunday()];
 
-      (async () =>
-        await axios
-          .get(
-            `https://workout-81691-default-rtdb.firebaseio.com/workouts/${user.authUser.uid}/${workoutFirebaseId}.json`
-          )
-          .then((res) => setSuggestedWorkout(res.data)))();
+      if (workoutFirebaseId !== 'Rest')
+        (async () =>
+          await axios
+            .get(
+              `https://workout-81691-default-rtdb.firebaseio.com/workouts/${user.authUser.uid}/${workoutFirebaseId}.json`
+            )
+            .then((res) => setSuggestedWorkout(res.data)))();
+      else setLoading(false);
     }
   }, [suggestedWorkout, adjustDateForSunday, activeRoutine, user.authUser.uid]);
 
@@ -37,6 +41,7 @@ const RecordWorkout = (props) => {
     if (suggestedWorkout && !exercisesDispatched) {
       dispatch(setExercises(suggestedWorkout.exercises));
       setExercisesDispatched(true);
+      setLoading(false);
     }
   }, [suggestedWorkout, dispatch, exercisesDispatched]);
 
@@ -86,22 +91,26 @@ const RecordWorkout = (props) => {
     );
   };
 
-  return (
+  const finalDisplay = (
     <>
       <h1>{today.toString().substring(0, 15)}</h1>
       {suggestedWorkout ? <h3>{suggestedWorkout.title}</h3> : <h3>Rest</h3>}
       {displayExercises}
-      <RecordWorkoutBtn
-        workout={suggestedWorkout}
-        exercises={exercises}
-        date={today}
-        history={props.history}
-        updated={updated}
-        updateWorkoutInFirebase={updateWorkoutInFirebase}
-        userId={user.authUser.uid}
-      />
+      {suggestedWorkout ? (
+        <RecordWorkoutBtn
+          workout={suggestedWorkout}
+          exercises={exercises}
+          date={today}
+          history={props.history}
+          updated={updated}
+          updateWorkoutInFirebase={updateWorkoutInFirebase}
+          userId={user.authUser.uid}
+        />
+      ) : null}
     </>
   );
+
+  return loading ? <Spinner /> : finalDisplay;
 };
 
 export default RecordWorkout;

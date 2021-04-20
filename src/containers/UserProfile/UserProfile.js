@@ -186,7 +186,9 @@ const UserProfile = (props) => {
           changeActiveRoutine(routine, routine.firebaseId)
         }
         numberOfWorkouts={
-          routine.workouts.filter((workout) => workout !== 'Rest').length
+          routine.workouts
+            ? routine.workouts.filter((workout) => workout !== 'Rest').length
+            : 0
         }
         isActiveRoutine={
           activeRoutine
