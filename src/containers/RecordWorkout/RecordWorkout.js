@@ -25,17 +25,24 @@ const RecordWorkout = (props) => {
   }, [today]);
 
   useEffect(() => {
-    if (!suggestedWorkout && activeRoutine) {
-      const workoutFirebaseId = activeRoutine.workouts[adjustDateForSunday()];
+    if (user && !activeRoutine) {
+    }
+  });
 
-      if (workoutFirebaseId !== 'Rest')
-        (async () =>
-          await axios
-            .get(
-              `https://workout-81691-default-rtdb.firebaseio.com/workouts/${user.authUser.uid}/${workoutFirebaseId}.json`
-            )
-            .then((res) => setSuggestedWorkout(res.data)))();
-      else setLoading(false);
+  useEffect(() => {
+    if (!suggestedWorkout) {
+      if (activeRoutine) {
+        const workoutFirebaseId = activeRoutine.workouts[adjustDateForSunday()];
+
+        if (workoutFirebaseId !== 'Rest') {
+          (async () =>
+            await axios
+              .get(
+                `https://workout-81691-default-rtdb.firebaseio.com/workouts/${user.authUser.uid}/${workoutFirebaseId}.json`
+              )
+              .then((res) => setSuggestedWorkout(res.data)))();
+        } else setLoading(false);
+      } else setLoading(false);
     }
   }, [suggestedWorkout, adjustDateForSunday, activeRoutine, user.authUser.uid]);
 
@@ -99,7 +106,13 @@ const RecordWorkout = (props) => {
     </button>
   );
 
-  console.log(showModal);
+  const switchWorkout = (workoutId) => {
+    axios
+      .get(
+        `https://workout-81691-default-rtdb.firebaseio.com/workouts/${user.authUser.uid}/${workoutId}.json`
+      )
+      .then((res) => setSuggestedWorkout(res.data));
+  };
 
   const finalDisplay = (
     <>
@@ -123,6 +136,7 @@ const RecordWorkout = (props) => {
         userId={user.authUser.uid}
         show={showModal}
         closeModal={() => setShowModal(false)}
+        switchWorkout={(workoutId) => switchWorkout(workoutId)}
       />
     </>
   );

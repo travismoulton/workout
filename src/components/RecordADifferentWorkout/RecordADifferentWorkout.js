@@ -1,15 +1,30 @@
 import { useState, useCallback, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 import Modal from '../UI/Modal/Modal';
 import Input from '../UI/Input/Input';
+import classes from './RecordADifferentWorkout.module.css';
 
 const RecordADifferentWorkout = (props) => {
   const [allWorkouts, setAllWorkouts] = useState([]);
   const [routineWorkouts, setRoutineWorkouts] = useState([]);
-  const [initialMenuSet, setInitialMenuSet] = useState(false);
-  const [workoutSelectMenu, setWorkoutSelectMenu] = useState({
+  const [initialRoutineMenuSet, setIntialRoutineMenuSet] = useState(false);
+  const [initalWorkoutMenuSet, setInitialWorkoutMenuSet] = useState(false);
+  const [activeRoutineSelectMenu, setActiveRoutineSelectMenu] = useState({
+    elementType: 'select',
+    elementConfig: {
+      options: [],
+    },
+    value: '',
+    validation: {
+      required: false,
+    },
+    valid: true,
+  });
+
+  const [allWorkoutSelectMenu, setAllWorkoutSelectMenu] = useState({
     elementType: 'select',
     elementConfig: {
       options: [],
@@ -40,24 +55,26 @@ const RecordADifferentWorkout = (props) => {
   }, [props.userId]);
 
   const fetchRoutineWorkouts = useCallback(async () => {
-    const workoutIds = activeRoutine.workouts.filter(
-      (workout) => workout !== 'Rest'
-    );
+    if (activeRoutine) {
+      const workoutIds = activeRoutine.workouts.filter(
+        (workout) => workout !== 'Rest'
+      );
 
-    const tempArr = [];
+      const tempArr = [];
 
-    for (let i = 0; i < workoutIds.length; i++) {
-      await axios
-        .get(
-          `https://workout-81691-default-rtdb.firebaseio.com/workouts/${props.userId}/${workoutIds[i]}.json`
-        )
-        .then((res) => {
-          tempArr.push({ ...res.data, firebaseId: workoutIds[i] });
-        });
+      for (let i = 0; i < workoutIds.length; i++) {
+        await axios
+          .get(
+            `https://workout-81691-default-rtdb.firebaseio.com/workouts/${props.userId}/${workoutIds[i]}.json`
+          )
+          .then((res) => {
+            tempArr.push({ ...res.data, firebaseId: workoutIds[i] });
+          });
+      }
+
+      setRoutineWorkouts(tempArr);
     }
-
-    setRoutineWorkouts(tempArr);
-  }, [activeRoutine.workouts, props.userId]);
+  }, [activeRoutine, props.userId]);
 
   useEffect(() => {
     fetchRoutineWorkouts();
@@ -65,38 +82,112 @@ const RecordADifferentWorkout = (props) => {
   }, [fetchRoutineWorkouts, fetchAllWorkouts]);
 
   useEffect(() => {
-    if (routineWorkouts.length && !initialMenuSet) {
+    if (routineWorkouts.length && !initialRoutineMenuSet) {
       const menuOptions = routineWorkouts.map((workout) => ({
         value: workout.firebaseId,
         displayValue: workout.title,
       }));
-      console.log('wtf');
-      console.log(routineWorkouts, menuOptions);
-      setWorkoutSelectMenu({
-        ...workoutSelectMenu,
+      setActiveRoutineSelectMenu({
+        ...activeRoutineSelectMenu,
         elementConfig: {
-          ...workoutSelectMenu.elementConfig,
-          options: menuOptions,
+          ...activeRoutineSelectMenu.elementConfig,
+          options: [{ value: '', displayValue: '' }, ...menuOptions],
         },
       });
-      setInitialMenuSet(true);
+      setIntialRoutineMenuSet(true);
     }
-  }, [routineWorkouts, initialMenuSet, workoutSelectMenu]);
+  }, [routineWorkouts, initialRoutineMenuSet, activeRoutineSelectMenu]);
 
-  const input = (
+  useEffect(() => {
+    if (allWorkouts.length && !initalWorkoutMenuSet) {
+      const menuOptions = allWorkouts.map((workout) => ({
+        value: workout.firebaseId,
+        displayValue: workout.title,
+      }));
+      setAllWorkoutSelectMenu({
+        ...allWorkoutSelectMenu,
+        elementConfig: {
+          ...allWorkoutSelectMenu.elementConfig,
+          options: [{ value: '', displayValue: '' }, ...menuOptions],
+        },
+      });
+      setInitialWorkoutMenuSet(true);
+    }
+  }, [allWorkouts, initalWorkoutMenuSet, allWorkoutSelectMenu]);
+
+  const routineBasedInput = (
     <Input
-      value={workoutSelectMenu.value}
-      elementConfig={workoutSelectMenu.elementConfig}
-      elementType={workoutSelectMenu.elementType}
+      label={'Choose from active routine'}
+      value={activeRoutineSelectMenu.value}
+      elementConfig={activeRoutineSelectMenu.elementConfig}
+      elementType={activeRoutineSelectMenu.elementType}
       changed={(e) =>
-        setWorkoutSelectMenu({ ...workoutSelectMenu, value: e.target.value })
+        setActiveRoutineSelectMenu({
+          ...activeRoutineSelectMenu,
+          value: e.target.value,
+        })
       }
     />
   );
 
+  const workoutBasedInput = (
+    <Input
+      label={'Choose from all your workouts'}
+      value={allWorkoutSelectMenu.value}
+      elementConfig={allWorkoutSelectMenu.elementConfig}
+      elementType={allWorkoutSelectMenu.elementType}
+      changed={(e) =>
+        setAllWorkoutSelectMenu({
+          ...allWorkoutSelectMenu,
+          value: e.target.value,
+        })
+      }
+    />
+  );
+
+  const switchWorkoutAndCloseModal = (menu) => {
+    if (menu === 'routine') {
+      props.switchWorkout(activeRoutineSelectMenu.value);
+      setActiveRoutineSelectMenu({ ...activeRoutineSelectMenu, value: '' });
+    } else if (menu === 'allWorkouts') {
+      props.switchWorkout(allWorkoutSelectMenu.value);
+      setAllWorkoutSelectMenu({ ...allWorkoutSelectMenu, value: '' });
+    }
+    props.closeModal();
+  };
+
+  const switchWorkoutBtn = (menu) => (
+    <button onClick={() => switchWorkoutAndCloseModal(menu)}>
+      Choose workout
+    </button>
+  );
+
+  const noAvailableWorkoutsMsg = (
+    <p>
+      You have no workouts available. Go to &nbsp;
+      <Link to="/create-workout">Create Workout</Link> To make one now
+    </p>
+  );
+
   const modal = (
     <Modal show={props.show} modalClosed={() => props.closeModal()}>
-      {input}
+      {activeRoutineSelectMenu.elementConfig.options.length ? (
+        <div className={classes.MenuGrouping}>
+          {routineBasedInput}
+          {switchWorkoutBtn('routine')}
+        </div>
+      ) : null}
+      {allWorkoutSelectMenu.elementConfig.options.length ? (
+        <div className={classes.MenuGrouping}>
+          {workoutBasedInput}
+          {switchWorkoutBtn('allWorkouts')}
+        </div>
+      ) : null}
+      {!activeRoutineSelectMenu.elementConfig.options.length &&
+      !allWorkoutSelectMenu.elementConfig.options.length
+        ? noAvailableWorkoutsMsg
+        : null}
+      <button onClick={props.closeModal}>Cancel</button>
     </Modal>
   );
 

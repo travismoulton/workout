@@ -1,3 +1,5 @@
-//1: If editing a routine, the button needs to send a patch request
-//2: Need to work on SubmitWorkout, same thing
-//3: Profile wont load
+//1: Add a functionality to view recorded workouts
+//1a: Reverse the array in displaying recorded workouts
+//2: Need to re-work creating / recording workouts. Different sets should be displayed seperately, with the option to have different weight and rep counts per sets
+//3: Need functionality to have user-created exercises. Not yet sure how this is going to impact the search functionality
+//4: Need to put firebase variables into ENV_VARs

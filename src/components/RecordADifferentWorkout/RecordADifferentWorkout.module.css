@@ -1,0 +1,8 @@
+.MenuGrouping {
+  display: flex;
+  justify-content: center;
+}
+
+.MenuGrouping button {
+  margin-left: 5rem;
+}

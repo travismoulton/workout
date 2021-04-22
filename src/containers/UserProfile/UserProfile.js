@@ -5,16 +5,20 @@ import axios from 'axios';
 
 import WorkoutLink from '../../components/WorkoutLink/WorkoutLink';
 import RoutineLink from '../../components/RoutineLink/RoutineLink';
+import RecordedWorkoutLink from '../../components/RecordedWorkoutLink/RecordedWorkoutLink';
 import classes from './UserProfile.module.css';
 import { setActiveRoutine } from '../../store/actions/favorites';
 
 const UserProfile = (props) => {
+  const [initialFetch, setInitialFetch] = useState(false);
   const [workouts, setWorkouts] = useState([]);
   const [routines, setRoutines] = useState([]);
+  const [recordedWorkouts, setRecordedWorkouts] = useState([]);
   const [routineDeleted, setRoutineDeleted] = useState(false);
   const [workoutDeleted, setWorkoutDeleted] = useState(false);
   const [workoutsShowing, setWorkoutsShowing] = useState(false);
   const [routinesShowing, setRoutinesShowing] = useState(false);
+  const [recordedWorkoutsShowing, setRecordedWorkoutsShowing] = useState(false);
   const [showMessage, setShowMessage] = useState(null);
   const [messageFinished, setMessageFinished] = useState(false);
   const { user } = useSelector((state) => state.auth);
@@ -74,13 +78,32 @@ const UserProfile = (props) => {
       });
   }, [user.authUser.uid]);
 
-  useEffect(() => {
-    if (user && !workouts.length) fetchWorkouts();
-  }, [user, workouts, fetchWorkouts]);
+  const fetchRecordedWorkouts = useCallback(() => {
+    axios
+      .get(
+        `https://workout-81691-default-rtdb.firebaseio.com/recordedWorkouts/${user.authUser.uid}.json`
+      )
+      .then((res) => {
+        if (res.data) {
+          const tempArr = [];
+          for (const key in res.data) {
+            tempArr.push({ ...res.data[key], firebaseId: key });
+          }
+          setRecordedWorkouts(tempArr);
+        } else if (!res.data) {
+          setRecordedWorkouts([]);
+        }
+      });
+  }, [user.authUser.uid]);
 
   useEffect(() => {
-    if (user && !routines.length) fetchRoutines();
-  }, [user, fetchRoutines, routines]);
+    if (user && !initialFetch) {
+      fetchWorkouts();
+      fetchRoutines();
+      fetchRecordedWorkouts();
+      setInitialFetch(true);
+    }
+  }, [initialFetch, user, fetchRecordedWorkouts, fetchWorkouts, fetchRoutines]);
 
   useEffect(() => {
     if (routineDeleted) {
@@ -205,14 +228,33 @@ const UserProfile = (props) => {
     </Link>
   );
 
+  const recordedWorkoutLinks = recordedWorkouts.length
+    ? recordedWorkouts.map((record) => (
+        <RecordedWorkoutLink
+          key={record.firebaseId}
+          title={record.title}
+          date={record.date}
+          firebaseId={record.firebaseId}
+        />
+      ))
+    : null;
+
   const triggerWorkoutsShowing = () => {
     setWorkoutsShowing(workoutsShowing ? false : true);
     if (routinesShowing) setRoutinesShowing(false);
+    if (recordedWorkoutsShowing) setRecordedWorkoutsShowing(false);
   };
 
   const triggerRoutinesShowing = () => {
     setRoutinesShowing(routinesShowing ? false : true);
     if (workoutsShowing) setWorkoutsShowing(false);
+    if (recordedWorkoutsShowing) setRecordedWorkoutsShowing(false);
+  };
+
+  const triggerRecordedWorkoutsShowing = () => {
+    setRecordedWorkoutsShowing(recordedWorkoutsShowing ? false : true);
+    if (workoutsShowing) setWorkoutsShowing(false);
+    if (routinesShowing) setRoutinesShowing(false);
   };
 
   return (
@@ -241,6 +283,18 @@ const UserProfile = (props) => {
           ></div>
         </span>
         {routinesShowing ? routineLinks : null}
+      </div>
+      <div className={classes.RecordedWorkouts}>
+        <span
+          className={classes.SectionHeader}
+          onClick={triggerRecordedWorkoutsShowing}
+        >
+          <h3>My Recorded Workouts</h3>
+          <div
+            className={routinesShowing ? classes.ArrowDown : classes.ArrowRight}
+          ></div>
+        </span>
+        {recordedWorkoutsShowing ? recordedWorkoutLinks : null}
       </div>
     </>
   );

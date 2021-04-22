@@ -14,6 +14,7 @@ import CreateWorkout from './containers/CreateWorkout/CreateWorkout';
 import CreateRoutine from './containers/CreateRoutine/CreateRoutine';
 import UserProfile from './containers/UserProfile/UserProfile';
 import RecordWorkout from './containers/RecordWorkout/RecordWorkout';
+import RecordedWorkoutDetail from './components/RecordedWorkoutDetail/RecordedWorkoutDetail';
 import {
   logout,
   authSuccess,
@@ -74,6 +75,10 @@ function App(props) {
       <Route path="/workout-detail/:workout" component={CreateWorkout} />
       <Route path="/routine-detail/:routine" component={CreateRoutine} />
       <Route path="/record-workout" component={RecordWorkout} />
+      <Route
+        path="/recorded-workout-detail/:id"
+        component={RecordedWorkoutDetail}
+      />
       <Route path="/login">
         <FirebaseContext.Consumer>
           {(firebase) => <Login firebase={firebase} history={props.history} />}
