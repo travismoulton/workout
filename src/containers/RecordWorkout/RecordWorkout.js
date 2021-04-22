@@ -13,6 +13,7 @@ const RecordWorkout = (props) => {
   const [suggestedWorkout, setSuggestedWorkout] = useState(null);
   const [exercisesDispatched, setExercisesDispatched] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [showModal, setShowModal] = useState(false);
   const { user } = useSelector((state) => state.auth);
   const { activeRoutine } = useSelector((state) => state.favorites);
   const { exercises } = useSelector((state) => state.workout);
@@ -92,6 +93,14 @@ const RecordWorkout = (props) => {
     );
   };
 
+  const recordADifferentWorkoutBtn = (
+    <button onClick={() => setShowModal(true)}>
+      Record a different workout
+    </button>
+  );
+
+  console.log(showModal);
+
   const finalDisplay = (
     <>
       <h1>{today.toString().substring(0, 15)}</h1>
@@ -108,7 +117,13 @@ const RecordWorkout = (props) => {
           userId={user.authUser.uid}
         />
       ) : null}
-      <RecordADifferentWorkout userId={user.authUser.uid} show={false} />
+      {recordADifferentWorkoutBtn}
+
+      <RecordADifferentWorkout
+        userId={user.authUser.uid}
+        show={showModal}
+        closeModal={() => setShowModal(false)}
+      />
     </>
   );
 
