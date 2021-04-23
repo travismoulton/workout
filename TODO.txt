@@ -6,3 +6,19 @@ FOR CHANING WORKOUT STRUCTURE:
 //1: WorkoutListItem must change. Need to change the input structure. Start w/ Set 1 and has a weight and reps input. Have a button for adding another set
 //2: Redux workout store will need to change. Each exercise object will contain a sets array made up of objects with weight and reps number values
 //3: Will most likely want to create a component to represent each set, and host all logic about incrementing and decrementing weight and reps in there.
+
+
+SUB_STEPS:
+//1: In create workout line 267 addExercise is dispatched. I will need to change the object to contain 
+  name, id, and a sets array that contains objects with weight and reps values
+
+//2: The props being passed to WorkoutListItem will need to change. Specifically weight, sets, and reps. 
+  Will just pass the sets array containing object with weight and reps data
+
+//3: Need to a button to add additional Sets
+
+//4: I believe the updateExerciseData action will need to be modified.
+
+//5: Left off at trying to implement addSet inside workoutlistitemcopy
+
+

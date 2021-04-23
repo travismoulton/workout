@@ -1,17 +1,14 @@
-import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 
-import {
-  changeExerciseOrder,
-  removeExercise,
-  updateExerciseData,
-} from '../../store/actions';
-import classes from './WorkoutListItem.module.css';
+import classes from './SetDetails.module.css';
+import { updateExerciseData } from '../../store/actions';
 import Input from '../../components/UI/Input/Input';
 
-const WorkoutListItem = (props) => {
+const SetDetails = (props) => {
   const { exercises } = useSelector((state) => state.workout);
   const dispatch = useDispatch();
+
   const [weightInput, setWeightInput] = useState({
     elementType: 'select',
     elementConfig: {
@@ -25,20 +22,6 @@ const WorkoutListItem = (props) => {
     value: props.weight,
     label: 'Weight',
     id: 1,
-  });
-
-  const [setsInput, setSetsInput] = useState({
-    elementType: 'select',
-    elementConfig: {
-      options: (() => {
-        let arr = [];
-        for (let i = 1; i < 25; i++) arr.push({ value: i, displayValue: i });
-        return arr;
-      })(),
-    },
-    value: props.sets,
-    label: 'Number of sets',
-    id: 2,
   });
 
   const [repsInput, setRepsInput] = useState({
@@ -59,13 +42,6 @@ const WorkoutListItem = (props) => {
     setWeightInput({ ...weightInput, value: e.target.value * 1 });
     dispatch(
       updateExerciseData(exercises, props.id, 'weight', e.target.value * 1)
-    );
-  };
-
-  const setNumSets = (e) => {
-    setSetsInput({ ...setsInput, value: e.target.value * 1 });
-    dispatch(
-      updateExerciseData(exercises, props.id, 'sets', e.target.value * 1)
     );
   };
 
@@ -108,24 +84,8 @@ const WorkoutListItem = (props) => {
     }
   };
 
-  const incrementSets = () => {
-    setSetsInput({ ...setsInput, value: setsInput.value + 1 });
-    dispatch(
-      updateExerciseData(exercises, props.id, 'sets', setsInput.value + 1)
-    );
-  };
-
-  const decrementSets = () => {
-    if (setsInput.value > 0) {
-      setSetsInput({ ...setsInput, value: setsInput.value - 1 });
-      dispatch(
-        updateExerciseData(exercises, props.id, 'sets', setsInput.value - 1)
-      );
-    }
-  };
-
-  const formFields = [weightInput, setsInput, repsInput];
-  const updateFunctions = [setWeight, setNumSets, setNumReps];
+  const formFields = [weightInput, repsInput];
+  const updateFunctions = [setWeight, setNumReps];
 
   const form = formFields.map((field, i) => (
     <Input
@@ -139,31 +99,6 @@ const WorkoutListItem = (props) => {
     />
   ));
 
-  const closeWorkoutBtn = (
-    <div
-      className={classes.CloseWorkoutBtn}
-      onClick={() => dispatch(removeExercise(exercises, props.id))}
-    >
-      &times;
-    </div>
-  );
-
-  const moveUpInOrderBtn = (
-    <button
-      onClick={() => dispatch(changeExerciseOrder(exercises, props.id, 'up'))}
-    >
-      Up
-    </button>
-  );
-
-  const moveDownInOrderBtn = (
-    <button
-      onClick={() => dispatch(changeExerciseOrder(exercises, props.id, 'down'))}
-    >
-      Down
-    </button>
-  );
-
   const btnRow = (
     <div className={classes.ButtonRow}>
       <span className={classes.ButtonPair}>
@@ -171,14 +106,6 @@ const WorkoutListItem = (props) => {
           -
         </button>
         <button className={classes.IncrementBtn} onClick={incrementWeight}>
-          +
-        </button>
-      </span>
-      <span className={classes.ButtonPair}>
-        <button className={classes.DecrementBtn} onClick={decrementSets}>
-          -
-        </button>
-        <button className={classes.IncrementBtn} onClick={incrementSets}>
           +
         </button>
       </span>
@@ -194,16 +121,11 @@ const WorkoutListItem = (props) => {
   );
 
   return (
-    <li className={classes.WorkoutListItem}>
-      <div>{props.name}</div>
-      <div className={classes.Form}>{form}</div>
-      <div>
-        {!props.firstExercise && !props.inRecordMode ? moveUpInOrderBtn : null}
-        {!props.lastExercise && !props.inRecordMode ? moveDownInOrderBtn : null}
-      </div>
+    <>
+      {form}
       {btnRow}
-      {closeWorkoutBtn}
-    </li>
+    </>
   );
 };
-export default WorkoutListItem;
+
+export default SetDetails;

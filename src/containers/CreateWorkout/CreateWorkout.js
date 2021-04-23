@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import uniqid from 'uniqid';
 import axios from 'axios';
 
 import Input from '../../components/UI/Input/Input';
@@ -266,7 +267,7 @@ const CreateWorkout = (props) => {
     dispatch(
       addExercise({
         name: exercise.name,
-        id: exercise.id,
+        id: uniqid(`${exercise.id}-`),
         weight: 0,
         sets: 1,
         reps: 1,
