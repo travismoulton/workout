@@ -1,5 +1,2 @@
-//1: Add a functionality to view recorded workouts
-//1a: Reverse the array in displaying recorded workouts
 //2: Need to re-work creating / recording workouts. Different sets should be displayed seperately, with the option to have different weight and rep counts per sets
 //3: Need functionality to have user-created exercises. Not yet sure how this is going to impact the search functionality
-//4: Need to put firebase variables into ENV_VARs

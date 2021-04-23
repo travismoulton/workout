@@ -89,7 +89,7 @@ const UserProfile = (props) => {
           for (const key in res.data) {
             tempArr.push({ ...res.data[key], firebaseId: key });
           }
-          setRecordedWorkouts(tempArr);
+          setRecordedWorkouts(tempArr.reverse());
         } else if (!res.data) {
           setRecordedWorkouts([]);
         }
@@ -291,7 +291,9 @@ const UserProfile = (props) => {
         >
           <h3>My Recorded Workouts</h3>
           <div
-            className={routinesShowing ? classes.ArrowDown : classes.ArrowRight}
+            className={
+              recordedWorkoutsShowing ? classes.ArrowDown : classes.ArrowRight
+            }
           ></div>
         </span>
         {recordedWorkoutsShowing ? recordedWorkoutLinks : null}
