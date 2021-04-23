@@ -11,8 +11,8 @@ const SubmitWorkoutBtn = (props) => {
     errorCode: null,
   });
   const { exercises } = useSelector((state) => state.workout);
-  const { user } = useSelector((state) => state.auth);
   const { formData } = useSelector((state) => state.workout);
+  const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
   useEffect(() => {
