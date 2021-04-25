@@ -1,5 +1,6 @@
 //2: Need to re-work creating / recording workouts. Different sets should be displayed seperately, with the option to have different weight and rep counts per sets
 //3: Need functionality to have user-created exercises. Not yet sure how this is going to impact the search functionality
+//4: Need to add modal with confirmation for deleting workouts and routines
 
 
 FOR CHANING WORKOUT STRUCTURE:
@@ -13,7 +14,7 @@ SUB_STEPS:
   name, id, and a sets array that contains objects with weight and reps values
 
 //2: The props being passed to WorkoutListItem will need to change. Specifically weight, sets, and reps. 
-  Will just pass the sets array containing object with weight and reps data
+  Will just pass the sets array containing objects with weight and reps data
 
 //3: Need to a button to add additional Sets
 

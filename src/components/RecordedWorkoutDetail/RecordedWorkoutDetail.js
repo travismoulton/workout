@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
+import uniqid from 'uniqid';
 
 import ExerciseListItem from './ExerciseListItem/ExerciseListItem';
 
@@ -27,9 +28,8 @@ const RecordedWorkoutDetail = (props) => {
     ? workout.exercises.map((exercise) => (
         <ExerciseListItem
           title={exercise.name}
-          numSets={exercise.sets}
-          numReps={exercise.reps}
-          weight={exercise.weight}
+          sets={exercise.sets}
+          key={uniqid()}
         />
       ))
     : null;
@@ -44,7 +44,9 @@ const RecordedWorkoutDetail = (props) => {
               .toString()
               .substring(0, 15)}
           </p>
-          {exercises ? <ul>{exercises}</ul> : null}
+          {exercises ? (
+            <ul style={{ listStyle: 'none', padding: '0' }}>{exercises}</ul>
+          ) : null}
         </>
       ) : null}
     </>

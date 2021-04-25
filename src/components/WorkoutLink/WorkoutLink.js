@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
+import slugify from 'slugify';
 
 import classes from './WorkoutLink.module.css';
 import Modal from '../UI/Modal/Modal';
@@ -37,7 +38,7 @@ const WorkoutLink = (props) => {
           <Link
             className={classes.WorkoutLink}
             to={{
-              pathname: `/workout-detail/${props.title}`,
+              pathname: `/workout-detail/${slugify(props.title)}`,
               state: { workout: props.workout },
             }}
           >

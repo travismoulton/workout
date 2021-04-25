@@ -2,7 +2,7 @@
   border: 1px solid #eee;
   padding: 1rem;
   width: 75rem;
-  height: 15rem;
+  min-height: 16rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;

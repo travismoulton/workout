@@ -266,11 +266,14 @@ const CreateWorkout = (props) => {
 
     dispatch(
       addExercise({
+        // name: exercise.name,
+        // id: uniqid(`${exercise.id}-`),
+        // weight: 0,
+        // sets: 1,
+        // reps: 1,
         name: exercise.name,
         id: uniqid(`${exercise.id}-`),
-        weight: 0,
-        sets: 1,
-        reps: 1,
+        sets: [{ weight: 0, reps: 1 }],
       })
     );
   };

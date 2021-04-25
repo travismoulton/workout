@@ -17,4 +17,5 @@ export {
   clearForm,
   setExercises,
   resetWorkoutStore,
+  addSetToExercise,
 } from './workout';

@@ -41,21 +41,39 @@ const SetDetails = (props) => {
   const setWeight = (e) => {
     setWeightInput({ ...weightInput, value: e.target.value * 1 });
     dispatch(
-      updateExerciseData(exercises, props.id, 'weight', e.target.value * 1)
+      updateExerciseData(
+        exercises,
+        props.id,
+        'weight',
+        e.target.value * 1,
+        props.setNumber - 1
+      )
     );
   };
 
   const setNumReps = (e) => {
     setRepsInput({ ...repsInput, value: e.target.value * 1 });
     dispatch(
-      updateExerciseData(exercises, props.id, 'reps', e.target.value * 1)
+      updateExerciseData(
+        exercises,
+        props.id,
+        'reps',
+        e.target.value * 1,
+        props.setNumber - 1
+      )
     );
   };
 
   const incrementWeight = () => {
     setWeightInput({ ...weightInput, value: weightInput.value + 5 });
     dispatch(
-      updateExerciseData(exercises, props.id, 'weight', weightInput.value + 5)
+      updateExerciseData(
+        exercises,
+        props.id,
+        'weight',
+        weightInput.value + 5,
+        props.setNumber - 1
+      )
     );
   };
 
@@ -63,7 +81,13 @@ const SetDetails = (props) => {
     if (weightInput.value > 0) {
       setWeightInput({ ...weightInput, value: weightInput.value - 5 });
       dispatch(
-        updateExerciseData(exercises, props.id, 'weight', weightInput.value - 5)
+        updateExerciseData(
+          exercises,
+          props.id,
+          'weight',
+          weightInput.value - 5,
+          props.setNumber - 1
+        )
       );
     }
   };
@@ -71,7 +95,13 @@ const SetDetails = (props) => {
   const incremementReps = () => {
     setRepsInput({ ...repsInput, value: repsInput.value + 1 });
     dispatch(
-      updateExerciseData(exercises, props.id, 'reps', repsInput.value + 1)
+      updateExerciseData(
+        exercises,
+        props.id,
+        'reps',
+        repsInput.value + 1,
+        props.setNumber - 1
+      )
     );
   };
 
@@ -79,7 +109,13 @@ const SetDetails = (props) => {
     if (repsInput.value > 0) {
       setRepsInput({ ...repsInput, value: repsInput.value - 1 });
       dispatch(
-        updateExerciseData(exercises, props.id, 'reps', repsInput.value - 1)
+        updateExerciseData(
+          exercises,
+          props.id,
+          'reps',
+          repsInput.value - 1,
+          props.setNumber - 1
+        )
       );
     }
   };
@@ -121,10 +157,11 @@ const SetDetails = (props) => {
   );
 
   return (
-    <>
-      {form}
+    <li>
+      <p>Set # {props.setNumber}</p>
+      <div className={classes.Form}>{form}</div>
       {btnRow}
-    </>
+    </li>
   );
 };
 

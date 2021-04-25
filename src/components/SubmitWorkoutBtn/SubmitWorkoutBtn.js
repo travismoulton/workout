@@ -62,8 +62,8 @@ const SubmitWorkoutBtn = (props) => {
     )
       if (await checkForPreviousNameUse()) return;
 
-    (await props.createNewWorkout)
-      ? axios.post(
+    props.createNewWorkout
+      ? await axios.post(
           `https://workout-81691-default-rtdb.firebaseio.com/workouts/${user.authUser.uid}.json`,
           {
             title: props.title,

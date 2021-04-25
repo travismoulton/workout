@@ -1,11 +1,12 @@
 .Form {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
 }
 
 .ButtonRow {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
+  margin: 0.5rem 0;
 }
 
 .IncrementBtn {
