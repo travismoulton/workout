@@ -10,19 +10,6 @@ const Results = (props) => {
   const favorites = useSelector((state) => state.favorites.favorites);
   const wgerDict = useSelector((state) => state.wgerDict);
 
-  // useEffect(() => {
-  //   const param =
-  //     props.location.state.category === 'exercisecategory'
-  //       ? `category=${props.location.state.id}`
-  //       : props.location.state.category === 'muscle'
-  //       ? `muscles=${props.location.state.id}`
-  //       : `equipment=${props.location.state.id}`;
-
-  //   axios
-  //     .get(`https://wger.de/api/v2/exercise/?language=2&${param}`)
-  //     .then((res) => setExercises(res.data.results));
-  // }, [props.location.state.id, props.location.state.category]);
-
   useEffect(() => {
     const param =
       props.location.state.category === 'exercisecategory'
@@ -51,6 +38,13 @@ const Results = (props) => {
       setFavoriteExerciseIds(favorites.map((favorite) => favorite.exercise));
   }, [favorites]);
 
+  const getFirebaseId = (exercise) =>
+    favoriteExerciseIds.includes(exercise.id) &&
+    favorites.length === favoriteExerciseIds.length
+      ? favorites.filter((favorite) => favorite.exercise === exercise.id)[0]
+          .firebaseId
+      : null;
+
   const displayResults = exercises.map((exercise) => (
     <ExerciseResult
       history={props.history}
@@ -59,14 +53,7 @@ const Results = (props) => {
       category={wgerDict.exerciseCategoryList[exercise.category]}
       equipment={wgerDict.equipment[exercise.equipment[0]]}
       isFavorite={favoriteExerciseIds.includes(exercise.id)}
-      firebaseId={
-        // Only run once setFavoriteExerciseIds has been triggered by favorites updating
-        favoriteExerciseIds.includes(exercise.id) &&
-        favorites.length === favoriteExerciseIds.length
-          ? favorites.filter((favorite) => favorite.exercise === exercise.id)[0]
-              .firebaseId
-          : null
-      }
+      firebaseId={getFirebaseId(exercise)}
       exerciseId={exercise.id}
     />
   ));

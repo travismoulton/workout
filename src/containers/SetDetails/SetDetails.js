@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import classes from './SetDetails.module.css';
-import { updateExerciseData } from '../../store/actions';
+import { updateExerciseData, removeSetFromExercise } from '../../store/actions';
 import Input from '../../components/UI/Input/Input';
 
 const SetDetails = (props) => {
@@ -92,10 +92,7 @@ const SetDetails = (props) => {
     }
   };
 
-  console.log('render');
-
   const incremementReps = () => {
-    console.log('increment reps');
     setRepsInput({ ...repsInput, value: repsInput.value + 1 });
     dispatch(
       updateExerciseData(
@@ -159,11 +156,24 @@ const SetDetails = (props) => {
     </div>
   );
 
+  const removeSetBtn = (
+    <button
+      onClick={() =>
+        dispatch(
+          removeSetFromExercise(exercises, props.id, props.setNumber - 1)
+        )
+      }
+    >
+      Remove set
+    </button>
+  );
+
   return (
     <li>
       <p>Set # {props.setNumber}</p>
       <div className={classes.Form}>{form}</div>
       {btnRow}
+      {props.numberOfSets > 1 ? removeSetBtn : null}
     </li>
   );
 };

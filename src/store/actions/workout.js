@@ -45,18 +45,25 @@ export const removeExercise = (exercises, exerciseId) => {
     : { type: SET_EXERCISES, exercises: [], updated: true };
 };
 
-// export const updateExerciseData = (exercises, exerciseId, param, val) => {
-//   const newExercises = exercises.map((exercise) =>
-//     exercise.id === exerciseId ? { ...exercise, [param]: val } : exercise
-//   );
-
-//   return { type: SET_EXERCISES, exercises: newExercises, updated: true };
-// };
-
 export const addSetToExercise = (exercises, exerciseId) => {
   const newExercises = exercises.map((exercise) =>
     exercise.id === exerciseId
       ? { ...exercise, sets: [...exercise.sets, { weight: 0, reps: 1 }] }
+      : exercise
+  );
+  return { type: SET_EXERCISES, exercises: newExercises, updated: true };
+};
+
+export const removeSetFromExercise = (exercises, exerciseId, setIndex) => {
+  const newExercises = exercises.map((exercise) =>
+    exercise.id === exerciseId
+      ? {
+          ...exercise,
+          sets: [
+            ...exercise.sets.slice(0, setIndex),
+            ...exercise.sets.slice(setIndex + 1),
+          ],
+        }
       : exercise
   );
   return { type: SET_EXERCISES, exercises: newExercises, updated: true };
@@ -81,8 +88,6 @@ export const updateExerciseData = (
         }
       : exercise
   );
-
-  console.log(newExercises);
 
   return { type: SET_EXERCISES, exercises: newExercises, updated: true };
 };

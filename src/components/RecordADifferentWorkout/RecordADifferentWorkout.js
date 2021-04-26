@@ -23,7 +23,6 @@ const RecordADifferentWorkout = (props) => {
     },
     valid: true,
   });
-
   const [allWorkoutSelectMenu, setAllWorkoutSelectMenu] = useState({
     elementType: 'select',
     elementConfig: {

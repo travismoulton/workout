@@ -52,6 +52,7 @@ const WorkoutListItem = (props) => {
           weight={s.weight}
           id={props.id}
           setNumber={i + 1}
+          numberOfSets={props.sets.length}
         />
       ))
     : null;
@@ -60,12 +61,10 @@ const WorkoutListItem = (props) => {
     <li className={classes.WorkoutListItem}>
       <div>{props.name}</div>
       {sets ? <ul style={{ listStyle: 'none' }}>{sets}</ul> : null}
-
       <div>
         {!props.firstExercise && !props.inRecordMode ? moveUpInOrderBtn : null}
         {!props.lastExercise && !props.inRecordMode ? moveDownInOrderBtn : null}
       </div>
-
       {closeWorkoutBtn}
       {addSetBtn}
     </li>

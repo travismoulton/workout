@@ -1,14 +1,9 @@
-// import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import slugify from 'slugify';
 
 import AddToWorkoutBtn from '../AddToWorkoutBtn/AddToWorkoutBtn';
-import {
-  addToFavorites,
-  removeFromFavorites,
-  // addExercise,
-} from '../../store/actions/';
+import { addToFavorites, removeFromFavorites } from '../../store/actions/';
 import classes from './ExerciseResult.module.css';
 
 const ExerciseResult = (props) => {

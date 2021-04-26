@@ -1,4 +1,5 @@
 import { useDispatch } from 'react-redux';
+import uniqid from 'uniqid';
 
 import { addExercise } from '../../store/actions';
 
@@ -8,10 +9,8 @@ const AddExerciseBtn = (props) => {
     dispatch(
       addExercise({
         name: props.name,
-        id: props.id,
-        weight: 0,
-        sets: 1,
-        reps: 1,
+        id: uniqid(`${props.id}-`),
+        sets: [{ weight: 0, reps: 1 }],
       })
     );
     props.history.push('/create-workout');

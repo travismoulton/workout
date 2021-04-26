@@ -1,6 +1,25 @@
 //3: Need functionality to have user-created exercises. Not yet sure how this is going to impact the search functionality
 //4: Need to add modal with confirmation for deleting workouts and routines
-//5: Add workout from search isn't generating a default set
+//8: Go through and configure the enter button to act as expected on each component -- Maybe
+//9: Need a feature to record a workout on a past day
+//10: Add a feature to text search for workouts?
+  => Would need to grab all exercises on page load from firebase. Then just search against those.
+//11: Should show last recorded workout, and workouts last week on the user profile page
+//12: Add functionality to have user's picture through firebase
+//13: If you are editing a workout, and you use the add from search functionality, it goes back to create-workout
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 // FINISHED BUT SAVE FOR LATER

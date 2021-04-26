@@ -14,11 +14,19 @@ const RecordWorkout = (props) => {
   const [exercisesDispatched, setExercisesDispatched] = useState(false);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
+  const [error, setError] = useState(false);
   const { user } = useSelector((state) => state.auth);
   const { activeRoutine } = useSelector((state) => state.favorites);
   const { exercises } = useSelector((state) => state.workout);
   const { updated } = useSelector((state) => state.workout);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    const unlisten = props.history.listen((location, action) => {
+      dispatch(resetWorkoutStore());
+      unlisten();
+    });
+  });
 
   const adjustDateForSunday = useCallback(() => {
     return today.getDay() === 0 ? 6 : today.getDay() - 1;
@@ -35,7 +43,12 @@ const RecordWorkout = (props) => {
               .get(
                 `https://workout-81691-default-rtdb.firebaseio.com/workouts/${user.authUser.uid}/${workoutFirebaseId}.json`
               )
-              .then((res) => setSuggestedWorkout(res.data)))();
+              .then((res) =>
+                setSuggestedWorkout({
+                  ...res.data,
+                  firebaseId: workoutFirebaseId,
+                })
+              ))();
         } else setLoading(false);
       } else setLoading(false);
     }
@@ -59,15 +72,8 @@ const RecordWorkout = (props) => {
       setSuggestedWorkout({ ...suggestedWorkout, exercises });
   }, [exercises, suggestedWorkout]);
 
-  useEffect(() => {
-    const unlisten = props.history.listen((location, action) => {
-      dispatch(resetWorkoutStore());
-      unlisten();
-    });
-  });
-
   const displayExercises = suggestedWorkout
-    ? suggestedWorkout.exercises.map((exercise) => (
+    ? exercises.map((exercise) => (
         <WorkoutListItem
           name={exercise.name}
           key={exercise.id}
@@ -79,7 +85,8 @@ const RecordWorkout = (props) => {
     : null;
 
   const updateWorkoutInFirebase = () => {
-    const workoutFirebaseId = activeRoutine.workouts[adjustDateForSunday()];
+    // const workoutFirebaseId = activeRoutine.workouts[adjustDateForSunday()];
+    const workoutFirebaseId = suggestedWorkout.firebaseId;
     axios.put(
       `https://workout-81691-default-rtdb.firebaseio.com/workouts/${user.authUser.uid}/${workoutFirebaseId}.json`,
       {
@@ -100,20 +107,31 @@ const RecordWorkout = (props) => {
   );
 
   const switchWorkout = (workoutId) => {
-    axios
-      .get(
-        `https://workout-81691-default-rtdb.firebaseio.com/workouts/${user.authUser.uid}/${workoutId}.json`
-      )
-      .then((res) => {
-        setSuggestedWorkout(res.data);
-        dispatch(setExercises(res.data.exercises));
-      });
+    workoutId
+      ? axios
+          .get(
+            `https://workout-81691-default-rtdb.firebaseio.com/workouts/${user.authUser.uid}/${workoutId}.json`
+          )
+          .then((res) => {
+            setSuggestedWorkout({ ...res.data, firebaseId: workoutId });
+            dispatch(setExercises(res.data.exercises));
+            if (error.code === 'noSelectedWorkout') setError(null);
+          })
+      : setError({
+          msg: (
+            <p style={{ color: 'red' }}>
+              No Workout was selected. Please select a workout to record
+            </p>
+          ),
+          code: 'noSelectedWorkout',
+        });
   };
 
   const finalDisplay = (
     <>
       <h1>{today.toString().substring(0, 15)}</h1>
       {suggestedWorkout ? <h3>{suggestedWorkout.title}</h3> : <h3>Rest</h3>}
+      {error ? error.msg : null}
       {displayExercises}
       {suggestedWorkout ? (
         <RecordWorkoutBtn

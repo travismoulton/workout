@@ -18,4 +18,5 @@ export {
   setExercises,
   resetWorkoutStore,
   addSetToExercise,
+  removeSetFromExercise,
 } from './workout';
