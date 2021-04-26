@@ -25,11 +25,6 @@ const RecordWorkout = (props) => {
   }, [today]);
 
   useEffect(() => {
-    if (user && !activeRoutine) {
-    }
-  });
-
-  useEffect(() => {
     if (!suggestedWorkout) {
       if (activeRoutine) {
         const workoutFirebaseId = activeRoutine.workouts[adjustDateForSunday()];
@@ -72,14 +67,12 @@ const RecordWorkout = (props) => {
   });
 
   const displayExercises = suggestedWorkout
-    ? suggestedWorkout.exercises.map((exercise, i) => (
+    ? suggestedWorkout.exercises.map((exercise) => (
         <WorkoutListItem
           name={exercise.name}
           key={exercise.id}
           id={exercise.id}
-          weight={exercise.weight}
           sets={exercise.sets}
-          reps={exercise.reps}
           inRecordMode={true}
         />
       ))
@@ -111,7 +104,10 @@ const RecordWorkout = (props) => {
       .get(
         `https://workout-81691-default-rtdb.firebaseio.com/workouts/${user.authUser.uid}/${workoutId}.json`
       )
-      .then((res) => setSuggestedWorkout(res.data));
+      .then((res) => {
+        setSuggestedWorkout(res.data);
+        dispatch(setExercises(res.data.exercises));
+      });
   };
 
   const finalDisplay = (

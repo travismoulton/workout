@@ -82,6 +82,8 @@ export const updateExerciseData = (
       : exercise
   );
 
+  console.log(newExercises);
+
   return { type: SET_EXERCISES, exercises: newExercises, updated: true };
 };
 

@@ -1,8 +1,9 @@
-//2: Need to re-work creating / recording workouts. Different sets should be displayed seperately, with the option to have different weight and rep counts per sets
 //3: Need functionality to have user-created exercises. Not yet sure how this is going to impact the search functionality
 //4: Need to add modal with confirmation for deleting workouts and routines
+//5: Add workout from search isn't generating a default set
 
 
+// FINISHED BUT SAVE FOR LATER
 FOR CHANING WORKOUT STRUCTURE:
 //1: WorkoutListItem must change. Need to change the input structure. Start w/ Set 1 and has a weight and reps input. Have a button for adding another set
 //2: Redux workout store will need to change. Each exercise object will contain a sets array made up of objects with weight and reps number values
@@ -21,5 +22,7 @@ SUB_STEPS:
 //4: I believe the updateExerciseData action will need to be modified.
 
 //5: Left off at trying to implement addSet inside workoutlistitemcopy
+***********************************************************************************
 
+// 
 

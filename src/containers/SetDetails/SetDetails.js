@@ -92,7 +92,10 @@ const SetDetails = (props) => {
     }
   };
 
+  console.log('render');
+
   const incremementReps = () => {
+    console.log('increment reps');
     setRepsInput({ ...repsInput, value: repsInput.value + 1 });
     dispatch(
       updateExerciseData(

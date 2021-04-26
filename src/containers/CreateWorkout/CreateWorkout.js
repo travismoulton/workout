@@ -330,9 +330,7 @@ const CreateWorkout = (props) => {
                 name={exercise.name}
                 key={exercise.id}
                 id={exercise.id}
-                weight={exercise.weight}
                 sets={exercise.sets}
-                reps={exercise.reps}
                 firstExercise={i === 0}
                 lastExercise={i === exercises.length - 1}
               />
