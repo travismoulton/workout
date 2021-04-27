@@ -8,6 +8,7 @@ const initialState = {
     9: 'Legs',
     13: 'Shoulders',
     99: 'All Body',
+    98: 'Cardio',
   },
   muscles: {
     2: {

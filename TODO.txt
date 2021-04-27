@@ -7,6 +7,31 @@
 //11: Should show last recorded workout, and workouts last week on the user profile page
 //12: Add functionality to have user's picture through firebase
 //13: If you are editing a workout, and you use the add from search functionality, it goes back to create-workout
+//14: Move the wgerDict outside of state
+//15: Add Time and Distance options to workout creation
+
+
+
+
+
+// Create exercise:
+Need a form 
+  - Takes title - required - check
+  - Category - optional - check
+  - Equipment - optional - check
+  - Description - optional - check
+  - Primary muscles - Optional - check
+  - Secondary muscles - optional
+
+Going to keep them outside of the master exercise list and search functionality. Inside search, add a 4th Category of "my custom exercises"
+CreateWorkout will get an additional select menu of my custom exercises
+No redux store should be required?
+Could add them into text based search
+Will not have a favorites functionality
+Will need to modify results and exercise detail to handle custom exercises
+
+
+
 
 
 

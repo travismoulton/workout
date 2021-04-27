@@ -16,6 +16,7 @@ const NavItems = (props) => {
           </NavItem>
           <NavItem link="/create-workout">Create Workout</NavItem>
           <NavItem link="/create-routine">Create Routine</NavItem>
+          <NavItem link="/create-exercise">Create Exercise</NavItem>
           <NavItem link="/record-workout">Record a Workout</NavItem>
           <NavItem link="/logout">Logout</NavItem>
         </>
