@@ -9,8 +9,20 @@ const CreateExercise = () => {
   const { user } = useSelector((state) => state.auth);
   const wgerDict = useSelector((state) => state.wgerDict);
   const [muscleSelectOptionsDone, setMuscleSelectOptionsDone] = useState(false);
-
   const [formIsValid, setFormIsValid] = useState(false);
+  const [requiredEquipmentList, setRequiredEquipmentList] = useState({
+    1: { name: 'Barbell', checked: false },
+    8: { name: 'Bench', checked: false },
+    3: { name: 'Dumbbell', checked: false },
+    4: { name: 'Gym mat', checked: false },
+    9: { name: 'Incline bench', checked: false },
+    10: { name: 'Kettlebell', checked: false },
+    7: { name: 'Body weight', checked: false },
+    6: { name: 'Pull-up bar', checked: false },
+    5: { name: 'Swiss Ball', checked: false },
+    2: { name: 'SZ-Bar', checked: false },
+  });
+
   const [exerciseNameInput, setExerciseNameInput] = useState({
     elementType: 'input',
     elementConfig: {
@@ -90,13 +102,49 @@ const CreateExercise = () => {
     touched: false,
     id: 'equipment',
   });
+  const [checkBoxTemplate, setCheckBoxTemplaet] = useState({
+    elementType: 'input',
+    elementConfig: {
+      type: 'checkbox',
+    },
+    value: false,
+    validation: { required: false },
+    valid: true,
+    touched: false,
+    checked: false,
+    label: null,
+    className: 'Checkbox',
+  });
 
-  const formFields = [
-    exerciseNameInput,
-    categoryInput,
-    primaryMuscleInput,
-    equipmentInput,
-  ];
+  const equipment = () => {
+    const equipment = [];
+    for (const key in wgerDict.equipment) {
+      equipment.push({ code: key, name: wgerDict.equipment[key] });
+    }
+    return equipment;
+  };
+
+  const equipmentCheckboxes = equipment().map((equip, i) => {
+    const checkbox = { ...checkBoxTemplate, label: equip.name };
+
+    // THIS ISN'T RIGHT. NEED THE PREVIOUS STATE OF CHECKED
+    const changed = (code) =>
+      setRequiredEquipmentList({
+        ...requiredEquipmentList,
+        [code]: { ...requiredEquipmentList.code, checked: true },
+      });
+    return (
+      <Input
+        elementType={checkbox.elementType}
+        elementConfig={checkbox.elementConfig}
+        value={checkbox.value}
+        label={checkbox.label}
+        key={checkbox.label}
+      />
+    );
+  });
+
+  const formFields = [exerciseNameInput, categoryInput, primaryMuscleInput];
 
   useEffect(() => {
     if (!muscleSelectOptionsDone) {
@@ -147,6 +195,7 @@ const CreateExercise = () => {
   return (
     <>
       {form}
+      {equipmentCheckboxes}
       <SubmitExerciseBtn isValid={formIsValid} userId={user.authUser.uid} />
     </>
   );

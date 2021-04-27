@@ -7,7 +7,8 @@ const Input = (props) => {
 
   switch (props.elementType) {
     case 'input':
-      inputClasses.push(classes.TextInput);
+      if (props.elementConfig.type === 'text')
+        inputClasses.push(classes.TextInput);
       inputElement = (
         <div>
           {props.label ? <label>{props.label}</label> : null}
@@ -37,6 +38,19 @@ const Input = (props) => {
               </option>
             ))}
           </select>
+        </div>
+      );
+      break;
+
+    case 'checkbox':
+      inputElement = (
+        <div>
+          {props.label ? <label>{props.label}</label> : null}
+          <input
+            {...props.elementConfig}
+            value={props.value}
+            checked={props.checked}
+          />
         </div>
       );
       break;

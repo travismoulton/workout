@@ -19,7 +19,7 @@ Need a form
   - Takes title - required - check
   - Category - optional - check
   - Equipment - optional - check
-  - Description - optional - check
+  - Description - optional 
   - Primary muscles - Optional - check
   - Secondary muscles - optional
 
@@ -32,7 +32,7 @@ Will need to modify results and exercise detail to handle custom exercises
 
 
 
-
+LEFT OFF WORKING ON EQIPMENT CHECKBOXES CHANGE FUNCTION
 
 
 

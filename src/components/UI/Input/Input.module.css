@@ -20,3 +20,8 @@
   border: 2px solid red;
   background-color: #fda49a;
 }
+
+.Checkbox {
+  width: 1rem;
+  height: 1rem;
+}
