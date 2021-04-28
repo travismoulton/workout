@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import Input from '../../components/UI/Input/Input';
 import SubmitExerciseBtn from './SubmitExerciseBtn/SubmitExerciseBtn';
 import { updateObject, checkValidityHandler } from '../../shared/utility';
+import classes from './CreateExercise.module.css';
 
 const CreateExercise = () => {
   const { user } = useSelector((state) => state.auth);
@@ -23,6 +24,8 @@ const CreateExercise = () => {
     2: { name: 'SZ-Bar', checked: false },
   });
 
+  const [secondaryMusclesUsed, setSecondaryMusclesUsed] = useState(null);
+
   const [exerciseNameInput, setExerciseNameInput] = useState({
     elementType: 'input',
     elementConfig: {
@@ -36,6 +39,19 @@ const CreateExercise = () => {
     valid: false,
     touched: false,
     id: 'name',
+  });
+  const [descriptionInput, setDescriptionInput] = useState({
+    elementType: 'textarea',
+    elementConfig: {
+      placeholder: 'Description of exercise...',
+    },
+    value: '',
+    validation: {
+      required: false,
+    },
+    valid: false,
+    touched: false,
+    id: 'description',
   });
   const [categoryInput, setCategoryInput] = useState({
     elementType: 'select',
@@ -56,7 +72,7 @@ const CreateExercise = () => {
     value: 0,
     label: 'Exercise Category',
     validation: {
-      required: false,
+      required: true,
     },
     valid: true,
     touched: false,
@@ -76,33 +92,8 @@ const CreateExercise = () => {
     touched: false,
     id: 'primaryMuscle',
   });
-  const [equipmentInput, setEquipmentInput] = useState({
-    elementType: 'select',
-    elementConfig: {
-      options: [
-        { value: 0, displayValue: '' },
-        { value: 1, displayValue: 'Barbell' },
-        { value: 8, displayValue: 'Bench' },
-        { value: 3, displayValue: 'Dumbbell' },
-        { value: 4, displayValue: 'Gym mat' },
-        { value: 9, displayValue: 'Incline bench' },
-        { value: 10, displayValue: 'Kettlebell' },
-        { value: 7, displayValue: 'Body weight' },
-        { value: 6, displayValue: 'Pull-up bar' },
-        { value: 5, displayValue: 'Swiss Ball' },
-        { value: 2, displayValue: 'SZ-Bar' },
-      ],
-    },
-    value: 0,
-    label: 'Equipment',
-    validation: {
-      required: false,
-    },
-    valid: true,
-    touched: false,
-    id: 'equipment',
-  });
-  const [checkBoxTemplate, setCheckBoxTemplaet] = useState({
+
+  const checkBoxTemplate = {
     elementType: 'input',
     elementConfig: {
       type: 'checkbox',
@@ -114,7 +105,7 @@ const CreateExercise = () => {
     checked: false,
     label: null,
     className: 'Checkbox',
-  });
+  };
 
   const equipment = () => {
     const equipment = [];
@@ -124,15 +115,17 @@ const CreateExercise = () => {
     return equipment;
   };
 
-  const equipmentCheckboxes = equipment().map((equip, i) => {
+  const equipmentCheckboxes = equipment().map((equip) => {
     const checkbox = { ...checkBoxTemplate, label: equip.name };
 
-    // THIS ISN'T RIGHT. NEED THE PREVIOUS STATE OF CHECKED
-    const changed = (code) =>
-      setRequiredEquipmentList({
-        ...requiredEquipmentList,
-        [code]: { ...requiredEquipmentList.code, checked: true },
-      });
+    const changed = (equipmentCode) =>
+      setRequiredEquipmentList((prevEquipment) => ({
+        ...prevEquipment,
+        [equipmentCode]: {
+          ...prevEquipment[equipmentCode],
+          checked: !prevEquipment[equipmentCode].checked,
+        },
+      }));
     return (
       <Input
         elementType={checkbox.elementType}
@@ -140,11 +133,48 @@ const CreateExercise = () => {
         value={checkbox.value}
         label={checkbox.label}
         key={checkbox.label}
+        changed={() => changed(equip.code)}
       />
     );
   });
 
-  const formFields = [exerciseNameInput, categoryInput, primaryMuscleInput];
+  const muscles = () => {
+    const muscles = [];
+    for (const key in wgerDict.muscles) {
+      muscles.push({ code: key, name: wgerDict.muscles[key].name });
+    }
+    return muscles;
+  };
+
+  const muscleCheckboxes = muscles().map((muscle) => {
+    const checkbox = { ...checkBoxTemplate, label: muscle.name };
+
+    const changed = (muscleCode) =>
+      setSecondaryMusclesUsed((prevMuscle) => ({
+        ...prevMuscle,
+        [muscleCode]: {
+          ...prevMuscle[muscleCode],
+          checked: !prevMuscle[muscleCode].checked,
+        },
+      }));
+    return (
+      <Input
+        elementType={checkbox.elementType}
+        elementConfig={checkbox.elementConfig}
+        value={checkbox.value}
+        label={checkbox.label}
+        key={checkbox.label}
+        changed={() => changed(muscle.code)}
+      />
+    );
+  });
+
+  const formFields = [
+    exerciseNameInput,
+    descriptionInput,
+    categoryInput,
+    primaryMuscleInput,
+  ];
 
   useEffect(() => {
     if (!muscleSelectOptionsDone) {
@@ -160,6 +190,16 @@ const CreateExercise = () => {
     }
   }, [muscleSelectOptionsDone, wgerDict, primaryMuscleInput]);
 
+  useEffect(() => {
+    if (!secondaryMusclesUsed) {
+      const muscles = {};
+      for (const key in wgerDict.muscles) {
+        muscles[key] = { name: wgerDict.muscles[key].name, checked: false };
+      }
+      setSecondaryMusclesUsed(muscles);
+    }
+  }, [secondaryMusclesUsed, wgerDict.muscles]);
+
   const inputChangedHandler = (e, input) => {
     const updatedInput = updateObject(input, {
       value: e.target.value,
@@ -173,12 +213,13 @@ const CreateExercise = () => {
       ? setCategoryInput(updatedInput)
       : input.id === 'primaryMuscle'
       ? setPrimaryMuscleInputInput(updatedInput)
-      : input.id === 'equipment'
-      ? setEquipmentInput(updatedInput)
+      : input.id === 'description'
+      ? setDescriptionInput(updatedInput)
       : // TODO: Need actional error handling
         console.log('error');
 
-    if (input.id === 'name') setFormIsValid(updatedInput.valid);
+    if (input.id === 'name' || input.id === 'description')
+      setFormIsValid(updatedInput.valid);
   };
 
   const form = formFields.map((field) => (
@@ -195,7 +236,10 @@ const CreateExercise = () => {
   return (
     <>
       {form}
-      {equipmentCheckboxes}
+      <h4>Select all needed equipment</h4>
+      <div className={classes.EquipmentCheckboxes}>{equipmentCheckboxes}</div>
+      <h4>Select all secondary muscles worked</h4>
+      <div className={classes.EquipmentCheckboxes}>{muscleCheckboxes}</div>
       <SubmitExerciseBtn isValid={formIsValid} userId={user.authUser.uid} />
     </>
   );

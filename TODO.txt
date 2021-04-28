@@ -32,7 +32,7 @@ Will need to modify results and exercise detail to handle custom exercises
 
 
 
-LEFT OFF WORKING ON EQIPMENT CHECKBOXES CHANGE FUNCTION
+LEFT OFF AT VALIDATING THE FORM.
 
 
 

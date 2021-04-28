@@ -42,15 +42,17 @@ const Input = (props) => {
       );
       break;
 
-    case 'checkbox':
+    case 'textarea':
       inputElement = (
         <div>
           {props.label ? <label>{props.label}</label> : null}
-          <input
+          <textarea
             {...props.elementConfig}
             value={props.value}
-            checked={props.checked}
-          />
+            onChange={props.changed}
+            autoComplete="false"
+            className={inputClasses.join(' ')}
+          ></textarea>
         </div>
       );
       break;
@@ -59,7 +61,7 @@ const Input = (props) => {
       inputElement = <p>Something went wrong</p>;
   }
 
-  return <div>{inputElement}</div>;
+  return inputElement;
 };
 
 export default Input;
