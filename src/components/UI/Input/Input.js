@@ -19,6 +19,7 @@ const Input = (props) => {
             autoComplete="false"
             className={inputClasses.join(' ')}
           />
+          {props.required ? <span>*</span> : null}
         </div>
       );
       break;
@@ -38,6 +39,7 @@ const Input = (props) => {
               </option>
             ))}
           </select>
+          {props.required ? <span>*</span> : null}
         </div>
       );
       break;
@@ -53,6 +55,7 @@ const Input = (props) => {
             autoComplete="false"
             className={inputClasses.join(' ')}
           ></textarea>
+          {props.required ? <span>*</span> : null}
         </div>
       );
       break;

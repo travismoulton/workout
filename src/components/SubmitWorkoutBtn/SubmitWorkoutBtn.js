@@ -62,28 +62,23 @@ const SubmitWorkoutBtn = (props) => {
     )
       if (await checkForPreviousNameUse()) return;
 
+    const workoutData = {
+      title: props.title,
+      targetAreaCode: props.targetAreaCode,
+      secondaryTargetCode: props.secondaryTargetCode,
+      targetArea: props.targetArea,
+      secondaryTargetArea: props.secondaryTargetArea,
+      exercises,
+    };
+
     props.createNewWorkout
       ? await axios.post(
           `https://workout-81691-default-rtdb.firebaseio.com/workouts/${user.authUser.uid}.json`,
-          {
-            title: props.title,
-            targetAreaCode: props.targetAreaCode,
-            secondaryTargetCode: props.secondaryTargetCode,
-            targetArea: props.targetArea,
-            secondaryTargetArea: props.secondaryTargetArea,
-            exercises,
-          }
+          workoutData
         )
       : await axios.put(
           `https://workout-81691-default-rtdb.firebaseio.com/workouts/${user.authUser.uid}/${props.firebaseId}.json`,
-          {
-            title: props.title,
-            targetAreaCode: props.targetAreaCode,
-            secondaryTargetCode: props.secondaryTargetCode,
-            targetArea: props.targetArea,
-            secondaryTargetArea: props.secondaryTargetArea,
-            exercises,
-          }
+          workoutData
         );
 
     dispatch(resetWorkoutStore());

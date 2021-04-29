@@ -57,7 +57,7 @@ const CreateExercise = () => {
     elementType: 'select',
     elementConfig: {
       options: [
-        { value: 0, displayValue: '' },
+        { value: '', displayValue: '' },
         { value: 10, displayValue: 'Abs' },
         { value: 8, displayValue: 'Arms' },
         { value: 12, displayValue: 'Back' },
@@ -74,7 +74,7 @@ const CreateExercise = () => {
     validation: {
       required: true,
     },
-    valid: true,
+    valid: false,
     touched: false,
     id: 'category',
   });
@@ -200,6 +200,27 @@ const CreateExercise = () => {
     }
   }, [secondaryMusclesUsed, wgerDict.muscles]);
 
+  const checkFormValidity = (updatedInput) => {
+    if (updatedInput.id === 'name') {
+      setFormIsValid(updatedInput.valid && categoryInput.valid);
+    } else if (updatedInput.id === 'category') {
+      setFormIsValid(updatedInput.valid, exerciseNameInput.valid);
+    }
+  };
+
+  const updateFormState = (updatedInput) => {
+    updatedInput.id === 'name'
+      ? setExerciseNameInput(updatedInput)
+      : updatedInput.id === 'category'
+      ? setCategoryInput(updatedInput)
+      : updatedInput.id === 'primaryMuscle'
+      ? setPrimaryMuscleInputInput(updatedInput)
+      : updatedInput.id === 'description'
+      ? setDescriptionInput(updatedInput)
+      : // TODO: Need actional error handling
+        console.log('error');
+  };
+
   const inputChangedHandler = (e, input) => {
     const updatedInput = updateObject(input, {
       value: e.target.value,
@@ -207,19 +228,9 @@ const CreateExercise = () => {
       touched: true,
     });
 
-    input.id === 'name'
-      ? setExerciseNameInput(updatedInput)
-      : input.id === 'category'
-      ? setCategoryInput(updatedInput)
-      : input.id === 'primaryMuscle'
-      ? setPrimaryMuscleInputInput(updatedInput)
-      : input.id === 'description'
-      ? setDescriptionInput(updatedInput)
-      : // TODO: Need actional error handling
-        console.log('error');
+    updateFormState(updatedInput);
 
-    if (input.id === 'name' || input.id === 'description')
-      setFormIsValid(updatedInput.valid);
+    checkFormValidity(updatedInput);
   };
 
   const form = formFields.map((field) => (
@@ -230,8 +241,25 @@ const CreateExercise = () => {
       label={field.label}
       key={field.id}
       changed={(e) => inputChangedHandler(e, field)}
+      required={field.validation.required}
     />
   ));
+
+  const getEquipmentUsed = () => {
+    let equipment = [];
+    for (let key in requiredEquipmentList) {
+      if (requiredEquipmentList[key].checked) equipment.push(key);
+    }
+    return equipment;
+  };
+
+  const getSecondaryMusclesUsed = () => {
+    let muscles = [];
+    for (let key in secondaryMusclesUsed) {
+      if (secondaryMusclesUsed[key].checked) muscles.push(key);
+    }
+    return muscles;
+  };
 
   return (
     <>
@@ -240,7 +268,16 @@ const CreateExercise = () => {
       <div className={classes.EquipmentCheckboxes}>{equipmentCheckboxes}</div>
       <h4>Select all secondary muscles worked</h4>
       <div className={classes.EquipmentCheckboxes}>{muscleCheckboxes}</div>
-      <SubmitExerciseBtn isValid={formIsValid} userId={user.authUser.uid} />
+      <SubmitExerciseBtn
+        formIsValid={formIsValid}
+        userId={user.authUser.uid}
+        title={exerciseNameInput.value}
+        description={descriptionInput.value}
+        category={categoryInput.value}
+        primaryMuscle={primaryMuscleInput.value}
+        equipment={getEquipmentUsed()}
+        secondaryMuscles={getSecondaryMusclesUsed()}
+      />
     </>
   );
 };
