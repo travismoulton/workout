@@ -204,7 +204,8 @@ const CreateExercise = () => {
     if (updatedInput.id === 'name') {
       setFormIsValid(updatedInput.valid && categoryInput.valid);
     } else if (updatedInput.id === 'category') {
-      setFormIsValid(updatedInput.valid, exerciseNameInput.valid);
+      console.log(exerciseNameInput.valid);
+      setFormIsValid(updatedInput.valid && exerciseNameInput.valid);
     }
   };
 
@@ -270,6 +271,8 @@ const CreateExercise = () => {
       <div className={classes.EquipmentCheckboxes}>{muscleCheckboxes}</div>
       <SubmitExerciseBtn
         formIsValid={formIsValid}
+        nameIsValid={exerciseNameInput.valid}
+        categoryIsValid={categoryInput.valid}
         userId={user.authUser.uid}
         title={exerciseNameInput.value}
         description={descriptionInput.value}

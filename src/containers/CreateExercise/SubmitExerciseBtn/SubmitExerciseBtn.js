@@ -1,26 +1,28 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import uniqid from 'uniqid';
 
 import Tooltip from '../../../components/UI/Tooltip/Tooltip';
+import classes from './SubmitExerciseBtn.module.css';
 
 const SubmitExerciseBtn = (props) => {
   const [error, setError] = useState(null);
-  const [TooltipData, setTooltipData] = useState({
+  const [tooltipData, setTooltipData] = useState({
     show: false,
     x: null,
     y: null,
+    innerTxt: null,
   });
 
   const checkForPreviousNameUse = async () => {
     let nameTaken = false;
     await axios
       .get(
-        `https://workout-81691-default-rtdb.firebaseio.com/customExercises/${props.userid}.json`
+        `https://workout-81691-default-rtdb.firebaseio.com/customExercises/${props.userId}.json`
       )
       .then((res) => {
         for (const key in res.data) {
-          if (res.data[key].title === props.title) {
+          if (res.data[key].name === props.title) {
             setError({
               msg: (
                 <p>That name is already taken, please try a different name</p>
@@ -30,52 +32,67 @@ const SubmitExerciseBtn = (props) => {
             nameTaken = true;
           }
         }
-      });
+      })
+      .catch((err) => console.log(err));
 
     return nameTaken;
   };
 
-  const submitInvalidFormHandler = () => {};
+  const exerciseData = {
+    name: props.title,
+    description: props.description,
+    category: props.category,
+    muscles: props.primaryMuscle,
+    equipment: props.equipment,
+    muscles_secondary: props.secondaryMuscles,
+    id: uniqid(),
+  };
 
-  const submitValidFormHandler = () => {
+  const submitValidFormHandler = async () => {
+    if (await checkForPreviousNameUse()) return;
+
     axios.post(
       `https://workout-81691-default-rtdb.firebaseio.com/customExercises/${props.userId}.json`,
-      {
-        name: props.title,
-        description: props.description,
-        category: props.category,
-        muscles: props.primaryMuscle,
-        equipment: props.equipment,
-        muscles_secondary: props.secondaryMuscles,
-        id: uniqid(),
-      }
+      exerciseData
     );
   };
 
-  const tooltip = TooltipData.show ? (
-    <Tooltip x={TooltipData.x} y={TooltipData.y}>
-      Tooltip
+  const createTooltipInnerTxt = () => {
+    if (!props.nameIsValid && !props.categoryIsValid) {
+      return <p>Name and category are required to create an exercise</p>;
+    } else if (props.nameIsValid && !props.categoryIsValid) {
+      return <p>Category is required to create an exercise</p>;
+    } else if (!props.nameIsValid && props.categoryIsValid) {
+      return <p>Name is required to create an exercise</p>;
+    }
+  };
+
+  const tooltip = tooltipData.show ? (
+    <Tooltip x={tooltipData.x} y={tooltipData.y}>
+      {createTooltipInnerTxt()}
     </Tooltip>
   ) : null;
 
   const showTooltipTestFunc = (e) => {
     if (!props.formIsValid) {
-      console.log(e);
+      const btnCoordinateData = e.target.getBoundingClientRect();
       setTooltipData({
         show: true,
-        x: e.pageX - 50 + 'px',
-        y: e.pageY - 75 + 'px',
+        x: btnCoordinateData.x + btnCoordinateData.width / 2 + 'px',
+        y: btnCoordinateData.y - btnCoordinateData.height - 10 + 'px',
       });
     }
   };
 
   const hideToolTip = () => {
-    setTooltipData({ show: false, x: null, y: null });
+    setTooltipData({ show: false, x: null, y: null, innerTxt: null });
   };
 
   return (
     <>
+      {error ? error.msg : null}
       <button
+        className={classes.Btn}
         disabled={!props.formIsValid}
         onClick={submitValidFormHandler}
         style={{ cursor: !props.formIsValid ? 'not-allowed' : 'auto' }}
@@ -84,6 +101,7 @@ const SubmitExerciseBtn = (props) => {
       >
         Submit Exercise
       </button>
+
       {tooltip}
     </>
   );
