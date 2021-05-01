@@ -6,6 +6,7 @@
   background-color: #b3ffff;
   display: flex;
   flex-direction: column;
+  min-width: 50rem;
 }
 
 .ExerciseResult div {
@@ -20,8 +21,4 @@
 
 .ExerciseResult button.favorite {
   background-color: #fff;
-}
-
-.Mb1 {
-  margin-bottom: 0.5rem;
 }

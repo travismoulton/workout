@@ -9,6 +9,7 @@ import Logout from './components/Logout/Logout';
 import Search from './containers/Search/Search';
 import Layout from './components/Layout/Layout';
 import Results from './containers/Results/Results';
+import CustomResults from './containers/CustomResults/CustomResults';
 import ExerciseDetail from './containers/ExerciseDetail/ExerciseDetail';
 import CreateWorkout from './containers/CreateWorkout/CreateWorkout';
 import CreateRoutine from './containers/CreateRoutine/CreateRoutine';
@@ -68,6 +69,7 @@ function App(props) {
         </FirebaseContext.Consumer>
       </Route>
       <Route path="/search" component={Search} />
+      <Route path="/results/my-custom-exercises" component={CustomResults} />
       <Route path="/results/:category/:query" component={Results} />
       <Route path="/exercise/:name" component={ExerciseDetail} />
       <Route path="/create-workout" component={CreateWorkout} />

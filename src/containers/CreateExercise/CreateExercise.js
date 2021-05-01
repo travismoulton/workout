@@ -6,7 +6,7 @@ import SubmitExerciseBtn from './SubmitExerciseBtn/SubmitExerciseBtn';
 import { updateObject, checkValidityHandler } from '../../shared/utility';
 import classes from './CreateExercise.module.css';
 
-const CreateExercise = () => {
+const CreateExercise = (props) => {
   const { user } = useSelector((state) => state.auth);
   const wgerDict = useSelector((state) => state.wgerDict);
   const [muscleSelectOptionsDone, setMuscleSelectOptionsDone] = useState(false);
@@ -204,7 +204,6 @@ const CreateExercise = () => {
     if (updatedInput.id === 'name') {
       setFormIsValid(updatedInput.valid && categoryInput.valid);
     } else if (updatedInput.id === 'category') {
-      console.log(exerciseNameInput.valid);
       setFormIsValid(updatedInput.valid && exerciseNameInput.valid);
     }
   };
@@ -280,6 +279,7 @@ const CreateExercise = () => {
         primaryMuscle={primaryMuscleInput.value}
         equipment={getEquipmentUsed()}
         secondaryMuscles={getSecondaryMusclesUsed()}
+        history={props.history}
       />
     </>
   );

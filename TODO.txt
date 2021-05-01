@@ -32,7 +32,7 @@ Will need to modify results and exercise detail to handle custom exercises
 
 
 
-LEFT OFF CREATING TOOLTIP. GOOGLE THIS => The correct approach is to use element.getBoundingClientRect():
+
 
 
 

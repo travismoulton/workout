@@ -14,6 +14,11 @@ const SubmitExerciseBtn = (props) => {
     innerTxt: null,
   });
 
+  useEffect(() => {
+    if (error)
+      if (error.takenName && error.takenName !== props.title) setError(null);
+  }, [error, props.title]);
+
   const checkForPreviousNameUse = async () => {
     let nameTaken = false;
     await axios
@@ -25,15 +30,18 @@ const SubmitExerciseBtn = (props) => {
           if (res.data[key].name === props.title) {
             setError({
               msg: (
-                <p>That name is already taken, please try a different name</p>
+                <p style={{ color: 'red' }}>
+                  That name is already taken, please try a different name
+                </p>
               ),
               code: 'nameTaken',
+              takenName: props.title,
             });
             nameTaken = true;
+            break;
           }
         }
-      })
-      .catch((err) => console.log(err));
+      });
 
     return nameTaken;
   };
@@ -42,7 +50,7 @@ const SubmitExerciseBtn = (props) => {
     name: props.title,
     description: props.description,
     category: props.category,
-    muscles: props.primaryMuscle,
+    muscles: [props.primaryMuscle],
     equipment: props.equipment,
     muscles_secondary: props.secondaryMuscles,
     id: uniqid(),
@@ -55,6 +63,8 @@ const SubmitExerciseBtn = (props) => {
       `https://workout-81691-default-rtdb.firebaseio.com/customExercises/${props.userId}.json`,
       exerciseData
     );
+
+    props.history.push(`/my-profile`);
   };
 
   const createTooltipInnerTxt = () => {

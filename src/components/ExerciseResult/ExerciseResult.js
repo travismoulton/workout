@@ -11,34 +11,38 @@ const ExerciseResult = (props) => {
   const buildingWorkout = useSelector((state) => state.workout.buildingWorkout);
   const dispatch = useDispatch();
 
-  const onSubmit = () =>
+  const toggleFavoritesHandler = () =>
     props.isFavorite
       ? dispatch(removeFromFavorites(user.authUser.uid, props.firebaseId))
       : dispatch(addToFavorites(user.authUser.uid, props.exerciseId));
 
-  const btn = (
+  const toggleFavoritesBtn = (
     <button
       className={props.isFavorite ? classes.favorite : null}
-      onClick={onSubmit}
+      onClick={toggleFavoritesHandler}
     >
       Favorite
     </button>
   );
 
+  console.log(props.firebaseSearchId);
+
   return (
     <li className={classes.ExerciseResult}>
-      <div className={classes.Mb1}>
+      <div style={{ marginBottom: '0.5rem' }}>
         <Link
           to={{
             pathname: `/exercise/${slugify(props.name)}`,
             state: {
               id: props.exerciseId,
+              firebaseId: props.firebaseSearchId,
+              custom: props.custom,
             },
           }}
         >
           {props.name}
         </Link>
-        {user ? btn : null}
+        {user ? toggleFavoritesBtn : null}
         {buildingWorkout ? (
           <AddToWorkoutBtn
             name={props.name}

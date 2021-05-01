@@ -21,11 +21,20 @@ const ExerciseDetail = (props) => {
   const buildingWorkout = useSelector((state) => state.workout.buildingWorkout);
   const dispatch = useDispatch();
 
+  console.log(exercise);
+
   useEffect(() => {
-    axios
-      .get(`https://wger.de/api/v2/exercise/${props.location.state.id}`)
-      .then((res) => setExercise(res.data));
-  }, [props.location.state.id]);
+    const url = props.location.state.custom
+      ? `https://workout-81691-default-rtdb.firebaseio.com/customExercises/${user.authUser.uid}/${props.location.state.firebaseId}.json`
+      : `https://wger.de/api/v2/exercise/${props.location.state.id}`;
+
+    axios.get(url).then((res) => setExercise(res.data));
+  }, [
+    props.location.state.id,
+    props.location.state.custom,
+    user.authUser.uid,
+    props.location.state.firebaseId,
+  ]);
 
   useEffect(() => {
     if (exercise) {
@@ -60,14 +69,26 @@ const ExerciseDetail = (props) => {
         category={wgerDict.exerciseCategoryList[exercise.category]}
       />
       <ExerciseDetailEquipment
-        equipment={exercise.equipment.map((el) => wgerDict.equipment[el])}
+        equipment={
+          exercise.equipment
+            ? exercise.equipment.map((el) => wgerDict.equipment[el])
+            : null
+        }
       />
       <ExerciseDetailDescription description={description} />
       <ExerciseDetailMuscles
-        muscles={exercise.muscles.map((muscle) => wgerDict.muscles[muscle])}
-        secondary={exercise.muscles_secondary.map(
-          (muscle) => wgerDict.muscles[muscle]
-        )}
+        muscles={
+          exercise.muscles
+            ? exercise.muscles.map((muscle) => wgerDict.muscles[muscle])
+            : null
+        }
+        secondary={
+          exercise.muscles_secondary
+            ? exercise.muscles_secondary.map(
+                (muscle) => wgerDict.muscles[muscle]
+              )
+            : null
+        }
       />
       <button
         className={isFavorite ? classes.Favorite : null}

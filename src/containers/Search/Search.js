@@ -5,7 +5,7 @@ import classes from './Search.module.css';
 import SearchCategory from '../../components/SearchCategory/SearchCategory';
 import SearchSubCategory from '../../components/SearchSubCategory/SearchSubCategory';
 
-const Search = () => {
+const Search = (props) => {
   const [subCategories, setSubCategories] = useState([]);
   const [categoryOpen, setCategoryOpen] = useState('');
 
@@ -23,6 +23,10 @@ const Search = () => {
       getSubCategories(category);
       setCategoryOpen(category);
     }
+  };
+
+  const getCustomExercises = () => {
+    props.history.push('/results/my-custom-exercises');
   };
 
   const displaySubCategoires = subCategories.map((subCat) => (
@@ -51,6 +55,10 @@ const Search = () => {
         clicked={() => controlSubCategories('equipment')}
       />
       {categoryOpen === 'equipment' ? displaySubCategoires : null}
+      <SearchCategory
+        categoryName={'My custom exercises'}
+        clicked={getCustomExercises}
+      />
     </div>
   );
 };
