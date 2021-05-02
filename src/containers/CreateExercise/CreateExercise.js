@@ -274,9 +274,11 @@ const CreateExercise = (props) => {
         categoryIsValid={categoryInput.valid}
         userId={user.authUser.uid}
         title={exerciseNameInput.value}
-        description={descriptionInput.value}
+        description={descriptionInput.value || ''}
         category={categoryInput.value}
-        primaryMuscle={primaryMuscleInput.value}
+        primaryMuscle={
+          primaryMuscleInput.value ? [primaryMuscleInput.value] : null
+        }
         equipment={getEquipmentUsed()}
         secondaryMuscles={getSecondaryMusclesUsed()}
         history={props.history}

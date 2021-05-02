@@ -21,6 +21,7 @@ const CreateWorkout = (props) => {
   const { favorites } = useSelector((state) => state.favorites);
   const { exercises } = useSelector((state) => state.workout);
   const { formData } = useSelector((state) => state.workout);
+  const { user } = useSelector((state) => state.auth);
   const wgerDict = useSelector((state) => state.wgerDict);
   const dispatch = useDispatch();
   const [favoritesAsExercises, setFavoritesAsExercises] = useState([]);
@@ -117,7 +118,7 @@ const CreateWorkout = (props) => {
     let arr = [];
 
     (async () => {
-      if (favorites) {
+      if (favorites && !favoritesAsExercises.length) {
         await axios
           .get(
             `https://workout-81691-default-rtdb.firebaseio.com/masterExerciseList.json`
@@ -132,12 +133,24 @@ const CreateWorkout = (props) => {
             }
           });
 
-        if (!favoritesAsExercises.length) {
-          setFavoritesAsExercises(arr);
-        }
+        await axios
+          .get(
+            `https://workout-81691-default-rtdb.firebaseio.com/customExercises/${user.authUser.uid}.json`
+          )
+          .then((res) => {
+            for (const key in res.data) {
+              const exercise = favorites.filter(
+                (fav) => fav.exercise === res.data[key].id
+              )[0];
+
+              if (exercise) arr.push(res.data[key]);
+            }
+          });
+
+        setFavoritesAsExercises(arr);
       }
     })();
-  }, [favorites, favoritesAsExercises]);
+  }, [favorites, favoritesAsExercises, user.authUser.uid]);
 
   useEffect(() => {
     // After favoritesAsExercises has been created, create an array of objects to

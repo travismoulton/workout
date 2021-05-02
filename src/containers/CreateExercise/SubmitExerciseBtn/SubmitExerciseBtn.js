@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import uniqid from 'uniqid';
 
@@ -50,10 +50,10 @@ const SubmitExerciseBtn = (props) => {
     name: props.title,
     description: props.description,
     category: props.category,
-    muscles: [props.primaryMuscle],
+    muscles: props.primaryMuscle,
     equipment: props.equipment,
     muscles_secondary: props.secondaryMuscles,
-    id: uniqid(),
+    id: uniqid('custom-'),
   };
 
   const submitValidFormHandler = async () => {

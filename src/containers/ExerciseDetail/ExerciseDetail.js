@@ -21,11 +21,9 @@ const ExerciseDetail = (props) => {
   const buildingWorkout = useSelector((state) => state.workout.buildingWorkout);
   const dispatch = useDispatch();
 
-  console.log(exercise);
-
   useEffect(() => {
     const url = props.location.state.custom
-      ? `https://workout-81691-default-rtdb.firebaseio.com/customExercises/${user.authUser.uid}/${props.location.state.firebaseId}.json`
+      ? `https://workout-81691-default-rtdb.firebaseio.com/customExercises/${user.authUser.uid}/${props.location.state.firebaseSearchId}.json`
       : `https://wger.de/api/v2/exercise/${props.location.state.id}`;
 
     axios.get(url).then((res) => setExercise(res.data));
@@ -33,13 +31,14 @@ const ExerciseDetail = (props) => {
     props.location.state.id,
     props.location.state.custom,
     user.authUser.uid,
-    props.location.state.firebaseId,
+    props.location.state.firebaseSearchId,
   ]);
 
   useEffect(() => {
     if (exercise) {
       const div = document.createElement('div');
       div.innerHTML = exercise.description;
+      // Strips out html tags from the API response
       setDescription(div.textContent || div.innerText);
     }
   }, [exercise]);
@@ -49,10 +48,10 @@ const ExerciseDetail = (props) => {
     setFirebaseId('');
 
     if (exercise && favorites)
-      favorites.forEach((fav) => {
-        if (fav.exercise === exercise.id) {
+      favorites.forEach((favorite) => {
+        if (favorite.exercise === exercise.id) {
           setIsFavorite(true);
-          setFirebaseId(fav.firebaseId);
+          setFirebaseId(favorite.firebaseId);
         }
       });
   }, [favorites, exercise]);
@@ -72,7 +71,7 @@ const ExerciseDetail = (props) => {
         equipment={
           exercise.equipment
             ? exercise.equipment.map((el) => wgerDict.equipment[el])
-            : null
+            : []
         }
       />
       <ExerciseDetailDescription description={description} />
@@ -80,14 +79,14 @@ const ExerciseDetail = (props) => {
         muscles={
           exercise.muscles
             ? exercise.muscles.map((muscle) => wgerDict.muscles[muscle])
-            : null
+            : []
         }
         secondary={
           exercise.muscles_secondary
             ? exercise.muscles_secondary.map(
                 (muscle) => wgerDict.muscles[muscle]
               )
-            : null
+            : []
         }
       />
       <button

@@ -1,11 +1,13 @@
 const ExerciseDetailEquipment = (props) => {
   const equipment = props.equipment.map((el) => <li key={el}>{el}</li>);
 
-  return (
+  return equipment.length ? (
     <div>
-      <span>Equipment:</span>
+      <h3>Equipment:</h3>
       <ul>{equipment}</ul>
     </div>
+  ) : (
+    <></>
   );
 };
 

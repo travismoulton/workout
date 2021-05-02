@@ -12,6 +12,7 @@ const SearchSubCategory = (props) => {
           subCategory: props.subCategoryName,
           id: props.id,
           category: props.category,
+          wger: true,
         },
       }}
       className={classes.SearchSubCategory}

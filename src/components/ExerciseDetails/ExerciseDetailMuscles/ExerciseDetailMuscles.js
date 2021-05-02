@@ -1,15 +1,19 @@
 const ExerciseDetailMuscles = (props) => {
-  const primary = props.muscles.map((muscle) => (
-    <li key={muscle.name}>{muscle.name}</li>
-  ));
-  const secondary = props.secondary.map((muscle) => (
-    <li key={muscle.name}>{muscle.name}</li>
-  ));
+  const primary = props.muscles.map((muscle) =>
+    muscle ? <li key={muscle.name}>{muscle.name}</li> : null
+  );
+  const secondary = props.secondary.map((muscle) =>
+    muscle ? <li key={muscle.name}>{muscle.name}</li> : null
+  );
 
   return (
     <div>
-      <h3>Primary Muscles:</h3>
-      <ul>{primary}</ul>
+      {primary.length ? (
+        <>
+          <h3>Primary Muscles:</h3>
+          <ul>{primary}</ul>
+        </>
+      ) : null}
       {secondary.length ? (
         <>
           <h3>Secondary Muscles:</h3>

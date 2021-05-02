@@ -25,8 +25,6 @@ const ExerciseResult = (props) => {
     </button>
   );
 
-  console.log(props.firebaseSearchId);
-
   return (
     <li className={classes.ExerciseResult}>
       <div style={{ marginBottom: '0.5rem' }}>
@@ -35,7 +33,7 @@ const ExerciseResult = (props) => {
             pathname: `/exercise/${slugify(props.name)}`,
             state: {
               id: props.exerciseId,
-              firebaseId: props.firebaseSearchId,
+              firebaseSearchId: props.firebaseSearchId,
               custom: props.custom,
             },
           }}
