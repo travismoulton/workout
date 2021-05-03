@@ -10,12 +10,25 @@ const WorkoutLink = (props) => {
 
   const modal = (
     <Modal show={showModal} modalClosed={() => setShowModal(false)}>
-      <p>
-        This workout belongs to a routine. If you delete it, it will be taken
-        out of that routine. Do you wish to continue?
-      </p>
+      <>
+        <p>Are you sure you want to delete this workout?</p>
+        {props.belongsToRoutine ? (
+          <p>
+            This workout belongs to a routine. If you delete it, it will be
+            taken out of that routine. Do you wish to continue?
+          </p>
+        ) : null}
+      </>
       <button onClick={() => setShowModal(false)}>No</button>
-      <button onClick={props.deleteWorkoutAndRemove}> Yes</button>
+      <button
+        onClick={
+          props.belongsToRoutine
+            ? props.deleteWorkoutAndRemove
+            : props.deleteWorkout
+        }
+      >
+        Yes
+      </button>
     </Modal>
   );
 
@@ -34,7 +47,7 @@ const WorkoutLink = (props) => {
             <p>Exercise Count: {props.exerciseCount}</p>
           ) : null}
         </div>
-        <div className={classes.FlexRox}>
+        <div className={classes.FlexRow}>
           <Link
             className={classes.WorkoutLink}
             to={{
@@ -44,18 +57,12 @@ const WorkoutLink = (props) => {
           >
             <button>Edit this workout</button>
           </Link>
-          <button
-            onClick={
-              props.belongsToRoutine
-                ? () => setShowModal(true)
-                : props.deleteWorkout
-            }
-          >
+          <button onClick={() => setShowModal(true)}>
             Delete this workout
           </button>
         </div>
       </div>
-      {props.belongsToRoutine ? modal : null}
+      {modal}
     </>
   );
 };

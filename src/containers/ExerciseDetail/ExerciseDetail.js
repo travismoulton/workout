@@ -9,6 +9,7 @@ import ExerciseDetailMuscles from '../../components/ExerciseDetails/ExerciseDeta
 import AddToWorkoutBtn from '../../components/AddToWorkoutBtn/AddToWorkoutBtn';
 import classes from './ExerciseDetail.module.css';
 import { addToFavorites, removeFromFavorites } from '../../store/actions';
+import wgerDict from '../../shared/wgerDict';
 
 const ExerciseDetail = (props) => {
   const [exercise, setExercise] = useState();
@@ -16,7 +17,7 @@ const ExerciseDetail = (props) => {
   const [description, setDescription] = useState('');
   const [firebaseId, setFirebaseId] = useState('');
   const user = useSelector((state) => state.auth.user);
-  const wgerDict = useSelector((state) => state.wgerDict);
+  // const wgerDict = useSelector((state) => state.wgerDict);
   const favorites = useSelector((state) => state.favorites.favorites);
   const buildingWorkout = useSelector((state) => state.workout.buildingWorkout);
   const dispatch = useDispatch();

@@ -1,4 +1,3 @@
-//3: Need functionality to have user-created exercises. Not yet sure how this is going to impact the search functionality
 //4: Need to add modal with confirmation for deleting workouts and routines
 //8: Go through and configure the enter button to act as expected on each component -- Maybe
 //9: Need a feature to record a workout on a past day
@@ -7,8 +6,15 @@
 //11: Should show last recorded workout, and workouts last week on the user profile page
 //12: Add functionality to have user's picture through firebase
 //13: If you are editing a workout, and you use the add from search functionality, it goes back to create-workout
-//14: Move the wgerDict outside of state
+//14: Delete the wgerDict reducer
 //15: Add Time and Distance options to workout creation
+//16: Custom exercises are breaking CreateWorkout
+//17: Add option to delete a custom workout
+//18: On userprofile, it's possible to active the dropdowns before the component is ready. Need to add a loaded piece of state
+//19: If you delete a workout that is contained in a routine, that routineLink on userProfile doesn't update the workout count unless the page is refreshed
+//20 Rendering the modal component on every workout link. Need to float it up to userProfile
+
+LEFT OFF --- Need to create the Modal inside userProfile so it's not being rendered inside every workoutLink
 
 
 

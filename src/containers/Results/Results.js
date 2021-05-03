@@ -3,12 +3,13 @@ import { useSelector } from 'react-redux';
 import axios from 'axios';
 
 import ExerciseResult from '../../components/ExerciseResult/ExerciseResult';
+import wgerDict from '../../shared/wgerDict';
 
 const Results = (props) => {
   const [exercises, setExercises] = useState([]);
   const [favoriteExerciseIds, setFavoriteExerciseIds] = useState([]);
   const { favorites } = useSelector((state) => state.favorites);
-  const wgerDict = useSelector((state) => state.wgerDict);
+  // const wgerDict = useSelector((state) => state.wgerDict);
   const { user } = useSelector((state) => state.auth);
 
   useEffect(() => {

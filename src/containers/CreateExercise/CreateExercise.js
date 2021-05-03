@@ -4,11 +4,12 @@ import { useSelector } from 'react-redux';
 import Input from '../../components/UI/Input/Input';
 import SubmitExerciseBtn from './SubmitExerciseBtn/SubmitExerciseBtn';
 import { updateObject, checkValidityHandler } from '../../shared/utility';
+import wgerDict from '../../shared/wgerDict';
 import classes from './CreateExercise.module.css';
 
 const CreateExercise = (props) => {
   const { user } = useSelector((state) => state.auth);
-  const wgerDict = useSelector((state) => state.wgerDict);
+  // const wgerDict = useSelector((state) => state.wgerDict);
   const [muscleSelectOptionsDone, setMuscleSelectOptionsDone] = useState(false);
   const [formIsValid, setFormIsValid] = useState(false);
   const [requiredEquipmentList, setRequiredEquipmentList] = useState({

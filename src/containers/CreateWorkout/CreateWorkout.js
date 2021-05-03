@@ -272,9 +272,11 @@ const CreateWorkout = (props) => {
     />
   ));
 
+  // DELETE THIS COMMENT LATER
+  // Changed to convert the ID to a string to support custom exercises and api
   const addExerciseFromFavorites = (e) => {
     const exercise = favoritesAsExercises.filter(
-      (fav) => fav.id === e.target.value * 1
+      (fav) => fav.id.toString() === e.target.value
     )[0];
 
     dispatch(

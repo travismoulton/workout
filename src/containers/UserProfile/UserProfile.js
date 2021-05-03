@@ -6,6 +6,7 @@ import axios from 'axios';
 import WorkoutLink from '../../components/WorkoutLink/WorkoutLink';
 import RoutineLink from '../../components/RoutineLink/RoutineLink';
 import RecordedWorkoutLink from '../../components/RecordedWorkoutLink/RecordedWorkoutLink';
+import Modal from '../../components/UI/Modal/Modal';
 import classes from './UserProfile.module.css';
 import { setActiveRoutine } from '../../store/actions/favorites';
 
@@ -21,6 +22,9 @@ const UserProfile = (props) => {
   const [recordedWorkoutsShowing, setRecordedWorkoutsShowing] = useState(false);
   const [showMessage, setShowMessage] = useState(null);
   const [messageFinished, setMessageFinished] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [modalText, setModalText] = useState(null);
+  const [modalDeleteFunction, setModalDeleteFunction] = useState(null);
   const { user } = useSelector((state) => state.auth);
   const { activeRoutine } = useSelector((state) => state.favorites);
   const dispatch = useDispatch();
@@ -148,6 +152,10 @@ const UserProfile = (props) => {
     removeWorkoutFromAllRoutines(firebaseId);
   };
 
+  const checkIfWorkoutBelongsToRoutine = (firebaseId) =>
+    routines.filter((routine) => routine.workouts.includes(firebaseId)).length >
+    0;
+
   const workoutLinks = workouts.length ? (
     workouts.map((workout) => (
       <WorkoutLink
@@ -157,11 +165,7 @@ const UserProfile = (props) => {
         secondaryTarget={workout.secondaryTargetArea}
         exerciseCount={workout.exercises ? workout.exercises.length : null}
         workout={workout}
-        belongsToRoutine={
-          routines.filter((routine) =>
-            routine.workouts.includes(workout.firebaseId)
-          ).length > 0
-        }
+        belongsToRoutine={checkIfWorkoutBelongsToRoutine(workout.firebaseId)}
         deleteWorkoutAndRemove={() => deleteWorkoutHandler(workout.firebaseId)}
         deleteWorkout={() => deleteWorkout(workout.firebaseId)}
       />
@@ -256,6 +260,10 @@ const UserProfile = (props) => {
     if (workoutsShowing) setWorkoutsShowing(false);
     if (routinesShowing) setRoutinesShowing(false);
   };
+
+  const modal = (
+    <Modal show={showModal} modalClosed={() => setShowModal(false)}></Modal>
+  );
 
   return (
     <>
