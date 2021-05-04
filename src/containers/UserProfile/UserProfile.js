@@ -23,7 +23,7 @@ const UserProfile = (props) => {
   const [showMessage, setShowMessage] = useState(null);
   const [messageFinished, setMessageFinished] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const [modalText, setModalText] = useState(null);
+  const [modalContent, setModalContent] = useState(null);
   const [modalDeleteFunction, setModalDeleteFunction] = useState(null);
   const { user } = useSelector((state) => state.auth);
   const { activeRoutine } = useSelector((state) => state.favorites);
@@ -224,6 +224,8 @@ const UserProfile = (props) => {
         }
         deleteRoutine={() => deleteRoutine(routine.firebaseId)}
         routine={routine}
+        setModalContent={(text) => setModalContent(text)}
+        toggleModal={() => setShowModal((prevModal) => !prevModal)}
       />
     ))
   ) : (
@@ -262,7 +264,9 @@ const UserProfile = (props) => {
   };
 
   const modal = (
-    <Modal show={showModal} modalClosed={() => setShowModal(false)}></Modal>
+    <Modal show={showModal} modalClosed={() => setShowModal(false)}>
+      {modalContent}
+    </Modal>
   );
 
   return (
@@ -306,6 +310,7 @@ const UserProfile = (props) => {
         </span>
         {recordedWorkoutsShowing ? recordedWorkoutLinks : null}
       </div>
+      {modal}
     </>
   );
 };

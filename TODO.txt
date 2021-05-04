@@ -14,7 +14,7 @@
 //19: If you delete a workout that is contained in a routine, that routineLink on userProfile doesn't update the workout count unless the page is refreshed
 //20 Rendering the modal component on every workout link. Need to float it up to userProfile
 
-LEFT OFF --- Need to create the Modal inside userProfile so it's not being rendered inside every workoutLink
+LEFT OFF --- Convert workoutLink's modal to userprofile
 
 
 

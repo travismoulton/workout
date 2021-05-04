@@ -1,3 +1,6 @@
+import CSSTransition from 'react-transition-group/CSSTransition';
+
+import './modal.css';
 import classes from './Modal.module.css';
 import Backdrop from '../Backdrop/Backdrop';
 
@@ -5,15 +8,16 @@ const Modal = (props) => {
   return (
     <>
       <Backdrop show={props.show} clicked={props.modalClosed} />
-      <div
-        className={classes.Modal}
-        style={{
-          transform: props.show ? 'translateY(0)' : 'translateY(-100vh)',
-          opacity: props.show ? '1' : '0',
-        }}
+      <CSSTransition
+        in={props.show}
+        timeout={100}
+        mountOnEnter
+        unmountOnExit
+        onEnter={() => console.log('onEnter')}
+        classNames="modal"
       >
-        {props.children}
-      </div>
+        <div className={classes.Modal}>{props.children}</div>
+      </CSSTransition>
     </>
   );
 };

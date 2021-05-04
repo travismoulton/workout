@@ -3,6 +3,7 @@ import { useState } from 'react';
 import slugify from 'slugify';
 
 import classes from './WorkoutLink.module.css';
+import './WorkoutLink.css';
 import Modal from '../UI/Modal/Modal';
 
 const WorkoutLink = (props) => {
@@ -40,9 +41,11 @@ const WorkoutLink = (props) => {
         </div>
         <div className={classes.FlexRow}>
           {props.targetArea ? <p>Target Area: {props.targetArea}</p> : null}
+
           {props.secondaryTarget ? (
             <p>Secondary Target: {props.secondaryTarget}</p>
           ) : null}
+
           {props.exerciseCount ? (
             <p>Exercise Count: {props.exerciseCount}</p>
           ) : null}
