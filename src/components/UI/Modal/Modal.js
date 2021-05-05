@@ -13,7 +13,6 @@ const Modal = (props) => {
         timeout={100}
         mountOnEnter
         unmountOnExit
-        onEnter={() => console.log('onEnter')}
         classNames="modal"
       >
         <div className={classes.Modal}>{props.children}</div>

@@ -24,7 +24,6 @@ const UserProfile = (props) => {
   const [messageFinished, setMessageFinished] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [modalContent, setModalContent] = useState(null);
-  const [modalDeleteFunction, setModalDeleteFunction] = useState(null);
   const { user } = useSelector((state) => state.auth);
   const { activeRoutine } = useSelector((state) => state.favorites);
   const dispatch = useDispatch();
@@ -168,6 +167,8 @@ const UserProfile = (props) => {
         belongsToRoutine={checkIfWorkoutBelongsToRoutine(workout.firebaseId)}
         deleteWorkoutAndRemove={() => deleteWorkoutHandler(workout.firebaseId)}
         deleteWorkout={() => deleteWorkout(workout.firebaseId)}
+        setModalContent={(text) => setModalContent(text)}
+        toggleModal={() => setShowModal((prevModal) => !prevModal)}
       />
     ))
   ) : (
@@ -268,6 +269,16 @@ const UserProfile = (props) => {
       {modalContent}
     </Modal>
   );
+
+  useEffect(() => {
+    let timer;
+    if (!showModal && modalContent)
+      timer = setTimeout(() => {
+        setModalContent(null);
+      }, 500);
+
+    return timer ? clearTimeout(timer) : null;
+  }, [showModal, modalContent]);
 
   return (
     <>

@@ -1,16 +1,21 @@
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
 import slugify from 'slugify';
 
 import classes from './WorkoutLink.module.css';
-import './WorkoutLink.css';
-import Modal from '../UI/Modal/Modal';
 
 const WorkoutLink = (props) => {
-  const [showModal, setShowModal] = useState(false);
+  const deleteWorkoutAndCloseModal = () => {
+    props.toggleModal();
+    props.deleteWorkout();
+  };
 
-  const modal = (
-    <Modal show={showModal} modalClosed={() => setShowModal(false)}>
+  const deleteWorkoutRemoveFromRoutineAndCloseModal = () => {
+    props.toggleModal();
+    props.deleteWorkoutAndRemove();
+  };
+
+  const displayModal = () => {
+    const modalContent = (
       <>
         <p>Are you sure you want to delete this workout?</p>
         {props.belongsToRoutine ? (
@@ -19,19 +24,21 @@ const WorkoutLink = (props) => {
             taken out of that routine. Do you wish to continue?
           </p>
         ) : null}
+        <button onClick={props.toggleModal}>No</button>
+        <button
+          onClick={
+            props.belongsToRoutine
+              ? deleteWorkoutRemoveFromRoutineAndCloseModal
+              : deleteWorkoutAndCloseModal
+          }
+        >
+          Yes
+        </button>
       </>
-      <button onClick={() => setShowModal(false)}>No</button>
-      <button
-        onClick={
-          props.belongsToRoutine
-            ? props.deleteWorkoutAndRemove
-            : props.deleteWorkout
-        }
-      >
-        Yes
-      </button>
-    </Modal>
-  );
+    );
+    props.setModalContent(modalContent);
+    props.toggleModal();
+  };
 
   return (
     <>
@@ -60,12 +67,9 @@ const WorkoutLink = (props) => {
           >
             <button>Edit this workout</button>
           </Link>
-          <button onClick={() => setShowModal(true)}>
-            Delete this workout
-          </button>
+          <button onClick={displayModal}>Delete this workout</button>
         </div>
       </div>
-      {modal}
     </>
   );
 };

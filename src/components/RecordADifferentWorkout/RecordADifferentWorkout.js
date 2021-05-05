@@ -190,7 +190,7 @@ const RecordADifferentWorkout = (props) => {
     </Modal>
   );
 
-  return <>{modal}</>;
+  return modal;
 };
 
 export default RecordADifferentWorkout;

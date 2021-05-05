@@ -16,13 +16,13 @@ import {
   clearForm,
 } from '../../store/actions';
 import { updateObject, checkValidityHandler } from '../../shared/utility';
+import wgerDict from '../../shared/wgerDict';
 
 const CreateWorkout = (props) => {
   const { favorites } = useSelector((state) => state.favorites);
   const { exercises } = useSelector((state) => state.workout);
   const { formData } = useSelector((state) => state.workout);
   const { user } = useSelector((state) => state.auth);
-  const wgerDict = useSelector((state) => state.wgerDict);
   const dispatch = useDispatch();
   const [favoritesAsExercises, setFavoritesAsExercises] = useState([]);
   const [favoritesAsSelectOptions, setFavoritesAsSelectOptions] = useState([]);
@@ -272,8 +272,6 @@ const CreateWorkout = (props) => {
     />
   ));
 
-  // DELETE THIS COMMENT LATER
-  // Changed to convert the ID to a string to support custom exercises and api
   const addExerciseFromFavorites = (e) => {
     const exercise = favoritesAsExercises.filter(
       (fav) => fav.id.toString() === e.target.value

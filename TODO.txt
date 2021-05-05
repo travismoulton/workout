@@ -1,4 +1,3 @@
-//4: Need to add modal with confirmation for deleting workouts and routines
 //8: Go through and configure the enter button to act as expected on each component -- Maybe
 //9: Need a feature to record a workout on a past day
 //10: Add a feature to text search for workouts?
@@ -6,73 +5,12 @@
 //11: Should show last recorded workout, and workouts last week on the user profile page
 //12: Add functionality to have user's picture through firebase
 //13: If you are editing a workout, and you use the add from search functionality, it goes back to create-workout
-//14: Delete the wgerDict reducer
 //15: Add Time and Distance options to workout creation
-//16: Custom exercises are breaking CreateWorkout
 //17: Add option to delete a custom workout
 //18: On userprofile, it's possible to active the dropdowns before the component is ready. Need to add a loaded piece of state
 //19: If you delete a workout that is contained in a routine, that routineLink on userProfile doesn't update the workout count unless the page is refreshed
-//20 Rendering the modal component on every workout link. Need to float it up to userProfile
+//21: After a user logs out, my custom exercises still appears as a search option until refresh.
+//22: After recording a workout, it's not immediatley available for view in the profile
+//23: On record workout, if you have  
 
-LEFT OFF --- Convert workoutLink's modal to userprofile
-
-
-
-
-
-// Create exercise:
-Need a form 
-  - Takes title - required - check
-  - Category - optional - check
-  - Equipment - optional - check
-  - Description - optional 
-  - Primary muscles - Optional - check
-  - Secondary muscles - optional
-
-Going to keep them outside of the master exercise list and search functionality. Inside search, add a 4th Category of "my custom exercises"
-CreateWorkout will get an additional select menu of my custom exercises
-No redux store should be required?
-Could add them into text based search
-Will not have a favorites functionality
-Will need to modify results and exercise detail to handle custom exercises
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// FINISHED BUT SAVE FOR LATER
-FOR CHANING WORKOUT STRUCTURE:
-//1: WorkoutListItem must change. Need to change the input structure. Start w/ Set 1 and has a weight and reps input. Have a button for adding another set
-//2: Redux workout store will need to change. Each exercise object will contain a sets array made up of objects with weight and reps number values
-//3: Will most likely want to create a component to represent each set, and host all logic about incrementing and decrementing weight and reps in there.
-
-
-SUB_STEPS:
-//1: In create workout line 267 addExercise is dispatched. I will need to change the object to contain 
-  name, id, and a sets array that contains objects with weight and reps values
-
-//2: The props being passed to WorkoutListItem will need to change. Specifically weight, sets, and reps. 
-  Will just pass the sets array containing objects with weight and reps data
-
-//3: Need to a button to add additional Sets
-
-//4: I believe the updateExerciseData action will need to be modified.
-
-//5: Left off at trying to implement addSet inside workoutlistitemcopy
-***********************************************************************************
-
-// 
 

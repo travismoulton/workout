@@ -6,14 +6,19 @@ import WorkoutListItem from '../WorkoutListItem/WorkoutListItem';
 import RecordWorkoutBtn from '../../components/RecordWorkoutBtn/RecordWorkoutBtn';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import RecordADifferentWorkout from '../../components/RecordADifferentWorkout/RecordADifferentWorkout';
+import ChangeWorkoutRecordDate from './ChangeRecordWorkoutDate/ChangeWorkoutRecordDate';
 import { setExercises, resetWorkoutStore } from '../../store/actions';
 
 const RecordWorkout = (props) => {
-  const [today] = useState(new Date());
+  const [today, setToday] = useState(new Date());
   const [suggestedWorkout, setSuggestedWorkout] = useState(null);
   const [exercisesDispatched, setExercisesDispatched] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [showModal, setShowModal] = useState(false);
+  const [showChangeDateModal, setShowChangeDateModal] = useState(false);
+  const [
+    showRecordDifferentWorkoutModal,
+    setShowRecordDifferentWorkoutModal,
+  ] = useState(false);
   const [error, setError] = useState(false);
   const { user } = useSelector((state) => state.auth);
   const { activeRoutine } = useSelector((state) => state.favorites);
@@ -85,7 +90,6 @@ const RecordWorkout = (props) => {
     : null;
 
   const updateWorkoutInFirebase = () => {
-    // const workoutFirebaseId = activeRoutine.workouts[adjustDateForSunday()];
     const workoutFirebaseId = suggestedWorkout.firebaseId;
     axios.put(
       `https://workout-81691-default-rtdb.firebaseio.com/workouts/${user.authUser.uid}/${workoutFirebaseId}.json`,
@@ -101,8 +105,14 @@ const RecordWorkout = (props) => {
   };
 
   const recordADifferentWorkoutBtn = (
-    <button onClick={() => setShowModal(true)}>
-      Record a different workout
+    <button onClick={() => setShowRecordDifferentWorkoutModal(true)}>
+      Record a different workout today
+    </button>
+  );
+
+  const recordDifferentDayBtn = (
+    <button onClick={() => setShowChangeDateModal(true)}>
+      Record a workout for a different day
     </button>
   );
 
@@ -131,9 +141,11 @@ const RecordWorkout = (props) => {
     <>
       <h1>{today.toString().substring(0, 15)}</h1>
       {suggestedWorkout ? <h3>{suggestedWorkout.title}</h3> : <h3>Rest</h3>}
+      {recordADifferentWorkoutBtn}
+      {recordDifferentDayBtn}
       {error ? error.msg : null}
       {displayExercises}
-      {suggestedWorkout ? (
+      {suggestedWorkout && exercises.length ? (
         <RecordWorkoutBtn
           workout={suggestedWorkout}
           exercises={exercises}
@@ -144,13 +156,18 @@ const RecordWorkout = (props) => {
           userId={user.authUser.uid}
         />
       ) : null}
-      {recordADifferentWorkoutBtn}
 
       <RecordADifferentWorkout
         userId={user.authUser.uid}
-        show={showModal}
-        closeModal={() => setShowModal(false)}
+        show={showRecordDifferentWorkoutModal}
+        closeModal={() => setShowRecordDifferentWorkoutModal(false)}
         switchWorkout={(workoutId) => switchWorkout(workoutId)}
+      />
+
+      <ChangeWorkoutRecordDate
+        show={showChangeDateModal}
+        closeModal={() => setShowChangeDateModal(false)}
+        changeDate={(date) => setToday(date)}
       />
     </>
   );
