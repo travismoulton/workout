@@ -30,6 +30,10 @@ const Search = (props) => {
     }
   }, [user, loaded]);
 
+  useEffect(() => {
+    if (!user && showCustomOption) setShowCustomOption(false);
+  }, [user, showCustomOption]);
+
   const getSubCategories = (category) => {
     axios.get(`https://wger.de/api/v2/${category}`).then((res) => {
       setSubCategories(res.data.results);

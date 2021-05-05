@@ -9,7 +9,6 @@ const Results = (props) => {
   const [exercises, setExercises] = useState([]);
   const [favoriteExerciseIds, setFavoriteExerciseIds] = useState([]);
   const { favorites } = useSelector((state) => state.favorites);
-  // const wgerDict = useSelector((state) => state.wgerDict);
   const { user } = useSelector((state) => state.auth);
 
   useEffect(() => {
@@ -85,14 +84,16 @@ const Results = (props) => {
   ));
 
   return (
-    <div>
-      <h3>
-        {props.location.state.wger
-          ? props.location.state.subCategory
-          : 'My custom exercises'}
-      </h3>
-      {exercises.length ? <ul>{displayResults}</ul> : null}
-    </div>
+    <>
+      <div>
+        <h3>
+          {props.location.state.wger
+            ? props.location.state.subCategory
+            : 'My custom exercises'}
+        </h3>
+        {exercises.length ? <ul>{displayResults}</ul> : null}
+      </div>
+    </>
   );
 };
 

@@ -28,6 +28,29 @@ const UserProfile = (props) => {
   const { activeRoutine } = useSelector((state) => state.favorites);
   const dispatch = useDispatch();
 
+  const bubbleSortWorkoutDates = useCallback((arr) => {
+    const temp = [...arr];
+    const swap = (arr, i, j) => ([arr[i], arr[j]] = [arr[j], arr[i]]);
+
+    for (let i = 0; i < temp.length; i++) {
+      let isSwapped = false;
+      for (let j = 0; j < temp.length - 1; j++) {
+        if (
+          new Date(
+            temp[j + 1].date.year,
+            temp[j + 1].date.month,
+            temp[j + 1].date.day
+          ) > new Date(temp[j].date.year, temp[j].date.month, temp[j].date.day)
+        ) {
+          swap(temp, j, j + 1);
+          isSwapped = true;
+        }
+      }
+      if (!isSwapped) break;
+    }
+    return temp;
+  }, []);
+
   useEffect(() => {
     if (props.history.location.state && !messageFinished && !showMessage) {
       const { message } = props.history.location.state;
@@ -92,12 +115,12 @@ const UserProfile = (props) => {
           for (const key in res.data) {
             tempArr.push({ ...res.data[key], firebaseId: key });
           }
-          setRecordedWorkouts(tempArr.reverse());
+          setRecordedWorkouts(bubbleSortWorkoutDates(tempArr));
         } else if (!res.data) {
           setRecordedWorkouts([]);
         }
       });
-  }, [user.authUser.uid]);
+  }, [user.authUser.uid, bubbleSortWorkoutDates]);
 
   useEffect(() => {
     if (user && !initialFetch) {

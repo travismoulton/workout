@@ -9,7 +9,6 @@ import classes from './CreateExercise.module.css';
 
 const CreateExercise = (props) => {
   const { user } = useSelector((state) => state.auth);
-  // const wgerDict = useSelector((state) => state.wgerDict);
   const [muscleSelectOptionsDone, setMuscleSelectOptionsDone] = useState(false);
   const [formIsValid, setFormIsValid] = useState(false);
   const [requiredEquipmentList, setRequiredEquipmentList] = useState({
@@ -189,7 +188,7 @@ const CreateExercise = (props) => {
       });
       setMuscleSelectOptionsDone(true);
     }
-  }, [muscleSelectOptionsDone, wgerDict, primaryMuscleInput]);
+  }, [muscleSelectOptionsDone, primaryMuscleInput]);
 
   useEffect(() => {
     if (!secondaryMusclesUsed) {
@@ -199,7 +198,7 @@ const CreateExercise = (props) => {
       }
       setSecondaryMusclesUsed(muscles);
     }
-  }, [secondaryMusclesUsed, wgerDict.muscles]);
+  }, [secondaryMusclesUsed]);
 
   const checkFormValidity = (updatedInput) => {
     if (updatedInput.id === 'name') {
