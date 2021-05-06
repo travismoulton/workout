@@ -18,5 +18,8 @@ export {
   setExercises,
   resetWorkoutStore,
   addSetToExercise,
+  addTimeFocusedSetToExercise,
   removeSetFromExercise,
+  resetSetsToRepsFocus,
+  resetSetsToTimeFocus,
 } from './workout';

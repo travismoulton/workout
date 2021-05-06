@@ -54,6 +54,33 @@ export const addSetToExercise = (exercises, exerciseId) => {
   return { type: SET_EXERCISES, exercises: newExercises, updated: true };
 };
 
+export const addTimeFocusedSetToExercise = (exercises, exerciseId) => {
+  const newExercises = exercises.map((exercise) =>
+    exercise.id === exerciseId
+      ? { ...exercise, sets: [...exercise.sets, { minutes: 0, seconds: 0 }] }
+      : exercise
+  );
+  return { type: SET_EXERCISES, exercises: newExercises, updated: true };
+};
+
+export const resetSetsToTimeFocus = (exercises, exerciseId) => {
+  const newExercises = exercises.map((exercise) =>
+    exercise.id === exerciseId
+      ? { ...exercise, sets: [{ minutes: 0, seconds: 0 }] }
+      : exercise
+  );
+  return { type: SET_EXERCISES, exercises: newExercises, updated: true };
+};
+
+export const resetSetsToRepsFocus = (exercises, exerciseId) => {
+  const newExercises = exercises.map((exercise) =>
+    exercise.id === exerciseId
+      ? { ...exercise, sets: [{ weight: 0, reps: 1 }] }
+      : exercise
+  );
+  return { type: SET_EXERCISES, exercises: newExercises, updated: true };
+};
+
 export const removeSetFromExercise = (exercises, exerciseId, setIndex) => {
   const newExercises = exercises.map((exercise) =>
     exercise.id === exerciseId
@@ -68,6 +95,19 @@ export const removeSetFromExercise = (exercises, exerciseId, setIndex) => {
   );
   return { type: SET_EXERCISES, exercises: newExercises, updated: true };
 };
+
+// export const removeAllSetsFromExercise = (exercises, exerciseId) => {
+//   console.log(exercises, exerciseId);
+//   const newExercises = exercises.map((exercise) =>
+//     exercise.id === exerciseId
+//       ? {
+//           ...exercise,
+//           sets: [],
+//         }
+//       : exercise
+//   );
+//   return { type: SET_EXERCISES, exercises: newExercises, updated: true };
+// };
 
 export const updateExerciseData = (
   exercises,

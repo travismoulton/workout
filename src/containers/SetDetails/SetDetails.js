@@ -38,6 +38,34 @@ const SetDetails = (props) => {
     id: 3,
   });
 
+  const [minutesInput, setMinutesInput] = useState({
+    elementType: 'select',
+    elementConfig: {
+      options: (() => {
+        let arr = [];
+        for (let i = 1; i < 90; i++) arr.push({ value: i, displayValue: i });
+        return arr;
+      })(),
+    },
+    value: props.minutes,
+    label: 'Minutes: ',
+    id: 3,
+  });
+
+  const [secondsInput, setSecondsInput] = useState({
+    elementType: 'select',
+    elementConfig: {
+      options: (() => {
+        let arr = [];
+        for (let i = 1; i < 61; i++) arr.push({ value: i, displayValue: i });
+        return arr;
+      })(),
+    },
+    value: props.seconds,
+    label: 'Seconds',
+    id: 3,
+  });
+
   const setWeight = (e) => {
     setWeightInput({ ...weightInput, value: e.target.value * 1 });
     dispatch(
@@ -58,6 +86,32 @@ const SetDetails = (props) => {
         exercises,
         props.id,
         'reps',
+        e.target.value * 1,
+        props.setNumber - 1
+      )
+    );
+  };
+
+  const setNumMinutes = (e) => {
+    setRepsInput({ ...minutesInput, value: e.target.value * 1 });
+    dispatch(
+      updateExerciseData(
+        exercises,
+        props.id,
+        'minutes',
+        e.target.value * 1,
+        props.setNumber - 1
+      )
+    );
+  };
+
+  const setNumSeconds = (e) => {
+    setRepsInput({ ...secondsInput, value: e.target.value * 1 });
+    dispatch(
+      updateExerciseData(
+        exercises,
+        props.id,
+        'seconds',
         e.target.value * 1,
         props.setNumber - 1
       )
@@ -92,7 +146,7 @@ const SetDetails = (props) => {
     }
   };
 
-  const incremementReps = () => {
+  const incrementReps = () => {
     setRepsInput({ ...repsInput, value: repsInput.value + 1 });
     dispatch(
       updateExerciseData(
@@ -120,8 +174,67 @@ const SetDetails = (props) => {
     }
   };
 
-  const formFields = [weightInput, repsInput];
-  const updateFunctions = [setWeight, setNumReps];
+  const incrementMinutes = () => {
+    setRepsInput({ ...minutesInput, value: minutesInput.value + 1 });
+    dispatch(
+      updateExerciseData(
+        exercises,
+        props.id,
+        'minutes',
+        minutesInput.value + 1,
+        props.setNumber - 1
+      )
+    );
+  };
+
+  const decrementMinutes = () => {
+    setRepsInput({ ...minutesInput, value: minutesInput.value - 1 });
+    dispatch(
+      updateExerciseData(
+        exercises,
+        props.id,
+        'minutes',
+        minutesInput.value - 1,
+        props.setNumber - 1
+      )
+    );
+  };
+
+  const incrementSeconds = () => {
+    setRepsInput({ ...secondsInput, value: secondsInput.value + 1 });
+    dispatch(
+      updateExerciseData(
+        exercises,
+        props.id,
+        'seconds',
+        secondsInput.value + 1,
+        props.setNumber - 1
+      )
+    );
+  };
+
+  const decrementSeconds = () => {
+    setRepsInput({ ...secondsInput, value: secondsInput.value - 1 });
+    dispatch(
+      updateExerciseData(
+        exercises,
+        props.id,
+        'seconds',
+        secondsInput.value - 1,
+        props.setNumber - 1
+      )
+    );
+  };
+
+  const formFields =
+    props.focus === 'reps'
+      ? [weightInput, repsInput]
+      : [minutesInput, secondsInput];
+
+  const updateFunctions =
+    props.focus === 'reps'
+      ? [setWeight, setNumReps]
+      : [setNumMinutes, setNumSeconds];
 
   const form = formFields.map((field, i) => (
     <Input
@@ -138,18 +251,30 @@ const SetDetails = (props) => {
   const btnRow = (
     <div className={classes.ButtonRow}>
       <span className={classes.ButtonPair}>
-        <button className={classes.DecrementBtn} onClick={decrementWeight}>
+        <button
+          className={classes.DecrementBtn}
+          onClick={props.focus === 'reps' ? decrementWeight : decrementMinutes}
+        >
           -
         </button>
-        <button className={classes.IncrementBtn} onClick={incrementWeight}>
+        <button
+          className={classes.IncrementBtn}
+          onClick={props.focus === 'reps' ? incrementWeight : incrementMinutes}
+        >
           +
         </button>
       </span>
       <span className={classes.ButtonPair}>
-        <button className={classes.DecrementBtn} onClick={decrementReps}>
+        <button
+          className={classes.DecrementBtn}
+          onClick={props.focus === 'reps' ? decrementReps : decrementSeconds}
+        >
           -
         </button>
-        <button className={classes.IncrementBtn} onClick={incremementReps}>
+        <button
+          className={classes.IncrementBtn}
+          onClick={props.focus === 'reps' ? incrementReps : incrementSeconds}
+        >
           +
         </button>
       </span>

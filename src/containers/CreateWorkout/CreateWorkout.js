@@ -339,8 +339,8 @@ const CreateWorkout = (props) => {
                 key={exercise.id}
                 id={exercise.id}
                 sets={exercise.sets}
-                firstExercise={i === 0}
-                lastExercise={i === exercises.length - 1}
+                isFirstExercise={i === 0}
+                isLastExercise={i === exercises.length - 1}
               />
             ))}
           </ul>
