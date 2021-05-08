@@ -67,9 +67,6 @@ const Register = (props) => {
 
   const [errorMessage, setErrorMessage] = useState('');
 
-  // const loading = useSelector((state) => state.auth.loading);
-  // const error = useSelector((state) => state.auth.error);
-  // const isAuthenticated = useSelector((state) => state.auth.user !== null);
   const dispatch = useDispatch();
 
   const updateEmail = (e) => {

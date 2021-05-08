@@ -7,6 +7,7 @@ import Login from './containers/Auth/Login/Login';
 import Register from './containers/Auth/Register/Register';
 import Logout from './components/Logout/Logout';
 import SendPasswordResetEmail from './components/SendPasswordResetEmail/SendPasswordResetEmail';
+import UpdatePassword from './components/UpdatePassword/UpdatePassword';
 import Search from './containers/Search/Search';
 import Layout from './components/Layout/Layout';
 import Results from './containers/Results/Results';
@@ -95,6 +96,13 @@ function App(props) {
       <Route path="/login">
         <FirebaseContext.Consumer>
           {(firebase) => <Login firebase={firebase} history={props.history} />}
+        </FirebaseContext.Consumer>
+      </Route>
+      <Route path="/update-password">
+        <FirebaseContext.Consumer>
+          {(firebase) => (
+            <UpdatePassword firebase={firebase} history={props.history} />
+          )}
         </FirebaseContext.Consumer>
       </Route>
       <Route path="/" component={Search} />

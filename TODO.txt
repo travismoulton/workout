@@ -6,3 +6,4 @@
 //14: Add password reset functionality and password retreival
 
 
+NEXT:: Need to handle error handling if the wrong password is put in for update password. Also, need to figure out what I'm supposed to import to get to EmailAuthProvider
