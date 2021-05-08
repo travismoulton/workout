@@ -9,6 +9,7 @@ import {
   authReset,
   authSuccess,
 } from '../../../store/actions/index';
+import classes from './Login.module.css';
 
 const Login = (props) => {
   const [emailInput, setEmailInput] = useState({
@@ -98,7 +99,10 @@ const Login = (props) => {
         {form}
         <button onClick={submitLogin}>Login</button>
       </div>
-      <Link to="/register">Register</Link>
+      <div className={classes.Links}>
+        <Link to="/register">Register</Link>
+        <Link to="/forgot-password">Forgot Password?</Link>
+      </div>
     </>
   );
 };

@@ -1,12 +1,8 @@
 //1: Go through and configure the enter button to act as expected on each component -- Maybe
 //2: Add a feature to text search for workouts?
   => Would need to grab all exercises on page load from firebase. Then just search against those.
-//3: Should show last recorded workout, and workouts last week on the user profile page
+
 //4: Add functionality to have user's picture through firebase
-//5: If you are editing a workout, and you use the add from search functionality, it goes back to create-workout
-//13: Error handling. Already install react-error-boundary
+//14: Add password reset functionality and password retreival
 
 
-
-DONE
-//6: Add Time and Distance options to workout creation

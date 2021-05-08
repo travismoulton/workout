@@ -6,6 +6,7 @@ import {
   CLEAR_WORKOUT_FORM_DATA,
   SET_ENTIRE_WORKOUT_FORM,
   RESET_WORKOUT_STORE,
+  SET_FIREBASE_ID,
 } from '../actions/actionsTypes';
 import { updateObject } from '../../shared/utility';
 
@@ -17,6 +18,7 @@ const intialState = {
     targetArea: '',
     secondaryTarget: '',
   },
+  firebaseId: null,
   updated: false,
 };
 
@@ -67,6 +69,9 @@ const setEntireForm = (state, action) => {
 const resetWorkoutStore = (state, action) =>
   updateObject(state, { ...intialState });
 
+const setFirebaseId = (state, action) =>
+  updateObject(state, { firebaseId: action.firebaseId });
+
 const reducer = (state = intialState, action) => {
   switch (action.type) {
     case START_SEARCH:
@@ -83,6 +88,8 @@ const reducer = (state = intialState, action) => {
       return setEntireForm(state, action);
     case RESET_WORKOUT_STORE:
       return resetWorkoutStore(state, action);
+    case SET_FIREBASE_ID:
+      return setFirebaseId(state, action);
     default:
       return state;
   }

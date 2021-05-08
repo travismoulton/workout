@@ -1,0 +1,8 @@
+.Links {
+  display: flex;
+  flex-direction: column;
+}
+
+.Links a {
+  margin-bottom: 1rem;
+}

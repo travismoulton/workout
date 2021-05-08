@@ -6,6 +6,7 @@ import './App.css';
 import Login from './containers/Auth/Login/Login';
 import Register from './containers/Auth/Register/Register';
 import Logout from './components/Logout/Logout';
+import SendPasswordResetEmail from './components/SendPasswordResetEmail/SendPasswordResetEmail';
 import Search from './containers/Search/Search';
 import Layout from './components/Layout/Layout';
 import Results from './containers/Results/Results';
@@ -16,6 +17,8 @@ import CreateExercise from './containers/CreateExercise/CreateExercise';
 import UserProfile from './containers/UserProfile/UserProfile';
 import RecordWorkout from './containers/RecordWorkout/RecordWorkout';
 import RecordedWorkoutDetail from './components/RecordedWorkoutDetail/RecordedWorkoutDetail';
+import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary';
+
 import {
   logout,
   authSuccess,
@@ -70,7 +73,14 @@ function App(props) {
       <Route path="/search" component={Search} />
       <Route path="/results/my-custom-exercises" component={Results} />
       <Route path="/results/:category/:query" component={Results} />
-      <Route path="/exercise/:name" component={ExerciseDetail} />
+      <Route
+        path="/exercise/:name"
+        render={(routeProps) => (
+          <ErrorBoundary>
+            <ExerciseDetail {...routeProps} />
+          </ErrorBoundary>
+        )}
+      />
       <Route path="/create-workout" component={CreateWorkout} />
       <Route path="/create-routine" component={CreateRoutine} />
       <Route path="/my-profile" component={UserProfile} />
@@ -100,10 +110,27 @@ function App(props) {
       </Route>
       <Route path="/search" component={Search} />
       <Route path="/results/:category/:query" component={Results} />
-      <Route path="/exercise/:name" component={ExerciseDetail} />
+      <Route
+        path="/exercise/:name"
+        render={(routeProps) => (
+          <ErrorBoundary>
+            <ExerciseDetail {...routeProps} />
+          </ErrorBoundary>
+        )}
+      />
       <Route path="/login">
         <FirebaseContext.Consumer>
           {(firebase) => <Login firebase={firebase} history={props.history} />}
+        </FirebaseContext.Consumer>
+      </Route>
+      <Route path="/forgot-password">
+        <FirebaseContext.Consumer>
+          {(firebase) => (
+            <SendPasswordResetEmail
+              firebase={firebase}
+              history={props.history}
+            />
+          )}
         </FirebaseContext.Consumer>
       </Route>
       <Route path="/" component={Search} />

@@ -6,6 +6,7 @@ import {
   SET_ENTIRE_WORKOUT_FORM,
   CLEAR_WORKOUT_FORM_DATA,
   RESET_WORKOUT_STORE,
+  SET_FIREBASE_ID,
 } from './actionsTypes';
 
 export const startSearchMode = () => ({ type: START_SEARCH });
@@ -96,19 +97,6 @@ export const removeSetFromExercise = (exercises, exerciseId, setIndex) => {
   return { type: SET_EXERCISES, exercises: newExercises, updated: true };
 };
 
-// export const removeAllSetsFromExercise = (exercises, exerciseId) => {
-//   console.log(exercises, exerciseId);
-//   const newExercises = exercises.map((exercise) =>
-//     exercise.id === exerciseId
-//       ? {
-//           ...exercise,
-//           sets: [],
-//         }
-//       : exercise
-//   );
-//   return { type: SET_EXERCISES, exercises: newExercises, updated: true };
-// };
-
 export const updateExerciseData = (
   exercises,
   exerciseId,
@@ -151,3 +139,8 @@ export const setEntireForm = (workoutName, targetArea, secondaryTarget) => ({
 export const clearForm = () => ({ type: CLEAR_WORKOUT_FORM_DATA });
 
 export const resetWorkoutStore = () => ({ type: RESET_WORKOUT_STORE });
+
+export const setFirebaseId = (firebaseId) => ({
+  type: SET_FIREBASE_ID,
+  firebaseId,
+});

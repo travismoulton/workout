@@ -22,4 +22,5 @@ export {
   removeSetFromExercise,
   resetSetsToRepsFocus,
   resetSetsToTimeFocus,
+  setFirebaseId,
 } from './workout';

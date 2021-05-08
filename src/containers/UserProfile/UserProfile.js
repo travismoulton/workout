@@ -360,4 +360,5 @@ const UserProfile = (props) => {
 
   return initialFetchCompleted ? display : <Spinner />;
 };
+
 export default UserProfile;

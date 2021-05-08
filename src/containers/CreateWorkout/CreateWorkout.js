@@ -13,7 +13,8 @@ import {
   setFormData,
   setExercises,
   setEntireForm,
-  clearForm,
+  resetWorkoutStore,
+  setFirebaseId,
 } from '../../store/actions';
 import { updateObject, checkValidityHandler } from '../../shared/utility';
 import wgerDict from '../../shared/wgerDict';
@@ -22,13 +23,16 @@ const CreateWorkout = (props) => {
   const { favorites } = useSelector((state) => state.favorites);
   const { exercises } = useSelector((state) => state.workout);
   const { formData } = useSelector((state) => state.workout);
+  const { firebaseId } = useSelector((state) => state.workout);
   const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const [favoritesAsExercises, setFavoritesAsExercises] = useState([]);
   const [favoritesAsSelectOptions, setFavoritesAsSelectOptions] = useState([]);
   const [loaded, setLoaded] = useState(false);
   const [historyUsed, setHistoryUsed] = useState(false);
-  const [firebaseId, setFirebaseId] = useState('');
+
+  // const [firebaseId, setFirebaseId] = useState('');
+
   const [originalTitle, setOriginalTitle] = useState('');
   // The form should be valid if the component renders with a workoutName coming from redux
   const [formIsValid, setFormIsValid] = useState(
@@ -204,9 +208,9 @@ const CreateWorkout = (props) => {
           });
 
         setOriginalTitle(workout.title);
-        setFirebaseId(workout.firebaseId);
         setFormIsValid(true);
         setHistoryUsed(true);
+        dispatch(setFirebaseId(workout.firebaseId));
       }
     }
   }, [
@@ -303,8 +307,7 @@ const CreateWorkout = (props) => {
 
   const clearAllWorkoutData = () => {
     clearAllFormInputs();
-    dispatch(setExercises([]));
-    dispatch(clearForm());
+    dispatch(resetWorkoutStore());
   };
 
   const clearWorkoutBtn = (
@@ -364,7 +367,7 @@ const CreateWorkout = (props) => {
             titleChanged={workoutNameInput.touched}
             firebaseId={firebaseId}
             originalTitleEntact={originalTitle === workoutNameInput.value}
-            createNewWorkout={firebaseId === ''}
+            createNewWorkout={firebaseId === null}
             history={props.history}
           />
           {clearWorkoutBtn}
