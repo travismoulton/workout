@@ -4,11 +4,9 @@
 //3: Should show last recorded workout, and workouts last week on the user profile page
 //4: Add functionality to have user's picture through firebase
 //5: If you are editing a workout, and you use the add from search functionality, it goes back to create-workout
+//13: Error handling. Already install react-error-boundary
+
+
+
+DONE
 //6: Add Time and Distance options to workout creation
-//8: On userprofile, it's possible to active the dropdowns before the component is ready. Need to add a loaded piece of state
-//9: If you delete a workout that is contained in a routine, that routineLink on userProfile doesn't update the workout count unless the page is refreshed
-//11: After recording a workout, it's not immediatley available for view in the profile
-//12: Need an exercise not found component if there is no exercise at the exerciseDetail URL
-
-
-

@@ -6,8 +6,8 @@ import Modal from '../UI/Modal/Modal';
 const RecordWorkoutBtn = (props) => {
   const [showModal, setShowModal] = useState(false);
 
-  const recordWorkoutHandler = () => {
-    axios.post(
+  const recordWorkoutHandler = async () => {
+    await axios.post(
       `https://workout-81691-default-rtdb.firebaseio.com/recordedWorkouts/${props.userId}.json`,
       {
         exercises: props.exercises,

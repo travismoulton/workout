@@ -43,7 +43,7 @@ const SetDetails = (props) => {
     elementConfig: {
       options: (() => {
         let arr = [];
-        for (let i = 1; i < 90; i++) arr.push({ value: i, displayValue: i });
+        for (let i = 0; i < 90; i++) arr.push({ value: i, displayValue: i });
         return arr;
       })(),
     },
@@ -57,13 +57,13 @@ const SetDetails = (props) => {
     elementConfig: {
       options: (() => {
         let arr = [];
-        for (let i = 1; i < 61; i++) arr.push({ value: i, displayValue: i });
+        for (let i = 0; i < 61; i++) arr.push({ value: i, displayValue: i });
         return arr;
       })(),
     },
     value: props.seconds,
     label: 'Seconds',
-    id: 3,
+    id: 4,
   });
 
   const setWeight = (e) => {
@@ -93,7 +93,7 @@ const SetDetails = (props) => {
   };
 
   const setNumMinutes = (e) => {
-    setRepsInput({ ...minutesInput, value: e.target.value * 1 });
+    setMinutesInput({ ...minutesInput, value: e.target.value * 1 });
     dispatch(
       updateExerciseData(
         exercises,
@@ -106,7 +106,7 @@ const SetDetails = (props) => {
   };
 
   const setNumSeconds = (e) => {
-    setRepsInput({ ...secondsInput, value: e.target.value * 1 });
+    setSecondsInput({ ...secondsInput, value: e.target.value * 1 });
     dispatch(
       updateExerciseData(
         exercises,
@@ -175,7 +175,7 @@ const SetDetails = (props) => {
   };
 
   const incrementMinutes = () => {
-    setRepsInput({ ...minutesInput, value: minutesInput.value + 1 });
+    setMinutesInput({ ...minutesInput, value: minutesInput.value + 1 });
     dispatch(
       updateExerciseData(
         exercises,
@@ -188,7 +188,7 @@ const SetDetails = (props) => {
   };
 
   const decrementMinutes = () => {
-    setRepsInput({ ...minutesInput, value: minutesInput.value - 1 });
+    setMinutesInput({ ...minutesInput, value: minutesInput.value - 1 });
     dispatch(
       updateExerciseData(
         exercises,
@@ -201,7 +201,7 @@ const SetDetails = (props) => {
   };
 
   const incrementSeconds = () => {
-    setRepsInput({ ...secondsInput, value: secondsInput.value + 1 });
+    setSecondsInput({ ...secondsInput, value: secondsInput.value + 1 });
     dispatch(
       updateExerciseData(
         exercises,
@@ -214,7 +214,7 @@ const SetDetails = (props) => {
   };
 
   const decrementSeconds = () => {
-    setRepsInput({ ...secondsInput, value: secondsInput.value - 1 });
+    setSecondsInput({ ...secondsInput, value: secondsInput.value - 1 });
     dispatch(
       updateExerciseData(
         exercises,

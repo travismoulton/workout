@@ -7,11 +7,12 @@ import WorkoutLink from '../../components/WorkoutLink/WorkoutLink';
 import RoutineLink from '../../components/RoutineLink/RoutineLink';
 import RecordedWorkoutLink from '../../components/RecordedWorkoutLink/RecordedWorkoutLink';
 import Modal from '../../components/UI/Modal/Modal';
+import Spinner from '../../components/UI/Spinner/Spinner';
 import classes from './UserProfile.module.css';
 import { setActiveRoutine } from '../../store/actions/favorites';
 
 const UserProfile = (props) => {
-  const [initialFetch, setInitialFetch] = useState(false);
+  const [initialFetchCompleted, setInitialFetchCompleted] = useState(false);
   const [workouts, setWorkouts] = useState([]);
   const [routines, setRoutines] = useState([]);
   const [recordedWorkouts, setRecordedWorkouts] = useState([]);
@@ -123,13 +124,19 @@ const UserProfile = (props) => {
   }, [user.authUser.uid, bubbleSortWorkoutDates]);
 
   useEffect(() => {
-    if (user && !initialFetch) {
+    if (user && !initialFetchCompleted) {
       fetchWorkouts();
       fetchRoutines();
       fetchRecordedWorkouts();
-      setInitialFetch(true);
+      setInitialFetchCompleted(true);
     }
-  }, [initialFetch, user, fetchRecordedWorkouts, fetchWorkouts, fetchRoutines]);
+  }, [
+    initialFetchCompleted,
+    user,
+    fetchRecordedWorkouts,
+    fetchWorkouts,
+    fetchRoutines,
+  ]);
 
   useEffect(() => {
     if (routineDeleted) {
@@ -145,15 +152,15 @@ const UserProfile = (props) => {
     }
   }, [workoutDeleted, fetchWorkouts]);
 
-  const deleteWorkout = (firebaseId) => {
-    axios
+  const deleteWorkout = async (firebaseId) => {
+    await axios
       .delete(
         `https://workout-81691-default-rtdb.firebaseio.com/workouts/${user.authUser.uid}/${firebaseId}.json`
       )
       .then(() => setWorkoutDeleted(true));
   };
 
-  const removeWorkoutFromAllRoutines = (firebaseId) => {
+  const removeWorkoutFromAllRoutines = async (firebaseId) => {
     const routinesToAlter = routines.filter((routine) =>
       routine.workouts.includes(firebaseId)
     );
@@ -162,11 +169,14 @@ const UserProfile = (props) => {
       const updatedWorkouts = [...routinesToAlter[i].workouts];
       updatedWorkouts[updatedWorkouts.indexOf(firebaseId)] = 'Rest';
 
-      axios.patch(
+      await axios.patch(
         `https://workout-81691-default-rtdb.firebaseio.com/routines/${user.authUser.uid}/${routinesToAlter[i].firebaseId}.json`,
         { workouts: updatedWorkouts }
       );
     }
+
+    // Update the routines to take the workout of the total workout count
+    fetchRoutines();
   };
 
   const deleteWorkoutHandler = (firebaseId) => {
@@ -190,7 +200,7 @@ const UserProfile = (props) => {
         belongsToRoutine={checkIfWorkoutBelongsToRoutine(workout.firebaseId)}
         deleteWorkoutAndRemove={() => deleteWorkoutHandler(workout.firebaseId)}
         deleteWorkout={() => deleteWorkout(workout.firebaseId)}
-        setModalContent={(text) => setModalContent(text)}
+        setModalContent={(jsx) => setModalContent(jsx)}
         toggleModal={() => setShowModal((prevModal) => !prevModal)}
       />
     ))
@@ -303,7 +313,7 @@ const UserProfile = (props) => {
     return timer ? clearTimeout(timer) : null;
   }, [showModal, modalContent]);
 
-  return (
+  const display = (
     <>
       {showMessage}
       <div className={classes.Workouts}>
@@ -347,5 +357,7 @@ const UserProfile = (props) => {
       {modal}
     </>
   );
+
+  return initialFetchCompleted ? display : <Spinner />;
 };
 export default UserProfile;

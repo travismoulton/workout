@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 import ExerciseDetailCategory from '../../components/ExerciseDetails/ExerciseDetailCategory/ExerciseDetailCategory';
 import ExerciseDetailEquipment from '../../components/ExerciseDetails/ExerciseDetailEquipment/ExerciseDetailEquipment';
@@ -24,17 +25,14 @@ const ExerciseDetail = (props) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const url = props.location.state.custom
-      ? `https://workout-81691-default-rtdb.firebaseio.com/customExercises/${user.authUser.uid}/${props.location.state.firebaseSearchId}.json`
-      : `https://wger.de/api/v2/exercise/${props.location.state.id}`;
+    if (props.location.state) {
+      const url = props.location.state.custom
+        ? `https://workout-81691-default-rtdb.firebaseio.com/customExercises/${user.authUser.uid}/${props.location.state.firebaseSearchId}.json`
+        : `https://wger.de/api/v2/exercise/${props.location.state.id}`;
 
-    axios.get(url).then((res) => setExercise(res.data));
-  }, [
-    props.location.state.id,
-    props.location.state.custom,
-    user.authUser.uid,
-    props.location.state.firebaseSearchId,
-  ]);
+      axios.get(url).then((res) => setExercise(res.data));
+    }
+  }, [props.location.state, user.authUser.uid]);
 
   useEffect(() => {
     if (exercise) {
@@ -134,7 +132,14 @@ const ExerciseDetail = (props) => {
       </div>
       {props.location.state.custom ? modal : null}
     </>
-  ) : null;
+  ) : (
+    <>
+      <h3>Something went wrong.</h3>
+      <p>
+        Go back to <Link to="/search">Search</Link> and try again
+      </p>
+    </>
+  );
 
   return <>{display}</>;
 };
