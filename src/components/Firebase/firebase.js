@@ -1,6 +1,5 @@
 import app from 'firebase/app';
-// import 'firebase/auth';
-import firebase from 'firebase';
+import 'firebase/auth';
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -18,10 +17,8 @@ class Firebase {
     app.initializeApp(firebaseConfig);
 
     this.auth = app.auth();
-    this.firebase = firebase;
+    this.firebase = app.auth;
   }
-
-  whatTheFuck = () => app.auth().Emai;
 
   doCreateUserWithEmailAndPassword = (email, password) =>
     this.auth.createUserWithEmailAndPassword(email, password);
@@ -37,7 +34,7 @@ class Firebase {
     this.auth.currentUser.updatePassword(password);
 
   generateCredntial = (email, password) =>
-    this.firebase.auth.EmailAuthProvider.credential(email, password);
+    this.firebase.EmailAuthProvider.credential(email, password);
 
   doReauthenticate = (credential) =>
     this.auth.currentUser.reauthenticateWithCredential(credential);

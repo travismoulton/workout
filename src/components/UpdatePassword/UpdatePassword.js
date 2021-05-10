@@ -1,7 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 import Input from '../UI/Input/Input';
+import { updateObject, checkValidityHandler } from '../../shared/utility';
 
 const UpdatePassword = (props) => {
   const { email } = useSelector((state) => state.auth.user.authUser);
@@ -18,7 +20,7 @@ const UpdatePassword = (props) => {
     valid: false,
     touched: false,
     label: 'Current password',
-    id: 1,
+    id: 'current',
   });
 
   const [passwordInput, setPasswordInput] = useState({
@@ -34,7 +36,7 @@ const UpdatePassword = (props) => {
     valid: false,
     touched: false,
     label: 'New password',
-    id: 3,
+    id: 'password',
   });
 
   const [confirmPWInput, setConfirmPW] = useState({
@@ -50,30 +52,49 @@ const UpdatePassword = (props) => {
     valid: false,
     touched: false,
     label: 'Confirm new password',
-    id: 4,
+    id: 'confirm',
   });
 
-  const updateCurrentPassword = (e) => {
-    setCurrentPasswordInput({
-      ...currentPasswordInput,
-      value: e.target.value,
-    });
-  };
+  const [error, setError] = useState(null);
 
-  const updatePassword = (e) => {
-    setPasswordInput({ ...passwordInput, value: e.target.value });
-  };
+  const [formIsValid, setFormIsValid] = useState(false);
 
-  const updateConfirmPW = (e) => {
-    setConfirmPW({ ...confirmPWInput, value: e.target.value });
-  };
-
-  const updateFunctions = [
-    updateCurrentPassword,
-    updatePassword,
-    updateConfirmPW,
-  ];
   const formFields = [currentPasswordInput, passwordInput, confirmPWInput];
+
+  const checkFormValidity = (updatedInput) => {
+    const oldForm = {
+      current: currentPasswordInput,
+      password: passwordInput,
+      confirm: confirmPWInput,
+    };
+
+    const newForm = updateObject(oldForm, { [updatedInput.id]: updatedInput });
+
+    let tempVal = true;
+
+    for (let identifier in newForm) {
+      console.log(newForm[identifier]);
+      tempVal = newForm[identifier].valid && tempVal;
+    }
+
+    setFormIsValid(tempVal);
+  };
+
+  const inputChangedHandler = (e, input) => {
+    const updatedInput = updateObject(input, {
+      value: e.target.value,
+      valid: checkValidityHandler(e.target.value, input.validation),
+      touched: true,
+    });
+
+    input.id === 'current'
+      ? setCurrentPasswordInput(updatedInput)
+      : input.id === 'password'
+      ? setPasswordInput(updatedInput)
+      : setConfirmPW(updatedInput);
+
+    checkFormValidity(updatedInput);
+  };
 
   const form = formFields.map((field, i) => (
     <Input
@@ -82,7 +103,7 @@ const UpdatePassword = (props) => {
       elementType={field.elementType}
       label={field.label}
       value={field.value}
-      changed={updateFunctions[i]}
+      changed={(e) => inputChangedHandler(e, field)}
     />
   ));
 
@@ -100,14 +121,28 @@ const UpdatePassword = (props) => {
       props.firebase
         .doReauthenticate(credential)
         .then(() => props.firebase.doPasswordUpdate(passwordInput.value))
-        .catch((err) => console.log(err))
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          setError({
+            code: err.code,
+            message:
+              err.code === 'auth/wrong-password' ? (
+                <p>
+                  Current password is incorrect. If you do not know you
+                  password, <Link to="/reset-password">Reset it here</Link>
+                </p>
+              ) : (
+                <p>An error occured</p>
+              ),
+          });
+        })
+        .catch((err) => console.log(err, '2'));
   };
 
   const submitBtn = <button onClick={onSumbit}>Update your password</button>;
 
   return (
     <>
+      {error ? error.message : null}
       {form}
       {submitBtn}
     </>
