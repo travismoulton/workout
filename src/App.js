@@ -105,6 +105,16 @@ function App(props) {
           )}
         </FirebaseContext.Consumer>
       </Route>
+      <Route path="/forgot-password">
+        <FirebaseContext.Consumer>
+          {(firebase) => (
+            <SendPasswordResetEmail
+              firebase={firebase}
+              history={props.history}
+            />
+          )}
+        </FirebaseContext.Consumer>
+      </Route>
       <Route path="/" component={Search} />
     </Switch>
   ) : (

@@ -3,7 +3,6 @@
   => Would need to grab all exercises on page load from firebase. Then just search against those.
 
 //4: Add functionality to have user's picture through firebase
-//14: Add password reset functionality and password retreival
 
 
-NEXT:: Enable / disable button based on formValidity
+

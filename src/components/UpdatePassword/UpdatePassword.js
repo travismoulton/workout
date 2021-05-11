@@ -138,13 +138,25 @@ const UpdatePassword = (props) => {
         .catch((err) => console.log(err, '2'));
   };
 
-  const submitBtn = <button onClick={onSumbit}>Update your password</button>;
+  const submitBtn = (
+    <button
+      disabled={!formIsValid}
+      style={{ cursor: !formIsValid ? 'not-allowed' : 'default' }}
+      onClick={onSumbit}
+    >
+      Update your password
+    </button>
+  );
 
   return (
     <>
       {error ? error.message : null}
       {form}
       {submitBtn}
+      <p>
+        Don't know your current password?{' '}
+        <Link to="/forgot-password">Click here</Link> to reset it
+      </p>
     </>
   );
 };

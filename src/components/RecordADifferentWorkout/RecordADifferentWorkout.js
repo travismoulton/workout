@@ -3,11 +3,13 @@ import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
+import useHttp from '../../hooks/http';
 import Modal from '../UI/Modal/Modal';
 import Input from '../UI/Input/Input';
 import classes from './RecordADifferentWorkout.module.css';
 
 const RecordADifferentWorkout = (props) => {
+  const [axiosError, setAxiosError] = useState(false);
   const [allWorkouts, setAllWorkouts] = useState([]);
   const [routineWorkouts, setRoutineWorkouts] = useState([]);
   const [initialRoutineMenuSet, setIntialRoutineMenuSet] = useState(false);
@@ -35,23 +37,90 @@ const RecordADifferentWorkout = (props) => {
     valid: true,
   });
   const { activeRoutine } = useSelector((state) => state.favorites);
+  const { isLoading, data, error, sendSyncRequest, clear } = useHttp();
 
-  const fetchAllWorkouts = useCallback(() => {
-    axios
-      .get(
-        `https://workout-81691-default-rtdb.firebaseio.com/workouts/${props.userId}.json`
-      )
-      .then((res) => {
-        if (res.data) {
-          const tempArr = [];
-          for (const key in res.data)
-            tempArr.push({ ...res.data[key], firebaseId: key });
-          setAllWorkouts(tempArr);
-        } else if (!res.data) {
-          setAllWorkouts([]);
-        }
-      });
-  }, [props.userId]);
+  const [reqSent, setReqSent] = useState(false);
+
+  const fetchAllWorkouts = useCallback(async () => {
+    await sendSyncRequest(
+      `https://workout-81691-default-rtdb.firebaseio.com/workouts/${props.userId}.json`,
+      'GET',
+      null,
+      null,
+      'ALLWORKOUTS'
+    );
+
+    if (data) {
+      const tempArr = [];
+      for (const key in data) tempArr.push({ ...data[key], firebaseId: key });
+      setAllWorkouts(tempArr);
+    }
+
+    clear();
+  }, [data, props.userId, sendSyncRequest, clear]);
+
+  // useEffect(() => {
+  //   if (!reqSent) {
+  //     (async () => {
+  //       await sendSyncRequest(
+  //         `https://workout-81691-default-rtdb.firebaseio.com/workouts/${props.userId}.json`,
+  //         'GET',
+  //         null,
+  //         null,
+  //         'ALLWORKOUTS'
+  //       );
+  //     })();
+
+  //     if (data) {
+  //       const tempArr = [];
+  //       for (const key in data) tempArr.push({ ...data[key], firebaseId: key });
+  //       setAllWorkouts(tempArr);
+  //     }
+
+  //     clear();
+  //     setReqSent(true);
+  //   }
+  // }, [reqSent, data, props.userId, sendSyncRequest, clear]);
+
+  // useEffect(() => {
+  //   if (!allWorkoutReqSent) {
+  //     sendSyncRequest(
+  //       `https://workout-81691-default-rtdb.firebaseio.com/workouts/${props.userId}.json`,
+  //       'GET',
+  //       null,
+  //       null,
+  //       'ALLWORKOUTS'
+  //     );
+
+  //     setAllWorkoutReqSent(true);
+  //   }
+  // }, [props.userId, allWorkoutReqSent, sendSyncRequest]);
+
+  // useEffect(() => {
+  //   if (!isLoading && !error && data && reqIdentifier === 'ALLWORKOUTS') {
+  //     const tempArr = [];
+  //     for (const key in data) tempArr.push({ ...data[key], firebaseId: key });
+  //     setAllWorkouts(tempArr);
+  //   }
+  // }, [isLoading, error, data, reqIdentifier]);
+
+  // const fetchAllWorkouts = useCallback(() => {
+  //   axios
+  //     .get(
+  //       `https://workout-81691-default-rtdb.firebaseio.com/workouts/${props.userId}.json`
+  //     )
+  //     .then((res) => {
+  //       if (res.data) {
+  //         const tempArr = [];
+  //         for (const key in res.data)
+  //           tempArr.push({ ...res.data[key], firebaseId: key });
+  //         setAllWorkouts(tempArr);
+  //       } else if (!res.data) {
+  //         setAllWorkouts([]);
+  //       }
+  //     })
+  //     .catch((err) => console.log(err));
+  // }, [props.userId]);
 
   const fetchRoutineWorkouts = useCallback(async () => {
     if (activeRoutine) {
@@ -64,11 +133,13 @@ const RecordADifferentWorkout = (props) => {
       for (let i = 0; i < workoutIds.length; i++) {
         await axios
           .get(
-            `https://workout-81691-default-rtdb.firebaseio.com/workouts/${props.userId}/${workoutIds[i]}.json`
+            `https://workout-81691-default-rtdb.firebaseio.com/workouts/${props.userId}/${workoutIds[i]}.json`,
+            { timeout: 5000 }
           )
           .then((res) => {
             tempArr.push({ ...res.data, firebaseId: workoutIds[i] });
-          });
+          })
+          .catch((err) => console.log(err));
       }
 
       setRoutineWorkouts(tempArr);
