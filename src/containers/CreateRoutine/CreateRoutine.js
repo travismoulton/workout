@@ -46,15 +46,25 @@ const CreateRoutine = (props) => {
   const [firebaseId, setFirebaseId] = useState('');
   const [originalTitle, setOriginalTitle] = useState('');
   const [isActiveRoutine, setIsActiveRoutine] = useState(false);
+  const [error, setError] = useState({
+    isError: false,
+    message: (
+      <p style={{ color: 'red' }}>
+        Sorry, something went wrong. Please try refreshing the page or come back
+        later
+      </p>
+    ),
+  });
 
   const { user } = useSelector((state) => state.auth);
 
   useEffect(() => {
     if (user && !workoutSelectMenu.elementConfig.options.length)
-      axios
-        .get(
-          `https://workout-81691-default-rtdb.firebaseio.com/workouts/${user.authUser.uid}.json`
-        )
+      axios({
+        method: 'get',
+        url: `https://workout-81691-default-rtdb.firebaseio.com/workouts/${user.authUser.uid}.json`,
+        timeout: 5000,
+      })
         .then((res) => {
           const userWorkouts = [{ displayValue: 'Rest', value: 'Rest' }];
 
@@ -71,8 +81,11 @@ const CreateRoutine = (props) => {
               options: userWorkouts,
             },
           });
+        })
+        .catch((err) => {
+          setError({ ...error, isError: true });
         });
-  }, [user, workoutSelectMenu]);
+  }, [user, workoutSelectMenu, error]);
 
   const days = [
     'Monday',
@@ -174,7 +187,11 @@ const CreateRoutine = (props) => {
     </>
   );
 
-  return workoutSelectMenu.elementConfig.options.length ? display : null;
+  return error.isError
+    ? error.message
+    : workoutSelectMenu.elementConfig.options.length
+    ? display
+    : null;
 };
 
 export default CreateRoutine;

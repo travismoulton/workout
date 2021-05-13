@@ -2,6 +2,7 @@ import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
+import useHttp from '../../hooks/http';
 import classes from './Search.module.css';
 import SearchCategory from '../../components/SearchCategory/SearchCategory';
 import SearchSubCategory from '../../components/SearchSubCategory/SearchSubCategory';
@@ -12,6 +13,9 @@ const Search = (props) => {
   const [showCustomOption, setShowCustomOption] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const { user } = useSelector((state) => state.auth);
+
+  const { isLoading, data, error, sendSyncRequest, clear, reqIdentifier } =
+    useHttp();
 
   useEffect(() => {
     if (user) {

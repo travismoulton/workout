@@ -46,6 +46,15 @@ const SubmitRoutineBtn = (props) => {
     return nameTaken;
   };
 
+  const redirectToMyProfile = () => {
+    props.history.push({
+      pathname: '/my-profile',
+      state: {
+        message: props.createNewRoutine ? 'Routine created' : 'Routine Updated',
+      },
+    });
+  };
+
   const onSubmit = async () => {
     if (!props.containsWorkout()) {
       setError({
@@ -71,33 +80,34 @@ const SubmitRoutineBtn = (props) => {
     )
       if (await checkForPreviousNameUse()) return;
 
-    props.createNewRoutine
-      ? await axios.post(
-          `https://workout-81691-default-rtdb.firebaseio.com/routines/${props.userId}.json`,
-          {
-            title: props.title,
-            workouts: props.workouts,
-            activeRoutine: false,
-          }
-        )
-      : await axios.put(
-          `https://workout-81691-default-rtdb.firebaseio.com/routines/${props.userId}/${props.firebaseId}.json`,
-          {
-            title: props.title,
-            workouts: props.workouts,
-            activeRoutine: props.isActiveRoutine,
-          }
-        );
-
-    // If the active routine was updated, update the redux store
-    if (props.isActiveRoutine) dispatch(fetchActiveRoutine(props.userId));
-
-    props.history.push({
-      pathname: '/my-profile',
-      state: {
-        message: props.createNewRoutine ? 'Routine created' : 'Routine Updated',
+    await axios({
+      method: props.createNewRoutine ? 'post' : 'put',
+      url: props.createNewRoutine
+        ? `https://workout-81691-default-rtdb.firebaseio.com/routines/${props.userId}.json`
+        : `https://workout-81691-default-rtdb.firebaseio.com/routines/${props.userId}/${props.firebaseId}.json`,
+      timeout: 5000,
+      data: {
+        title: props.title,
+        workouts: props.workouts,
+        activeRoutine: props.isActiveRoutine,
       },
-    });
+    })
+      .then(() => {
+        if (props.isActiveRoutine) dispatch(fetchActiveRoutine(props.userId));
+        redirectToMyProfile();
+      })
+      .catch((err) =>
+        setError({
+          ...error,
+          isError: true,
+          code: 'axios',
+          msg: (
+            <p style={{ color: 'red' }}>
+              We weren't able to create this workout, please try agian
+            </p>
+          ),
+        })
+      );
   };
 
   return (

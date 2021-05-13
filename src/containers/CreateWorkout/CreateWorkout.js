@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import uniqid from 'uniqid';
+import uniqid, { time } from 'uniqid';
 import axios from 'axios';
 
 import Input from '../../components/UI/Input/Input';
@@ -30,10 +30,16 @@ const CreateWorkout = (props) => {
   const [favoritesAsSelectOptions, setFavoritesAsSelectOptions] = useState([]);
   const [loaded, setLoaded] = useState(false);
   const [historyUsed, setHistoryUsed] = useState(false);
-
-  // const [firebaseId, setFirebaseId] = useState('');
-
   const [originalTitle, setOriginalTitle] = useState('');
+  const [error, setError] = useState({
+    isError: false,
+    message: (
+      <p style={{ color: 'red' }}>
+        Sorry, something went wrong trying to get some of your favorites. Please
+        refresh the page or try again later
+      </p>
+    ),
+  });
   // The form should be valid if the component renders with a workoutName coming from redux
   const [formIsValid, setFormIsValid] = useState(
     formData.workoutName ? true : false
@@ -118,43 +124,58 @@ const CreateWorkout = (props) => {
     id: 4,
   });
 
+  const filterFavorites = useCallback(
+    (arr, res) => {
+      for (const key in res.data) {
+        const exercise = favorites.filter(
+          (fav) => fav.exercise.toString() === res.data[key].id.toString()
+        )[0];
+
+        if (exercise) arr.push(res.data[key]);
+      }
+    },
+    [favorites]
+  );
+
   useEffect(() => {
     let arr = [];
 
     (async () => {
-      if (favorites && !favoritesAsExercises.length) {
+      if (favorites && !favoritesAsExercises.length && !error.isError) {
         await axios
           .get(
-            `https://workout-81691-default-rtdb.firebaseio.com/masterExerciseList.json`
+            `https://workout-81691-default-rtdb.firebaseio.com/masterExerciseList.json`,
+            { timeout: 5000 }
           )
           .then((res) => {
-            for (const key in res.data) {
-              const exercise = favorites.filter(
-                (fav) => fav.exercise * 1 === res.data[key].id
-              )[0];
-
-              if (exercise) arr.push(res.data[key]);
-            }
+            filterFavorites(arr, res);
+          })
+          .catch((err) => {
+            setError({ ...error, isError: true });
           });
 
         await axios
           .get(
-            `https://workout-81691-default-rtdb.firebaseio.com/customExercises/${user.authUser.uid}.json`
+            `https://workout-81691-default-rtdb.firebaseio.com/customExercises/${user.authUser.uid}.json`,
+            { timeout: 5000 }
           )
           .then((res) => {
-            for (const key in res.data) {
-              const exercise = favorites.filter(
-                (fav) => fav.exercise === res.data[key].id
-              )[0];
-
-              if (exercise) arr.push(res.data[key]);
-            }
+            filterFavorites(arr, res);
+          })
+          .catch((err) => {
+            setError({ ...error, isError: true });
           });
 
         setFavoritesAsExercises(arr);
       }
     })();
-  }, [favorites, favoritesAsExercises, user.authUser.uid]);
+  }, [
+    favorites,
+    favoritesAsExercises,
+    user.authUser.uid,
+    filterFavorites,
+    error,
+  ]);
 
   useEffect(() => {
     // After favoritesAsExercises has been created, create an array of objects to
@@ -175,6 +196,10 @@ const CreateWorkout = (props) => {
     // If there are no favorites, the page can be loaded immediatley
     if (favorites) if (!favorites.length && !loaded) setLoaded(true);
   }, [favorites, loaded]);
+
+  useEffect(() => {
+    if (error.isError) setLoaded(true);
+  }, [error, loaded]);
 
   // If taken to the create-workout component as a workout detail, load the
   // exercises and populate the form from state.
@@ -321,6 +346,7 @@ const CreateWorkout = (props) => {
 
   const finalDisplay = (
     <>
+      {error.isError ? error.message : null}
       {titleForm}
       <Input
         elementType={addFromFavorites.elementType}

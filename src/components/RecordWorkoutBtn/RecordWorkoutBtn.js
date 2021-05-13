@@ -5,11 +5,21 @@ import Modal from '../UI/Modal/Modal';
 
 const RecordWorkoutBtn = (props) => {
   const [showModal, setShowModal] = useState(false);
+  const [axiosError, setAxiosError] = useState({
+    isError: null,
+    message: (
+      <p style={{ color: 'red' }}>
+        We're having trouble recording your workout. Please try again
+      </p>
+    ),
+  });
 
   const recordWorkoutHandler = async () => {
-    await axios.post(
-      `https://workout-81691-default-rtdb.firebaseio.com/recordedWorkouts/${props.userId}.json`,
-      {
+    axios({
+      method: 'post',
+      url: `https://workout-81691-default-rtdb.firebaseio.com/recordedWorkouts/${props.userId}.json`,
+      timeout: 5000,
+      data: {
         exercises: props.exercises,
         title: props.workout.title,
         date: {
@@ -17,13 +27,15 @@ const RecordWorkoutBtn = (props) => {
           month: props.date.getMonth(),
           day: props.date.getDate(),
         },
-      }
-    );
-
-    props.history.push({
-      pathname: '/my-profile',
-      state: { message: 'Workout Recorded' },
-    });
+      },
+    })
+      .then(() => {
+        props.history.push({
+          pathname: '/my-profile',
+          state: { message: 'Workout Recorded' },
+        });
+      })
+      .catch((err) => setAxiosError({ ...axiosError, isError: true }));
   };
 
   const closeModalAndSaveWorkout = () => {
@@ -58,6 +70,7 @@ const RecordWorkoutBtn = (props) => {
       >
         Record workout
       </button>
+      {axiosError.isError ? axiosError.message : null}
     </>
   );
 };

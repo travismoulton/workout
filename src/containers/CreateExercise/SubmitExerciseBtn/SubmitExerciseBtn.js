@@ -6,13 +6,36 @@ import Tooltip from '../../../components/UI/Tooltip/Tooltip';
 import classes from './SubmitExerciseBtn.module.css';
 
 const SubmitExerciseBtn = (props) => {
-  const [error, setError] = useState(null);
+  const [error, setError] = useState({ isError: false, code: '', msg: '' });
   const [tooltipData, setTooltipData] = useState({
     show: false,
     x: null,
     y: null,
     innerTxt: null,
   });
+
+  const axiosError = {
+    ...error,
+    isError: true,
+    code: 'axios',
+    msg: (
+      <p style={{ color: 'red' }}>
+        Sorry, something went wrong. Please try again
+      </p>
+    ),
+  };
+
+  const nameTakenError = {
+    ...error,
+    isError: true,
+    msg: (
+      <p style={{ color: 'red' }}>
+        That name is already taken, please try a different name
+      </p>
+    ),
+    code: 'nameTaken',
+    takenName: props.title,
+  };
 
   useEffect(() => {
     if (error)
@@ -23,24 +46,20 @@ const SubmitExerciseBtn = (props) => {
     let nameTaken = false;
     await axios
       .get(
-        `https://workout-81691-default-rtdb.firebaseio.com/customExercises/${props.userId}.json`
+        `https://workout-81691-default-rtdb.firebaseio.com/customExercises/${props.userId}.json`,
+        { timeout: 5000 }
       )
       .then((res) => {
         for (const key in res.data) {
           if (res.data[key].name === props.title) {
-            setError({
-              msg: (
-                <p style={{ color: 'red' }}>
-                  That name is already taken, please try a different name
-                </p>
-              ),
-              code: 'nameTaken',
-              takenName: props.title,
-            });
+            setError(nameTakenError);
             nameTaken = true;
             break;
           }
         }
+      })
+      .catch((err) => {
+        setError(axiosError);
       });
 
     return nameTaken;
@@ -59,12 +78,18 @@ const SubmitExerciseBtn = (props) => {
   const submitValidFormHandler = async () => {
     if (await checkForPreviousNameUse()) return;
 
-    axios.post(
-      `https://workout-81691-default-rtdb.firebaseio.com/customExercises/${props.userId}.json`,
-      exerciseData
-    );
-
-    props.history.push(`/my-profile`);
+    axios({
+      method: 'post',
+      url: `https://workout-81691-default-rtdb.firebaseio.com/customExercises/${props.userId}.json`,
+      timeout: 5000,
+      data: exerciseData,
+    })
+      .then(() => {
+        props.history.push(`/my-profile`);
+      })
+      .catch((err) => {
+        setError(axiosError);
+      });
   };
 
   const createTooltipInnerTxt = () => {
@@ -100,7 +125,7 @@ const SubmitExerciseBtn = (props) => {
 
   return (
     <>
-      {error ? error.msg : null}
+      {error.isError ? error.msg : null}
       <button
         className={classes.Btn}
         disabled={!props.formIsValid}

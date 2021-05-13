@@ -55,6 +55,15 @@ const SubmitWorkoutBtn = (props) => {
     return nameTaken;
   };
 
+  const redirectToMyProfile = () => {
+    props.history.push({
+      pathname: '/my-profile',
+      state: {
+        message: props.createNewWorkout ? 'Workout created' : 'Workout Updated',
+      },
+    });
+  };
+
   const submitValidForm = async () => {
     if (
       props.createNewWorkout ||
@@ -71,25 +80,31 @@ const SubmitWorkoutBtn = (props) => {
       exercises,
     };
 
-    props.createNewWorkout
-      ? await axios.post(
-          `https://workout-81691-default-rtdb.firebaseio.com/workouts/${user.authUser.uid}.json`,
-          workoutData
-        )
-      : await axios.put(
-          `https://workout-81691-default-rtdb.firebaseio.com/workouts/${user.authUser.uid}/${props.firebaseId}.json`,
-          workoutData
-        );
-
-    dispatch(resetWorkoutStore());
-    props.clearAllFormInputs();
-
-    props.history.push({
-      pathname: '/my-profile',
-      state: {
-        message: props.createNewWorkout ? 'Workout created' : 'Workout Updated',
-      },
-    });
+    axios({
+      method: props.createNewWorkout ? 'post' : 'put',
+      url: props.createNewWorkout
+        ? `https://workout-81691-default-rtdb.firebaseio.com/workouts/${user.authUser.uid}.json`
+        : `https://workout-81691-default-rtdb.firebaseio.com/workouts/${user.authUser.uid}/${props.firebaseId}.json`,
+      timeout: 5000,
+      data: workoutData,
+    })
+      .then(() => {
+        dispatch(resetWorkoutStore());
+        props.clearAllFormInputs();
+        redirectToMyProfile();
+      })
+      .catch((err) =>
+        setError({
+          ...error,
+          isError: true,
+          code: 'axios',
+          msg: (
+            <p style={{ color: 'red' }}>
+              We're unable to update your workout right now. Please try again
+            </p>
+          ),
+        })
+      );
   };
 
   const onSubmit = () =>
