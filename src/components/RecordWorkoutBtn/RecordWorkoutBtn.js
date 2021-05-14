@@ -38,9 +38,9 @@ const RecordWorkoutBtn = (props) => {
       .catch((err) => setAxiosError({ ...axiosError, isError: true }));
   };
 
-  const closeModalAndSaveWorkout = () => {
+  const closeModalAndSaveWorkout = async () => {
     setShowModal(false);
-    props.updateWorkoutInFirebase();
+    await props.updateWorkoutInFirebase();
     recordWorkoutHandler();
   };
 

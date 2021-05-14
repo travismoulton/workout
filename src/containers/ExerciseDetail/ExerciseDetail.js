@@ -19,6 +19,16 @@ const ExerciseDetail = (props) => {
   const [description, setDescription] = useState('');
   const [firebaseId, setFirebaseId] = useState('');
   const [showModal, setShowModal] = useState(false);
+  const [error, setError] = useState({
+    isError: false,
+    message: (
+      <p style={{ color: 'red' }}>
+        We're having trouble loading this page right now. Please refresh the
+        page or try again later
+      </p>
+    ),
+    code: '',
+  });
   const user = useSelector((state) => state.auth.user);
   const favorites = useSelector((state) => state.favorites.favorites);
   const buildingWorkout = useSelector((state) => state.workout.buildingWorkout);
@@ -29,8 +39,13 @@ const ExerciseDetail = (props) => {
       ? `https://workout-81691-default-rtdb.firebaseio.com/customExercises/${user.authUser.uid}/${props.location.state.firebaseSearchId}.json`
       : `https://wger.de/api/v2/exercise/${props.location.state.id}`;
 
-    axios.get(url).then((res) => setExercise(res.data));
-  }, [props.location.state, user.authUser.uid]);
+    axios
+      .get(url, { timeout: 5000 })
+      .then((res) => setExercise(res.data))
+      .catch((err) => {
+        setError({ ...error, isError: true, code: 'noExercise' });
+      });
+  }, [props.location.state, user.authUser.uid, error]);
 
   useEffect(() => {
     if (exercise) {
@@ -63,9 +78,13 @@ const ExerciseDetail = (props) => {
     if (isFavorite)
       dispatch(removeFromFavorites(user.authUser.uid, props.firebaseId));
 
-    await axios.delete(
-      `https://workout-81691-default-rtdb.firebaseio.com/customExercises/${user.authUser.uid}/${props.location.state.firebaseSearchId}.json`
-    );
+    await axios({
+      method: 'delete',
+      url: `https://workout-81691-default-rtdb.firebaseio.com/customExercises/${user.authUser.uid}/${props.location.state.firebaseSearchId}.json`,
+      timeout: 5000,
+    }).catch((err) => {
+      setError({ ...error, isError: true, code: 'delete' });
+    });
 
     setShowModal(false);
 
@@ -86,6 +105,7 @@ const ExerciseDetail = (props) => {
 
   const display = exercise ? (
     <>
+      {error.code === 'delete' && error.message}
       <div>
         <h3>{exercise.name}</h3>
         <ExerciseDetailCategory
@@ -132,7 +152,13 @@ const ExerciseDetail = (props) => {
     </>
   ) : null;
 
-  return <>{display}</>;
+  const noExerciseError = error.code === 'noExercise' && error.message;
+
+  return exercise
+    ? display
+    : error.code === 'noExercise'
+    ? noExerciseError
+    : null;
 };
 
 export default ExerciseDetail;

@@ -15,11 +15,9 @@ const RecordWorkout = (props) => {
   const [exercisesDispatched, setExercisesDispatched] = useState(false);
   const [loading, setLoading] = useState(true);
   const [showChangeDateModal, setShowChangeDateModal] = useState(false);
-  const [
-    showRecordDifferentWorkoutModal,
-    setShowRecordDifferentWorkoutModal,
-  ] = useState(false);
-  const [error, setError] = useState(false);
+  const [showRecordDifferentWorkoutModal, setShowRecordDifferentWorkoutModal] =
+    useState(false);
+  const [error, setError] = useState({ isError: false, message: '', code: '' });
   const { user } = useSelector((state) => state.auth);
   const { activeRoutine } = useSelector((state) => state.favorites);
   const { exercises } = useSelector((state) => state.workout);
@@ -46,16 +44,29 @@ const RecordWorkout = (props) => {
           (async () =>
             await axios
               .get(
-                `https://workout-81691-default-rtdb.firebaseio.com/workouts/${user.authUser.uid}/${workoutFirebaseId}.json`
+                `https://workout-81691-default-rtdb.firebaseio.com/workouts/${user.authUser.uid}/${workoutFirebaseId}.json`,
+                { timeout: 5000 }
               )
               .then((res) =>
                 setSuggestedWorkout({
                   ...res.data,
                   firebaseId: workoutFirebaseId,
                 })
-              ))();
-        } else setLoading(false);
-      } else setLoading(false);
+              )
+              .catch((err) => {
+                setError({
+                  isError: true,
+                  message: (
+                    <p>
+                      Sorry, we can't load your workouts right now. Please
+                      refresh the page or try again later
+                    </p>
+                  ),
+                  code: 'activeRoutineError',
+                });
+              }))();
+        } else if (workoutFirebaseId === 'Rest') setLoading(false);
+      } else if (!activeRoutine) setLoading(false);
     }
   }, [suggestedWorkout, adjustDateForSunday, activeRoutine, user.authUser.uid]);
 
@@ -89,19 +100,34 @@ const RecordWorkout = (props) => {
       ))
     : null;
 
-  const updateWorkoutInFirebase = () => {
+  const updateWorkoutInFirebase = async () => {
     const workoutFirebaseId = suggestedWorkout.firebaseId;
-    axios.put(
-      `https://workout-81691-default-rtdb.firebaseio.com/workouts/${user.authUser.uid}/${workoutFirebaseId}.json`,
-      {
+    await axios({
+      method: 'put',
+      url: `https://workout-81691-default-rtdb.firebaseio.com/workouts/${user.authUser.uid}/${workoutFirebaseId}.json`,
+      data: {
         title: suggestedWorkout.title,
         targetAreaCode: suggestedWorkout.targetAreaCode,
         secondaryTargetCode: suggestedWorkout.secondaryTargetCode,
         targetArea: suggestedWorkout.targetArea,
         secondaryTargetArea: suggestedWorkout.secondaryTargetArea,
         exercises,
-      }
-    );
+      },
+      timeout: 5000,
+    }).catch((err) => {
+      setError({
+        isError: true,
+        message: (
+          <p style={{ color: 'red' }}>
+            Sorry, we're having trouble processing your request right now.
+            Please refresh the page and record the workout again, or come back
+            later
+          </p>
+        ),
+      });
+      // Stops function execution in RecordWorkoutBtn so the workout isn't recorded
+      throw new Error();
+    });
   };
 
   const recordADifferentWorkoutBtn = (
@@ -120,15 +146,29 @@ const RecordWorkout = (props) => {
     workoutId
       ? axios
           .get(
-            `https://workout-81691-default-rtdb.firebaseio.com/workouts/${user.authUser.uid}/${workoutId}.json`
+            `https://workout-81691-default-rtdb.firebaseio.com/workouts/${user.authUser.uid}/${workoutId}.json`,
+            { timeout: 5000 }
           )
           .then((res) => {
             setSuggestedWorkout({ ...res.data, firebaseId: workoutId });
             dispatch(setExercises(res.data.exercises));
             if (error.code === 'noSelectedWorkout') setError(null);
           })
+          .catch((err) => {
+            setError({
+              isError: true,
+              message: (
+                <p style={{ color: 'red' }}>
+                  Sorry, we were not able to load the workout. Please refresh
+                  the page and try again, or come back later
+                </p>
+              ),
+              code: 'switchWorkout',
+            });
+          })
       : setError({
-          msg: (
+          isError: true,
+          message: (
             <p style={{ color: 'red' }}>
               No Workout was selected. Please select a workout to record
             </p>
@@ -139,11 +179,11 @@ const RecordWorkout = (props) => {
 
   const finalDisplay = (
     <>
+      {error.isError ? error.message : null}
       <h1>{today.toString().substring(0, 15)}</h1>
       {suggestedWorkout ? <h3>{suggestedWorkout.title}</h3> : <h3>Rest</h3>}
       {recordADifferentWorkoutBtn}
       {recordDifferentDayBtn}
-      {error ? error.msg : null}
       {displayExercises}
       {suggestedWorkout && exercises.length ? (
         <RecordWorkoutBtn

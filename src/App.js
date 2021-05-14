@@ -87,7 +87,14 @@ function App(props) {
       <Route path="/my-profile" component={UserProfile} />
       <Route path="/workout-detail/:workout" component={CreateWorkout} />
       <Route path="/routine-detail/:routine" component={CreateRoutine} />
-      <Route path="/record-workout" component={RecordWorkout} />
+      <Route
+        path="/record-workout"
+        render={(routeProps) => (
+          <ErrorBoundary>
+            <RecordWorkout {...routeProps} />
+          </ErrorBoundary>
+        )}
+      />
       <Route path="/create-exercise" component={CreateExercise} />
       <Route
         path="/recorded-workout-detail/:id"
