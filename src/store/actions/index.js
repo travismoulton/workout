@@ -4,6 +4,7 @@ export {
   removeFromFavorites,
   setFavorites,
   fetchActiveRoutine,
+  setActiveRoutine,
 } from './favorites';
 export {
   startSearchMode,
@@ -24,3 +25,4 @@ export {
   resetSetsToTimeFocus,
   setFirebaseId,
 } from './workout';
+export { setWorkouts, setRoutines, setRecordedWorkouts } from './userProfile';

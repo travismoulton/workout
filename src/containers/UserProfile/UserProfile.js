@@ -3,6 +3,8 @@ import { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
+import Workouts from './Workouts/Workouts';
+import Routines from './Routines/Routines';
 import WorkoutLink from '../../components/WorkoutLink/WorkoutLink';
 import RoutineLink from '../../components/RoutineLink/RoutineLink';
 import RecordedWorkoutLink from '../../components/RecordedWorkoutLink/RecordedWorkoutLink';
@@ -13,11 +15,13 @@ import { setActiveRoutine } from '../../store/actions/favorites';
 
 const UserProfile = (props) => {
   const [initialFetchCompleted, setInitialFetchCompleted] = useState(false);
-  const [workouts, setWorkouts] = useState([]);
+
+  // const [workouts, setWorkouts] = useState([]);
+
   const [routines, setRoutines] = useState([]);
   const [recordedWorkouts, setRecordedWorkouts] = useState([]);
   const [routineDeleted, setRoutineDeleted] = useState(false);
-  const [workoutDeleted, setWorkoutDeleted] = useState(false);
+  // const [workoutDeleted, setWorkoutDeleted] = useState(false);
   const [workoutsShowing, setWorkoutsShowing] = useState(false);
   const [routinesShowing, setRoutinesShowing] = useState(false);
   const [recordedWorkoutsShowing, setRecordedWorkoutsShowing] = useState(false);
@@ -71,6 +75,7 @@ const UserProfile = (props) => {
     return timer ? () => clearTimeout(timer) : null;
   }, [showMessage]);
 
+  // ***
   const fetchRoutines = useCallback(() => {
     axios
       .get(
@@ -88,22 +93,26 @@ const UserProfile = (props) => {
       });
   }, [user.authUser.uid]);
 
-  const fetchWorkouts = useCallback(() => {
-    axios
-      .get(
-        `https://workout-81691-default-rtdb.firebaseio.com/workouts/${user.authUser.uid}.json`
-      )
-      .then((res) => {
-        if (res.data) {
-          const tempArr = [];
-          for (const key in res.data)
-            tempArr.push({ ...res.data[key], firebaseId: key });
-          setWorkouts(tempArr);
-        } else if (!res.data) {
-          setWorkouts([]);
-        }
-      });
-  }, [user.authUser.uid]);
+  // ***
+
+  // // ***
+  // const fetchWorkouts = useCallback(() => {
+  //   axios
+  //     .get(
+  //       `https://workout-81691-default-rtdb.firebaseio.com/workouts/${user.authUser.uid}.json`
+  //     )
+  //     .then((res) => {
+  //       if (res.data) {
+  //         const tempArr = [];
+  //         for (const key in res.data)
+  //           tempArr.push({ ...res.data[key], firebaseId: key });
+  //         setWorkouts(tempArr);
+  //       } else if (!res.data) {
+  //         setWorkouts([]);
+  //       }
+  //     });
+  // }, [user.authUser.uid]);
+  // // ***
 
   const fetchRecordedWorkouts = useCallback(() => {
     axios
@@ -125,7 +134,7 @@ const UserProfile = (props) => {
 
   useEffect(() => {
     if (user && !initialFetchCompleted) {
-      fetchWorkouts();
+      // fetchWorkouts();
       fetchRoutines();
       fetchRecordedWorkouts();
       setInitialFetchCompleted(true);
@@ -134,7 +143,7 @@ const UserProfile = (props) => {
     initialFetchCompleted,
     user,
     fetchRecordedWorkouts,
-    fetchWorkouts,
+    // fetchWorkouts,
     fetchRoutines,
   ]);
 
@@ -145,70 +154,74 @@ const UserProfile = (props) => {
     }
   }, [routineDeleted, fetchRoutines]);
 
-  useEffect(() => {
-    if (workoutDeleted) {
-      fetchWorkouts();
-      setWorkoutDeleted(false);
-    }
-  }, [workoutDeleted, fetchWorkouts]);
+  // //***
+  // useEffect(() => {
+  //   if (workoutDeleted) {
+  //     fetchWorkouts();
+  //     setWorkoutDeleted(false);
+  //   }
+  // }, [workoutDeleted, fetchWorkouts]);
+  // //***
 
-  const deleteWorkout = async (firebaseId) => {
-    await axios
-      .delete(
-        `https://workout-81691-default-rtdb.firebaseio.com/workouts/${user.authUser.uid}/${firebaseId}.json`
-      )
-      .then(() => setWorkoutDeleted(true));
-  };
+  // //***
+  // const deleteWorkout = async (firebaseId) => {
+  //   await axios
+  //     .delete(
+  //       `https://workout-81691-default-rtdb.firebaseio.com/workouts/${user.authUser.uid}/${firebaseId}.json`
+  //     )
+  //     .then(() => setWorkoutDeleted(true));
+  // };
+  // //***
 
-  const removeWorkoutFromAllRoutines = async (firebaseId) => {
-    const routinesToAlter = routines.filter((routine) =>
-      routine.workouts.includes(firebaseId)
-    );
+  // const removeWorkoutFromAllRoutines = async (firebaseId) => {
+  //   const routinesToAlter = routines.filter((routine) =>
+  //     routine.workouts.includes(firebaseId)
+  //   );
 
-    for (let i = 0; i < routinesToAlter.length; i++) {
-      const updatedWorkouts = [...routinesToAlter[i].workouts];
-      updatedWorkouts[updatedWorkouts.indexOf(firebaseId)] = 'Rest';
+  //   for (let i = 0; i < routinesToAlter.length; i++) {
+  //     const updatedWorkouts = [...routinesToAlter[i].workouts];
+  //     updatedWorkouts[updatedWorkouts.indexOf(firebaseId)] = 'Rest';
 
-      await axios.patch(
-        `https://workout-81691-default-rtdb.firebaseio.com/routines/${user.authUser.uid}/${routinesToAlter[i].firebaseId}.json`,
-        { workouts: updatedWorkouts }
-      );
-    }
+  //     await axios.patch(
+  //       `https://workout-81691-default-rtdb.firebaseio.com/routines/${user.authUser.uid}/${routinesToAlter[i].firebaseId}.json`,
+  //       { workouts: updatedWorkouts }
+  //     );
+  //   }
 
-    // Update the routines to take the workout of the total workout count
-    fetchRoutines();
-  };
+  //   // Update the routines to take the workout of the total workout count
+  //   fetchRoutines();
+  // };
 
-  const deleteWorkoutHandler = (firebaseId) => {
-    deleteWorkout(firebaseId);
-    removeWorkoutFromAllRoutines(firebaseId);
-  };
+  // const deleteWorkoutHandler = (firebaseId) => {
+  //   deleteWorkout(firebaseId);
+  //   removeWorkoutFromAllRoutines(firebaseId);
+  // };
 
-  const checkIfWorkoutBelongsToRoutine = (firebaseId) =>
-    routines.filter((routine) => routine.workouts.includes(firebaseId)).length >
-    0;
+  // const checkIfWorkoutBelongsToRoutine = (firebaseId) =>
+  //   routines.filter((routine) => routine.workouts.includes(firebaseId)).length >
+  //   0;
 
-  const workoutLinks = workouts.length ? (
-    workouts.map((workout) => (
-      <WorkoutLink
-        key={workout.title}
-        title={workout.title}
-        targetArea={workout.targetArea}
-        secondaryTarget={workout.secondaryTargetArea}
-        exerciseCount={workout.exercises ? workout.exercises.length : null}
-        workout={workout}
-        belongsToRoutine={checkIfWorkoutBelongsToRoutine(workout.firebaseId)}
-        deleteWorkoutAndRemove={() => deleteWorkoutHandler(workout.firebaseId)}
-        deleteWorkout={() => deleteWorkout(workout.firebaseId)}
-        setModalContent={(jsx) => setModalContent(jsx)}
-        toggleModal={() => setShowModal((prevModal) => !prevModal)}
-      />
-    ))
-  ) : (
-    <Link to="/create-workout">
-      No workouts available, click here to create a workout
-    </Link>
-  );
+  // const workoutLinks = workouts.length ? (
+  //   workouts.map((workout) => (
+  //     <WorkoutLink
+  //       key={workout.title}
+  //       title={workout.title}
+  //       targetArea={workout.targetArea}
+  //       secondaryTarget={workout.secondaryTargetArea}
+  //       exerciseCount={workout.exercises ? workout.exercises.length : null}
+  //       workout={workout}
+  //       belongsToRoutine={checkIfWorkoutBelongsToRoutine(workout.firebaseId)}
+  //       deleteWorkoutAndRemove={() => deleteWorkoutHandler(workout.firebaseId)}
+  //       deleteWorkout={() => deleteWorkout(workout.firebaseId)}
+  //       setModalContent={(jsx) => setModalContent(jsx)}
+  //       toggleModal={() => setShowModal((prevModal) => !prevModal)}
+  //     />
+  //   ))
+  // ) : (
+  //   <Link to="/create-workout">
+  //     No workouts available, click here to create a workout
+  //   </Link>
+  // );
 
   const changeActiveRoutine = (routine, firebaseId) => {
     // If there is a current active routine in firebase, set the active routine property to false
@@ -316,7 +329,7 @@ const UserProfile = (props) => {
   const display = (
     <>
       {showMessage}
-      <div className={classes.Workouts}>
+      {/* <div className={classes.Workouts}>
         <span
           className={classes.SectionHeader}
           onClick={triggerWorkoutsShowing}
@@ -327,8 +340,14 @@ const UserProfile = (props) => {
           ></div>
         </span>
         {workoutsShowing ? workoutLinks : null}
-      </div>
-      <div className={classes.Routines}>
+      </div> */}
+      <Workouts
+        setModalContent={(jsx) => setModalContent(jsx)}
+        toggleModal={() => setShowModal((prevShowModal) => !prevShowModal)}
+        triggerWorkoutsShowing={triggerWorkoutsShowing}
+        showWorkouts={workoutsShowing}
+      />
+      {/* <div className={classes.Routines}>
         <span
           className={classes.SectionHeader}
           onClick={triggerRoutinesShowing}
@@ -339,7 +358,13 @@ const UserProfile = (props) => {
           ></div>
         </span>
         {routinesShowing ? routineLinks : null}
-      </div>
+      </div> */}
+      <Routines
+        setModalContent={(jsx) => setModalContent(jsx)}
+        toggleModal={() => setShowModal((prevShowModal) => !prevShowModal)}
+        triggerRoutinesShowing={triggerRoutinesShowing}
+        showRoutines={routinesShowing}
+      />
       <div className={classes.RecordedWorkouts}>
         <span
           className={classes.SectionHeader}
