@@ -6,13 +6,22 @@ import ExerciseResult from '../../components/ExerciseResult/ExerciseResult';
 import wgerDict from '../../shared/wgerDict';
 
 const Results = (props) => {
-  const [exercises, setExercises] = useState([]);
+  const [exerciseResults, setExerciseResults] = useState([]);
   const [favoriteExerciseIds, setFavoriteExerciseIds] = useState([]);
+  const [error, setError] = useState({
+    isError: false,
+    message: (
+      <p style={{ color: 'red' }}>
+        We're having trouble loading the exercises right now. Please go back to
+        the search page and try again
+      </p>
+    ),
+  });
   const { favorites } = useSelector((state) => state.favorites);
   const { user } = useSelector((state) => state.auth);
 
   useEffect(() => {
-    if (props.location.state.wger && !exercises.length) {
+    if (props.location.state.wger && !exerciseResults.length) {
       const param =
         props.location.state.category === 'exercisecategory'
           ? `category=${props.location.state.id}`
@@ -25,34 +34,43 @@ const Results = (props) => {
 
       (async () => {
         while (next) {
-          // eslint-disable-next-line no-loop-func
-          await axios.get(next).then((res) => {
-            res.data.results.forEach((result) => arr.push(result));
-            next = res.data.next;
-          });
+          await axios
+            .get(next, { timeout: 5000 })
+            // eslint-disable-next-line no-loop-func
+            .then((res) => {
+              res.data.results.forEach((result) => arr.push(result));
+              next = res.data.next;
+            })
+            .catch((err) => {
+              setError({ ...error, isError: true });
+            });
         }
-        setExercises(arr);
+        setExerciseResults(arr);
       })();
     }
-  }, [props.location.state, exercises]);
+  }, [props.location.state, exerciseResults, error]);
 
   useEffect(() => {
-    if (props.location.state.custom && !exercises.length) {
+    if (props.location.state.custom && !exerciseResults.length) {
       (async () => {
         await axios
           .get(
-            `https://workout-81691-default-rtdb.firebaseio.com/customExercises/${user.authUser.uid}.json`
+            `https://workout-81691-default-rtdb.firebaseio.com/customExercises/${user.authUser.uid}.json`,
+            { timeout: 5000 }
           )
           .then((res) => {
             const exerciseArr = [];
             for (const key in res.data) {
               exerciseArr.push({ ...res.data[key], firebaseId: key });
             }
-            setExercises(exerciseArr);
+            setExerciseResults(exerciseArr);
+          })
+          .catch((err) => {
+            setError({ ...error, isError: true });
           });
       })();
     }
-  }, [props.location.state, exercises, user.authUser.uid]);
+  }, [props.location.state, exerciseResults, user.authUser.uid, error]);
 
   useEffect(() => {
     if (favorites)
@@ -66,7 +84,7 @@ const Results = (props) => {
           .firebaseId
       : null;
 
-  const displayResults = exercises.map((exercise) => (
+  const displayResults = exerciseResults.map((exercise) => (
     <ExerciseResult
       history={props.history}
       key={exercise.name}
@@ -86,12 +104,13 @@ const Results = (props) => {
   return (
     <>
       <div>
+        {error.isError && error.message}
         <h3>
           {props.location.state.wger
             ? props.location.state.subCategory
             : 'My custom exercises'}
         </h3>
-        {exercises.length ? <ul>{displayResults}</ul> : null}
+        {exerciseResults.length && <ul>{displayResults}</ul>}
       </div>
     </>
   );
