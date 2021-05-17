@@ -1,27 +1,18 @@
-import { useSelector, useDispatch } from 'react-redux';
 import { useState, useEffect, useCallback } from 'react';
-import { Link } from 'react-router-dom';
-import axios from 'axios';
 
 import Workouts from './Workouts/Workouts';
 import Routines from './Routines/Routines';
-import WorkoutLink from '../../components/WorkoutLink/WorkoutLink';
-import RoutineLink from '../../components/RoutineLink/RoutineLink';
-import RecordedWorkoutLink from '../../components/RecordedWorkoutLink/RecordedWorkoutLink';
+import RecordedWorkouts from './RecordedWorkouts/RecordedWorkouts';
+
 import Modal from '../../components/UI/Modal/Modal';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import classes from './UserProfile.module.css';
-import { setActiveRoutine } from '../../store/actions/favorites';
 
 const UserProfile = (props) => {
   const [initialFetchCompleted, setInitialFetchCompleted] = useState(false);
-
-  // const [workouts, setWorkouts] = useState([]);
-
-  const [routines, setRoutines] = useState([]);
-  const [recordedWorkouts, setRecordedWorkouts] = useState([]);
-  const [routineDeleted, setRoutineDeleted] = useState(false);
-  // const [workoutDeleted, setWorkoutDeleted] = useState(false);
+  const [workoutsFetched, setWorkoutsFetched] = useState(false);
+  const [routinesFetched, setRoutinesFetched] = useState(false);
+  const [recordedWorkoutsFetched, setRecordedWorkoutsFetched] = useState(false);
   const [workoutsShowing, setWorkoutsShowing] = useState(false);
   const [routinesShowing, setRoutinesShowing] = useState(false);
   const [recordedWorkoutsShowing, setRecordedWorkoutsShowing] = useState(false);
@@ -29,32 +20,21 @@ const UserProfile = (props) => {
   const [messageFinished, setMessageFinished] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [modalContent, setModalContent] = useState(null);
-  const { user } = useSelector((state) => state.auth);
-  const { activeRoutine } = useSelector((state) => state.favorites);
-  const dispatch = useDispatch();
 
-  const bubbleSortWorkoutDates = useCallback((arr) => {
-    const temp = [...arr];
-    const swap = (arr, i, j) => ([arr[i], arr[j]] = [arr[j], arr[i]]);
-
-    for (let i = 0; i < temp.length; i++) {
-      let isSwapped = false;
-      for (let j = 0; j < temp.length - 1; j++) {
-        if (
-          new Date(
-            temp[j + 1].date.year,
-            temp[j + 1].date.month,
-            temp[j + 1].date.day
-          ) > new Date(temp[j].date.year, temp[j].date.month, temp[j].date.day)
-        ) {
-          swap(temp, j, j + 1);
-          isSwapped = true;
-        }
-      }
-      if (!isSwapped) break;
-    }
-    return temp;
-  }, []);
+  useEffect(() => {
+    if (
+      workoutsFetched &&
+      routinesFetched &&
+      recordedWorkoutsFetched &&
+      !initialFetchCompleted
+    )
+      setInitialFetchCompleted(true);
+  }, [
+    initialFetchCompleted,
+    workoutsFetched,
+    recordedWorkoutsFetched,
+    routinesFetched,
+  ]);
 
   useEffect(() => {
     if (props.history.location.state && !messageFinished && !showMessage) {
@@ -74,223 +54,6 @@ const UserProfile = (props) => {
 
     return timer ? () => clearTimeout(timer) : null;
   }, [showMessage]);
-
-  // ***
-  const fetchRoutines = useCallback(() => {
-    axios
-      .get(
-        `https://workout-81691-default-rtdb.firebaseio.com/routines/${user.authUser.uid}.json`
-      )
-      .then((res) => {
-        if (res.data) {
-          const tempArr = [];
-          for (const key in res.data)
-            tempArr.push({ ...res.data[key], firebaseId: key });
-          setRoutines(tempArr);
-        } else if (!res.data) {
-          setRoutines([]);
-        }
-      });
-  }, [user.authUser.uid]);
-
-  // ***
-
-  // // ***
-  // const fetchWorkouts = useCallback(() => {
-  //   axios
-  //     .get(
-  //       `https://workout-81691-default-rtdb.firebaseio.com/workouts/${user.authUser.uid}.json`
-  //     )
-  //     .then((res) => {
-  //       if (res.data) {
-  //         const tempArr = [];
-  //         for (const key in res.data)
-  //           tempArr.push({ ...res.data[key], firebaseId: key });
-  //         setWorkouts(tempArr);
-  //       } else if (!res.data) {
-  //         setWorkouts([]);
-  //       }
-  //     });
-  // }, [user.authUser.uid]);
-  // // ***
-
-  const fetchRecordedWorkouts = useCallback(() => {
-    axios
-      .get(
-        `https://workout-81691-default-rtdb.firebaseio.com/recordedWorkouts/${user.authUser.uid}.json`
-      )
-      .then((res) => {
-        if (res.data) {
-          const tempArr = [];
-          for (const key in res.data) {
-            tempArr.push({ ...res.data[key], firebaseId: key });
-          }
-          setRecordedWorkouts(bubbleSortWorkoutDates(tempArr));
-        } else if (!res.data) {
-          setRecordedWorkouts([]);
-        }
-      });
-  }, [user.authUser.uid, bubbleSortWorkoutDates]);
-
-  useEffect(() => {
-    if (user && !initialFetchCompleted) {
-      // fetchWorkouts();
-      fetchRoutines();
-      fetchRecordedWorkouts();
-      setInitialFetchCompleted(true);
-    }
-  }, [
-    initialFetchCompleted,
-    user,
-    fetchRecordedWorkouts,
-    // fetchWorkouts,
-    fetchRoutines,
-  ]);
-
-  useEffect(() => {
-    if (routineDeleted) {
-      fetchRoutines();
-      setRoutineDeleted(false);
-    }
-  }, [routineDeleted, fetchRoutines]);
-
-  // //***
-  // useEffect(() => {
-  //   if (workoutDeleted) {
-  //     fetchWorkouts();
-  //     setWorkoutDeleted(false);
-  //   }
-  // }, [workoutDeleted, fetchWorkouts]);
-  // //***
-
-  // //***
-  // const deleteWorkout = async (firebaseId) => {
-  //   await axios
-  //     .delete(
-  //       `https://workout-81691-default-rtdb.firebaseio.com/workouts/${user.authUser.uid}/${firebaseId}.json`
-  //     )
-  //     .then(() => setWorkoutDeleted(true));
-  // };
-  // //***
-
-  // const removeWorkoutFromAllRoutines = async (firebaseId) => {
-  //   const routinesToAlter = routines.filter((routine) =>
-  //     routine.workouts.includes(firebaseId)
-  //   );
-
-  //   for (let i = 0; i < routinesToAlter.length; i++) {
-  //     const updatedWorkouts = [...routinesToAlter[i].workouts];
-  //     updatedWorkouts[updatedWorkouts.indexOf(firebaseId)] = 'Rest';
-
-  //     await axios.patch(
-  //       `https://workout-81691-default-rtdb.firebaseio.com/routines/${user.authUser.uid}/${routinesToAlter[i].firebaseId}.json`,
-  //       { workouts: updatedWorkouts }
-  //     );
-  //   }
-
-  //   // Update the routines to take the workout of the total workout count
-  //   fetchRoutines();
-  // };
-
-  // const deleteWorkoutHandler = (firebaseId) => {
-  //   deleteWorkout(firebaseId);
-  //   removeWorkoutFromAllRoutines(firebaseId);
-  // };
-
-  // const checkIfWorkoutBelongsToRoutine = (firebaseId) =>
-  //   routines.filter((routine) => routine.workouts.includes(firebaseId)).length >
-  //   0;
-
-  // const workoutLinks = workouts.length ? (
-  //   workouts.map((workout) => (
-  //     <WorkoutLink
-  //       key={workout.title}
-  //       title={workout.title}
-  //       targetArea={workout.targetArea}
-  //       secondaryTarget={workout.secondaryTargetArea}
-  //       exerciseCount={workout.exercises ? workout.exercises.length : null}
-  //       workout={workout}
-  //       belongsToRoutine={checkIfWorkoutBelongsToRoutine(workout.firebaseId)}
-  //       deleteWorkoutAndRemove={() => deleteWorkoutHandler(workout.firebaseId)}
-  //       deleteWorkout={() => deleteWorkout(workout.firebaseId)}
-  //       setModalContent={(jsx) => setModalContent(jsx)}
-  //       toggleModal={() => setShowModal((prevModal) => !prevModal)}
-  //     />
-  //   ))
-  // ) : (
-  //   <Link to="/create-workout">
-  //     No workouts available, click here to create a workout
-  //   </Link>
-  // );
-
-  const changeActiveRoutine = (routine, firebaseId) => {
-    // If there is a current active routine in firebase, set the active routine property to false
-    if (activeRoutine.firebaseId) {
-      axios.patch(
-        `https://workout-81691-default-rtdb.firebaseio.com/routines/${user.authUser.uid}/${activeRoutine.firebaseId}.json`,
-        {
-          activeRoutine: false,
-        }
-      );
-    }
-
-    axios.patch(
-      `https://workout-81691-default-rtdb.firebaseio.com/routines/${user.authUser.uid}/${firebaseId}.json`,
-      { activeRoutine: true }
-    );
-
-    dispatch(setActiveRoutine({ ...routine, firebaseId }));
-  };
-
-  const deleteRoutine = (firebaseId) => {
-    axios
-      .delete(
-        `https://workout-81691-default-rtdb.firebaseio.com/routines/${user.authUser.uid}/${firebaseId}.json`
-      )
-      .then(() => setRoutineDeleted(true));
-  };
-
-  const routineLinks = routines.length ? (
-    routines.map((routine) => (
-      <RoutineLink
-        key={routine.title}
-        workouts={routine.workouts}
-        title={routine.title}
-        setActiveRoutine={() =>
-          changeActiveRoutine(routine, routine.firebaseId)
-        }
-        numberOfWorkouts={
-          routine.workouts
-            ? routine.workouts.filter((workout) => workout !== 'Rest').length
-            : 0
-        }
-        isActiveRoutine={
-          activeRoutine
-            ? routine.firebaseId === activeRoutine.firebaseId
-            : false
-        }
-        deleteRoutine={() => deleteRoutine(routine.firebaseId)}
-        routine={routine}
-        setModalContent={(text) => setModalContent(text)}
-        toggleModal={() => setShowModal((prevModal) => !prevModal)}
-      />
-    ))
-  ) : (
-    <Link to="/create-routine">
-      No routines available, click here to create a routine
-    </Link>
-  );
-
-  const recordedWorkoutLinks = recordedWorkouts.length
-    ? recordedWorkouts.map((record) => (
-        <RecordedWorkoutLink
-          key={record.firebaseId}
-          title={record.title}
-          date={record.date}
-          firebaseId={record.firebaseId}
-        />
-      ))
-    : null;
 
   const triggerWorkoutsShowing = () => {
     setWorkoutsShowing(workoutsShowing ? false : true);
@@ -329,61 +92,36 @@ const UserProfile = (props) => {
   const display = (
     <>
       {showMessage}
-      {/* <div className={classes.Workouts}>
-        <span
-          className={classes.SectionHeader}
-          onClick={triggerWorkoutsShowing}
-        >
-          <h3>My Workouts</h3>
-          <div
-            className={workoutsShowing ? classes.ArrowDown : classes.ArrowRight}
-          ></div>
-        </span>
-        {workoutsShowing ? workoutLinks : null}
-      </div> */}
+
       <Workouts
         setModalContent={(jsx) => setModalContent(jsx)}
         toggleModal={() => setShowModal((prevShowModal) => !prevShowModal)}
         triggerWorkoutsShowing={triggerWorkoutsShowing}
         showWorkouts={workoutsShowing}
+        setFetchCompleted={() => setWorkoutsFetched(true)}
       />
-      {/* <div className={classes.Routines}>
-        <span
-          className={classes.SectionHeader}
-          onClick={triggerRoutinesShowing}
-        >
-          <h3>My Routines</h3>
-          <div
-            className={routinesShowing ? classes.ArrowDown : classes.ArrowRight}
-          ></div>
-        </span>
-        {routinesShowing ? routineLinks : null}
-      </div> */}
+
       <Routines
         setModalContent={(jsx) => setModalContent(jsx)}
         toggleModal={() => setShowModal((prevShowModal) => !prevShowModal)}
         triggerRoutinesShowing={triggerRoutinesShowing}
         showRoutines={routinesShowing}
+        setFetchCompleted={() => setRoutinesFetched(true)}
       />
-      <div className={classes.RecordedWorkouts}>
-        <span
-          className={classes.SectionHeader}
-          onClick={triggerRecordedWorkoutsShowing}
-        >
-          <h3>My Recorded Workouts</h3>
-          <div
-            className={
-              recordedWorkoutsShowing ? classes.ArrowDown : classes.ArrowRight
-            }
-          ></div>
-        </span>
-        {recordedWorkoutsShowing ? recordedWorkoutLinks : null}
-      </div>
+      <RecordedWorkouts
+        setModalContent={(jsx) => setModalContent(jsx)}
+        toggleModal={() => setShowModal((prevShowModal) => !prevShowModal)}
+        triggerRecordedWorkoutsShowing={triggerRecordedWorkoutsShowing}
+        showRecordedWorkouts={recordedWorkoutsShowing}
+        setFetchCompleted={() => setRecordedWorkoutsFetched(true)}
+      />
+
       {modal}
     </>
   );
 
-  return initialFetchCompleted ? display : <Spinner />;
+  // return initialFetchCompleted ? display : <Spinner />;
+  return display;
 };
 
 export default UserProfile;

@@ -1,4 +1,5 @@
 export { authStart, authSuccess, authFail, logout, authReset } from './auth';
+
 export {
   addToFavorites,
   removeFromFavorites,
@@ -6,6 +7,7 @@ export {
   fetchActiveRoutine,
   setActiveRoutine,
 } from './favorites';
+
 export {
   startSearchMode,
   changeExerciseOrder,
@@ -25,4 +27,10 @@ export {
   resetSetsToTimeFocus,
   setFirebaseId,
 } from './workout';
-export { setWorkouts, setRoutines, setRecordedWorkouts } from './userProfile';
+
+export {
+  setWorkouts,
+  setRoutines,
+  setRecordedWorkouts,
+  toggleRoutineRefresh,
+} from './userProfile';

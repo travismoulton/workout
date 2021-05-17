@@ -5,7 +5,7 @@ import axios from 'axios';
 
 import WorkoutLink from '../../../components/WorkoutLink/WorkoutLink';
 import classes from './Workouts.module.css';
-import { setWorkouts } from '../../../store/actions';
+import { setWorkouts, toggleRoutineRefresh } from '../../../store/actions';
 
 const Workouts = (props) => {
   const [initialFetchCompleted, setInitialFetchCompleted] = useState(false);
@@ -27,7 +27,7 @@ const Workouts = (props) => {
             tempArr.push({ ...res.data[key], firebaseId: key });
           dispatch(setWorkouts(tempArr));
         } else if (!res.data) {
-          // dispatch(setWorkouts([]));
+          dispatch(setWorkouts(null));
         }
       });
   }, [user.authUser.uid, dispatch]);
@@ -36,8 +36,9 @@ const Workouts = (props) => {
     if (!initialFetchCompleted) {
       fetchWorkouts();
       setInitialFetchCompleted();
+      props.setFetchCompleted();
     }
-  }, [initialFetchCompleted, fetchWorkouts]);
+  }, [initialFetchCompleted, fetchWorkouts, props]);
 
   useEffect(() => {
     if (workoutDeleted) {
@@ -55,13 +56,14 @@ const Workouts = (props) => {
   };
 
   const checkIfWorkoutBelongsToRoutine = (firebaseId) =>
+    routines &&
     routines.filter((routine) => routine.workouts.includes(firebaseId)).length >
-    0;
+      0;
 
   const removeWorkoutFromAllRoutines = async (firebaseId) => {
-    const routinesToAlter = routines.filter((routine) =>
-      routine.workouts.includes(firebaseId)
-    );
+    const routinesToAlter =
+      routines &&
+      routines.filter((routine) => routine.workouts.includes(firebaseId));
 
     for (let i = 0; i < routinesToAlter.length; i++) {
       const updatedWorkouts = [...routinesToAlter[i].workouts];
@@ -74,9 +76,10 @@ const Workouts = (props) => {
     }
   };
 
-  const deleteWorkoutHandler = (firebaseId) => {
+  const deleteWorkoutAndRemoveHandler = async (firebaseId) => {
     deleteWorkout(firebaseId);
-    removeWorkoutFromAllRoutines(firebaseId);
+    await removeWorkoutFromAllRoutines(firebaseId);
+    dispatch(toggleRoutineRefresh());
   };
 
   const workoutLinks = workouts ? (
@@ -88,8 +91,10 @@ const Workouts = (props) => {
         secondaryTarget={workout.secondaryTargetArea}
         exerciseCount={workout.exercises ? workout.exercises.length : null}
         workout={workout}
-        // belongsToRoutine={checkIfWorkoutBelongsToRoutine(workout.firebaseId)}
-        // deleteWorkoutAndRemove={() => deleteWorkoutHandler(workout.firebaseId)}
+        belongsToRoutine={checkIfWorkoutBelongsToRoutine(workout.firebaseId)}
+        deleteWorkoutAndRemove={() =>
+          deleteWorkoutAndRemoveHandler(workout.firebaseId)
+        }
         deleteWorkout={() => deleteWorkout(workout.firebaseId)}
         setModalContent={(jsx) => props.setModalContent(jsx)}
         toggleModal={props.toggleModal}

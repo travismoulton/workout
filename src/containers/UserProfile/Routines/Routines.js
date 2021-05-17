@@ -5,13 +5,20 @@ import axios from 'axios';
 
 import RoutineLink from '../../../components/RoutineLink/RoutineLink';
 import classes from './Routines.module.css';
-import { setRoutines, setActiveRoutine } from '../../../store/actions';
+import {
+  setRoutines,
+  setActiveRoutine,
+  toggleRoutineRefresh,
+} from '../../../store/actions';
 
 const Routines = (props) => {
+  const [randomState, setRandomState] = useState(false);
   const [initialFetchCompleted, setInitialFetchCompleted] = useState(false);
   const [routineDeleted, setRoutineDeleted] = useState(false);
   const { user } = useSelector((state) => state.auth);
-  const { routines } = useSelector((state) => state.userProfile);
+  const { routines, refreshRoutines } = useSelector(
+    (state) => state.userProfile
+  );
   const { activeRoutine } = useSelector((state) => state.favorites);
   const dispatch = useDispatch();
 
@@ -27,7 +34,7 @@ const Routines = (props) => {
             tempArr.push({ ...res.data[key], firebaseId: key });
           dispatch(setRoutines(tempArr));
         } else if (!res.data) {
-          // dispatch(setRoutines([]));
+          dispatch(setRoutines(null));
         }
       });
   }, [user.authUser.uid, dispatch]);
@@ -36,8 +43,17 @@ const Routines = (props) => {
     if (!initialFetchCompleted) {
       fetchRoutines();
       setInitialFetchCompleted();
+      props.setFetchCompleted();
     }
-  }, [initialFetchCompleted, fetchRoutines]);
+  }, [initialFetchCompleted, fetchRoutines, props]);
+
+  useEffect(() => {
+    if (refreshRoutines) {
+      fetchRoutines();
+      dispatch(toggleRoutineRefresh());
+      setRandomState(true);
+    }
+  }, [randomState, refreshRoutines, dispatch, fetchRoutines]);
 
   useEffect(() => {
     if (routineDeleted) {
