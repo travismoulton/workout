@@ -16,7 +16,7 @@
 
 .Workouts,
 .Routines,
-.RecordedWorkouts {
+.RecordedWorkout {
   display: flex;
   flex-direction: column;
   justify-content: center;

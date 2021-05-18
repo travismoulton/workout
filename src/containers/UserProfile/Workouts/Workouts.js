@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 import WorkoutLink from '../../../components/WorkoutLink/WorkoutLink';
-import classes from './Workouts.module.css';
+import '../UserProfile.css';
 import { setWorkouts, toggleRoutineRefresh } from '../../../store/actions';
 
 const Workouts = (props) => {
@@ -18,7 +18,8 @@ const Workouts = (props) => {
   const fetchWorkouts = useCallback(() => {
     axios
       .get(
-        `https://workout-81691-default-rtdb.firebaseio.com/workouts/${user.authUser.uid}.json`
+        `https://workout-81691-default-rtdb.firebaseio.com/workouts/${user.authUser.uid}.json`,
+        { timeout: 5000 }
       )
       .then((res) => {
         if (res.data) {
@@ -29,11 +30,14 @@ const Workouts = (props) => {
         } else if (!res.data) {
           dispatch(setWorkouts(null));
         }
+      })
+      .catch((err) => {
+        props.toggleError();
       });
-  }, [user.authUser.uid, dispatch]);
+  }, [user.authUser.uid, dispatch, props]);
 
   useEffect(() => {
-    if (!initialFetchCompleted) {
+    if (!initialFetchCompleted && !props.isError) {
       fetchWorkouts();
       setInitialFetchCompleted();
       props.setFetchCompleted();
@@ -50,9 +54,13 @@ const Workouts = (props) => {
   const deleteWorkout = async (firebaseId) => {
     await axios
       .delete(
-        `https://workout-81691-default-rtdb.firebaseio.com/workouts/${user.authUser.uid}/${firebaseId}.json`
+        `https://workout-81691-default-rtdb.firebaseio.com/workouts/${user.authUser.uid}/${firebaseId}.json`,
+        { timeout: 5000 }
       )
-      .then(() => setWorkoutDeleted(true));
+      .then(() => setWorkoutDeleted(true))
+      .catch((err) => {
+        props.toggleError();
+      });
   };
 
   const checkIfWorkoutBelongsToRoutine = (firebaseId) =>
@@ -69,10 +77,14 @@ const Workouts = (props) => {
       const updatedWorkouts = [...routinesToAlter[i].workouts];
       updatedWorkouts[updatedWorkouts.indexOf(firebaseId)] = 'Rest';
 
-      await axios.patch(
-        `https://workout-81691-default-rtdb.firebaseio.com/routines/${user.authUser.uid}/${routinesToAlter[i].firebaseId}.json`,
-        { workouts: updatedWorkouts }
-      );
+      await axios({
+        method: 'patch',
+        url: `https://workout-81691-default-rtdb.firebaseio.com/routines/${user.authUser.uid}/${routinesToAlter[i].firebaseId}.json`,
+        data: { workouts: updatedWorkouts },
+        timeout: 5000,
+      }).catch((err) => {
+        props.toggleError();
+      });
     }
   };
 
@@ -107,17 +119,10 @@ const Workouts = (props) => {
   );
 
   return (
-    <div className={classes.Workouts}>
-      <span
-        className={classes.SectionHeader}
-        onClick={props.triggerWorkoutsShowing}
-      >
+    <div className="Workouts">
+      <span className="SectionHeader" onClick={props.triggerWorkoutsShowing}>
         <h3>My Workouts</h3>
-        <div
-          className={
-            props.showWorkouts ? classes.ArrowDown : classes.ArrowRight
-          }
-        ></div>
+        <div className={props.showWorkouts ? 'ArrowDown' : 'ArrowRight'}></div>
       </span>
       {props.showWorkouts && workoutLinks}
     </div>

@@ -40,14 +40,14 @@ const ExerciseResult = (props) => {
         >
           {props.name}
         </Link>
-        {user ? toggleFavoritesBtn : null}
-        {buildingWorkout ? (
+        {user && toggleFavoritesBtn}
+        {buildingWorkout && (
           <AddToWorkoutBtn
             name={props.name}
             id={props.exerciseId}
             history={props.history}
           />
-        ) : null}
+        )}
       </div>
       <div>
         <span>{props.category}</span>

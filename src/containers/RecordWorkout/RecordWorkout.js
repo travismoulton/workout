@@ -10,7 +10,7 @@ import ChangeWorkoutRecordDate from './ChangeRecordWorkoutDate/ChangeWorkoutReco
 import { setExercises, resetWorkoutStore } from '../../store/actions';
 
 const RecordWorkout = (props) => {
-  const [today, setToday] = useState(new Date());
+  const [workoutDate, setWorkoutDate] = useState(new Date());
   const [suggestedWorkout, setSuggestedWorkout] = useState(null);
   const [exercisesDispatched, setExercisesDispatched] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -32,8 +32,8 @@ const RecordWorkout = (props) => {
   });
 
   const adjustDateForSunday = useCallback(() => {
-    return today.getDay() === 0 ? 6 : today.getDay() - 1;
-  }, [today]);
+    return workoutDate.getDay() === 0 ? 6 : workoutDate.getDay() - 1;
+  }, [workoutDate]);
 
   useEffect(() => {
     if (!suggestedWorkout) {
@@ -88,17 +88,17 @@ const RecordWorkout = (props) => {
       setSuggestedWorkout({ ...suggestedWorkout, exercises });
   }, [exercises, suggestedWorkout]);
 
-  const displayExercises = suggestedWorkout
-    ? exercises.map((exercise) => (
-        <WorkoutListItem
-          name={exercise.name}
-          key={exercise.id}
-          id={exercise.id}
-          sets={exercise.sets}
-          inRecordMode={true}
-        />
-      ))
-    : null;
+  const displayExercises =
+    suggestedWorkout &&
+    exercises.map((exercise) => (
+      <WorkoutListItem
+        name={exercise.name}
+        key={exercise.id}
+        id={exercise.id}
+        sets={exercise.sets}
+        inRecordMode={true}
+      />
+    ));
 
   const updateWorkoutInFirebase = async () => {
     const workoutFirebaseId = suggestedWorkout.firebaseId;
@@ -179,8 +179,8 @@ const RecordWorkout = (props) => {
 
   const finalDisplay = (
     <>
-      {error.isError ? error.message : null}
-      <h1>{today.toString().substring(0, 15)}</h1>
+      {error.isError && error.message}
+      <h1>{workoutDate.toString().substring(0, 15)}</h1>
       {suggestedWorkout ? <h3>{suggestedWorkout.title}</h3> : <h3>Rest</h3>}
       {recordADifferentWorkoutBtn}
       {recordDifferentDayBtn}
@@ -189,7 +189,7 @@ const RecordWorkout = (props) => {
         <RecordWorkoutBtn
           workout={suggestedWorkout}
           exercises={exercises}
-          date={today}
+          date={workoutDate}
           history={props.history}
           updated={updated}
           updateWorkoutInFirebase={updateWorkoutInFirebase}
@@ -207,7 +207,7 @@ const RecordWorkout = (props) => {
       <ChangeWorkoutRecordDate
         show={showChangeDateModal}
         closeModal={() => setShowChangeDateModal(false)}
-        changeDate={(date) => setToday(date)}
+        changeDate={(date) => setWorkoutDate(date)}
       />
     </>
   );

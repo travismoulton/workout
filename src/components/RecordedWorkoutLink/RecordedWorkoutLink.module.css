@@ -20,3 +20,8 @@
   display: flex;
   justify-content: space-around;
 }
+
+.BtnRow {
+  display: flex;
+  justify-content: space-evenly;
+}

@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 
 import Workouts from './Workouts/Workouts';
 import Routines from './Routines/Routines';
@@ -20,6 +20,15 @@ const UserProfile = (props) => {
   const [messageFinished, setMessageFinished] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [modalContent, setModalContent] = useState(null);
+  const [error, setError] = useState({
+    isError: false,
+    message: (
+      <p style={{ color: 'red' }}>
+        Sorry, something went wrong. Please refresh the page and try again or
+        come back later.
+      </p>
+    ),
+  });
 
   useEffect(() => {
     if (
@@ -89,39 +98,56 @@ const UserProfile = (props) => {
     return timer ? clearTimeout(timer) : null;
   }, [showModal, modalContent]);
 
-  const display = (
+  return (
     <>
-      {showMessage}
+      {error.isError && error.message}
+      <div style={{ display: !initialFetchCompleted && 'none' }}>
+        {showMessage}
 
-      <Workouts
-        setModalContent={(jsx) => setModalContent(jsx)}
-        toggleModal={() => setShowModal((prevShowModal) => !prevShowModal)}
-        triggerWorkoutsShowing={triggerWorkoutsShowing}
-        showWorkouts={workoutsShowing}
-        setFetchCompleted={() => setWorkoutsFetched(true)}
-      />
+        <Workouts
+          setModalContent={(jsx) => setModalContent(jsx)}
+          toggleModal={() => setShowModal((prevShowModal) => !prevShowModal)}
+          triggerWorkoutsShowing={triggerWorkoutsShowing}
+          showWorkouts={workoutsShowing}
+          setFetchCompleted={() => setWorkoutsFetched(true)}
+          toggleError={() => setError({ ...error, isError: true })}
+          isError={error.isError}
+        />
 
-      <Routines
-        setModalContent={(jsx) => setModalContent(jsx)}
-        toggleModal={() => setShowModal((prevShowModal) => !prevShowModal)}
-        triggerRoutinesShowing={triggerRoutinesShowing}
-        showRoutines={routinesShowing}
-        setFetchCompleted={() => setRoutinesFetched(true)}
-      />
-      <RecordedWorkouts
-        setModalContent={(jsx) => setModalContent(jsx)}
-        toggleModal={() => setShowModal((prevShowModal) => !prevShowModal)}
-        triggerRecordedWorkoutsShowing={triggerRecordedWorkoutsShowing}
-        showRecordedWorkouts={recordedWorkoutsShowing}
-        setFetchCompleted={() => setRecordedWorkoutsFetched(true)}
-      />
+        <Routines
+          setModalContent={(jsx) => setModalContent(jsx)}
+          toggleModal={() => setShowModal((prevShowModal) => !prevShowModal)}
+          triggerRoutinesShowing={triggerRoutinesShowing}
+          showRoutines={routinesShowing}
+          setFetchCompleted={() => setRoutinesFetched(true)}
+          toggleError={() => setError({ ...error, isError: true })}
+          isError={error.isError}
+        />
+        <RecordedWorkouts
+          setModalContent={(jsx) => setModalContent(jsx)}
+          toggleModal={() => setShowModal((prevShowModal) => !prevShowModal)}
+          triggerRecordedWorkoutsShowing={triggerRecordedWorkoutsShowing}
+          showRecordedWorkouts={recordedWorkoutsShowing}
+          setFetchCompleted={() => setRecordedWorkoutsFetched(true)}
+          toggleError={() => setError({ ...error, isError: true })}
+          isError={error.isError}
+        />
 
-      {modal}
+        {modal}
+      </div>
+
+      <div
+        style={{
+          display:
+            (initialFetchCompleted && !error.isError) || error.isError
+              ? 'none'
+              : 'block',
+        }}
+      >
+        <Spinner />
+      </div>
     </>
   );
-
-  // return initialFetchCompleted ? display : <Spinner />;
-  return display;
 };
 
 export default UserProfile;

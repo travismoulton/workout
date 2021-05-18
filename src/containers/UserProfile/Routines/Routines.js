@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 import RoutineLink from '../../../components/RoutineLink/RoutineLink';
-import classes from './Routines.module.css';
+import '../UserProfile.css';
 import {
   setRoutines,
   setActiveRoutine,
@@ -25,7 +25,8 @@ const Routines = (props) => {
   const fetchRoutines = useCallback(() => {
     axios
       .get(
-        `https://workout-81691-default-rtdb.firebaseio.com/routines/${user.authUser.uid}.json`
+        `https://workout-81691-default-rtdb.firebaseio.com/routines/${user.authUser.uid}.json`,
+        { timeout: 5000 }
       )
       .then((res) => {
         if (res.data) {
@@ -36,11 +37,14 @@ const Routines = (props) => {
         } else if (!res.data) {
           dispatch(setRoutines(null));
         }
+      })
+      .catch((err) => {
+        props.toggleError();
       });
-  }, [user.authUser.uid, dispatch]);
+  }, [user.authUser.uid, dispatch, props]);
 
   useEffect(() => {
-    if (!initialFetchCompleted) {
+    if (!initialFetchCompleted && !props.isError) {
       fetchRoutines();
       setInitialFetchCompleted();
       props.setFetchCompleted();
@@ -65,18 +69,24 @@ const Routines = (props) => {
   const changeActiveRoutine = (routine, firebaseId) => {
     // If there is a current active routine in firebase, set the active routine property to false
     if (activeRoutine.firebaseId) {
-      axios.patch(
-        `https://workout-81691-default-rtdb.firebaseio.com/routines/${user.authUser.uid}/${activeRoutine.firebaseId}.json`,
-        {
-          activeRoutine: false,
-        }
-      );
+      axios({
+        method: 'patch',
+        url: `https://workout-81691-default-rtdb.firebaseio.com/routines/${user.authUser.uid}/${activeRoutine.firebaseId}.json`,
+        timeout: 5000,
+        data: { activeRoutine: false },
+      }).catch((err) => {
+        props.toggleError();
+      });
     }
 
-    axios.patch(
-      `https://workout-81691-default-rtdb.firebaseio.com/routines/${user.authUser.uid}/${firebaseId}.json`,
-      { activeRoutine: true }
-    );
+    axios({
+      method: 'patch',
+      url: `https://workout-81691-default-rtdb.firebaseio.com/routines/${user.authUser.uid}/${firebaseId}.json`,
+      timeout: 5000,
+      data: { activeRoutine: true },
+    }).catch((err) => {
+      props.toggleError();
+    });
 
     dispatch(setActiveRoutine({ ...routine, firebaseId }));
   };
@@ -84,9 +94,13 @@ const Routines = (props) => {
   const deleteRoutine = (firebaseId) => {
     axios
       .delete(
-        `https://workout-81691-default-rtdb.firebaseio.com/routines/${user.authUser.uid}/${firebaseId}.json`
+        `https://workout-81691-default-rtdb.firebaseio.com/routines/${user.authUser.uid}/${firebaseId}.json`,
+        { timeout: 5000 }
       )
-      .then(() => setRoutineDeleted(true));
+      .then(() => setRoutineDeleted(true))
+      .catch((err) => {
+        props.toggleError();
+      });
   };
 
   const routineLinks = routines ? (
@@ -121,17 +135,10 @@ const Routines = (props) => {
   );
 
   return (
-    <div className={classes.Routines}>
-      <span
-        className={classes.SectionHeader}
-        onClick={props.triggerRoutinesShowing}
-      >
+    <div className="Routines">
+      <span className="SectionHeader" onClick={props.triggerRoutinesShowing}>
         <h3>My Routines</h3>
-        <div
-          className={
-            props.showRoutines ? classes.ArrowDown : classes.ArrowRight
-          }
-        ></div>
+        <div className={props.showRoutines ? 'ArrowDown' : 'ArrowRight'}></div>
       </span>
       {props.showRoutines && routineLinks}
     </div>

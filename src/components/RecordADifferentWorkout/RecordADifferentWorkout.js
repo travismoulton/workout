@@ -100,17 +100,33 @@ const RecordADifferentWorkout = (props) => {
     fetchAllWorkouts();
   }, [fetchRoutineWorkouts, fetchAllWorkouts]);
 
+  const filterMenuOptions = (unfilteredOptions) => {
+    const filteredOptions = [];
+
+    unfilteredOptions.forEach((unfiltered) => {
+      !filteredOptions.filter(
+        (filtered) => filtered.displayValue === unfiltered.displayValue
+      ).length && filteredOptions.push(unfiltered);
+    });
+
+    return filteredOptions;
+  };
+
   useEffect(() => {
     if (routineWorkouts.length && !initialRoutineMenuSet) {
       const menuOptions = routineWorkouts.map((workout) => ({
         value: workout.firebaseId,
         displayValue: workout.title,
       }));
+
       setActiveRoutineSelectMenu({
         ...activeRoutineSelectMenu,
         elementConfig: {
           ...activeRoutineSelectMenu.elementConfig,
-          options: [{ value: '', displayValue: '' }, ...menuOptions],
+          options: [
+            { value: '', displayValue: '' },
+            ...filterMenuOptions(menuOptions),
+          ],
         },
       });
       setIntialRoutineMenuSet(true);

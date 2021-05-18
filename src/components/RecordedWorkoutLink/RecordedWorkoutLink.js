@@ -10,12 +10,17 @@ const RecordedWorkoutLink = (props) => {
       <div className={classes.Record}>
         <p>{props.title}</p>
         <p>{date.toString().substring(0, 15)}</p>
-        <Link
-          className={classes.Link}
-          to={`/recorded-workout-detail/${props.firebaseId}`}
-        >
-          <button>View details</button>
-        </Link>
+        <div className={classes.BtnRow}>
+          <Link
+            className={classes.Link}
+            to={`/recorded-workout-detail/${props.firebaseId}`}
+          >
+            <button>View details</button>
+          </Link>
+          <button onClick={props.deleteRecordedWorkout}>
+            Delete this record
+          </button>
+        </div>
       </div>
     </>
   );

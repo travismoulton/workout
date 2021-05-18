@@ -3,42 +3,45 @@ import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
 
 import RecordedWorkoutLink from '../../../components/RecordedWorkoutLink/RecordedWorkoutLink';
-import classes from './RecordedWorkouts.module.css';
+import '../UserProfile.css';
 import { setRecordedWorkouts } from '../../../store/actions';
 
 const RecordedWorkouts = (props) => {
   const [initialFetchCompleted, setInitialFetchCompleted] = useState(false);
+  const [recordedWorkoutDeleted, setRecordedWorkoutDeleted] = useState(false);
   const { user } = useSelector((state) => state.auth);
   const { recordedWorkouts } = useSelector((state) => state.userProfile);
   const dispatch = useDispatch();
 
-  const bubbleSortWorkoutDates = useCallback((arr) => {
-    const temp = [...arr];
+  const bubbleSortWorkoutDates = useCallback((unsortedDates) => {
+    const dates = [...unsortedDates];
     const swap = (arr, i, j) => ([arr[i], arr[j]] = [arr[j], arr[i]]);
 
-    for (let i = 0; i < temp.length; i++) {
+    for (let i = 0; i < dates.length; i++) {
       let isSwapped = false;
-      for (let j = 0; j < temp.length - 1; j++) {
+      for (let j = 0; j < dates.length - 1; j++) {
         if (
           new Date(
-            temp[j + 1].date.year,
-            temp[j + 1].date.month,
-            temp[j + 1].date.day
-          ) > new Date(temp[j].date.year, temp[j].date.month, temp[j].date.day)
+            dates[j + 1].date.year,
+            dates[j + 1].date.month,
+            dates[j + 1].date.day
+          ) >
+          new Date(dates[j].date.year, dates[j].date.month, dates[j].date.day)
         ) {
-          swap(temp, j, j + 1);
+          swap(dates, j, j + 1);
           isSwapped = true;
         }
       }
       if (!isSwapped) break;
     }
-    return temp;
+    return dates;
   }, []);
 
   const fetchRecordedWorkouts = useCallback(() => {
     axios
       .get(
-        `https://workout-81691-default-rtdb.firebaseio.com/recordedWorkouts/${user.authUser.uid}.json`
+        `https://workout-81691-default-rtdb.firebaseio.com/recordedWorkouts/${user.authUser.uid}.json`,
+        { timeout: 5000 }
       )
       .then((res) => {
         if (res.data) {
@@ -50,16 +53,40 @@ const RecordedWorkouts = (props) => {
         } else if (!res.data) {
           dispatch(setRecordedWorkouts(null));
         }
+      })
+      .catch((err) => {
+        props.toggleError();
       });
-  }, [user.authUser.uid, bubbleSortWorkoutDates, dispatch]);
+  }, [user.authUser.uid, bubbleSortWorkoutDates, dispatch, props]);
 
   useEffect(() => {
-    if (!initialFetchCompleted) {
+    if (!initialFetchCompleted && !props.isError) {
       fetchRecordedWorkouts();
       setInitialFetchCompleted();
       props.setFetchCompleted();
     }
   }, [initialFetchCompleted, fetchRecordedWorkouts, props]);
+
+  const deleteRecordedWorkout = async (firebaseId) => {
+    await axios
+      .delete(
+        `https://workout-81691-default-rtdb.firebaseio.com/recordedWorkouts/${user.authUser.uid}/${firebaseId}.json`,
+        { timeout: 5000 }
+      )
+      .then(() => {
+        setRecordedWorkoutDeleted(true);
+      })
+      .catch((err) => {
+        props.toggleError();
+      });
+  };
+
+  useEffect(() => {
+    if (recordedWorkoutDeleted) {
+      fetchRecordedWorkouts();
+      setRecordedWorkoutDeleted(false);
+    }
+  }, [fetchRecordedWorkouts, recordedWorkoutDeleted]);
 
   const recordedWorkoutLinks =
     recordedWorkouts &&
@@ -69,20 +96,19 @@ const RecordedWorkouts = (props) => {
         title={record.title}
         date={record.date}
         firebaseId={record.firebaseId}
+        deleteRecordedWorkout={() => deleteRecordedWorkout(record.firebaseId)}
       />
     ));
 
   return (
-    <div className={classes.RecordedWorkouts}>
+    <div className="RecordedWorkout">
       <span
-        className={classes.SectionHeader}
+        className="SectionHeader"
         onClick={props.triggerRecordedWorkoutsShowing}
       >
         <h3>My Recorded Workouts</h3>
         <div
-          className={
-            props.showRecordedWorkouts ? classes.ArrowDown : classes.ArrowRight
-          }
+          className={props.showRecordedWorkouts ? 'ArrowDown' : 'ArrowRight'}
         ></div>
       </span>
       {props.showRecordedWorkouts && recordedWorkoutLinks}
