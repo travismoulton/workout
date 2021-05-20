@@ -20,7 +20,18 @@ const Search = (props) => {
       </p>
     ),
   });
+  const [needLoginMessage, setNeedLoginMessage] = useState(null);
   const { user } = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    const page = props.location.pathname.substring(1);
+    if (
+      !user &&
+      props.location.pathname !== '/' &&
+      props.location.pathname !== '/search'
+    )
+      setNeedLoginMessage(<p>You need to log in to visit the {page} page</p>);
+  }, [user, props]);
 
   useEffect(() => {
     if (user) {
@@ -86,6 +97,7 @@ const Search = (props) => {
 
   return loaded ? (
     <div className={classes.Search}>
+      {needLoginMessage}
       {error.isError && error.message}
       <SearchCategory
         categoryName={'Exercise Category'}

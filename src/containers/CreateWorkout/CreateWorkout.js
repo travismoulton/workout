@@ -204,7 +204,8 @@ const CreateWorkout = (props) => {
   // If taken to the create-workout component as a workout detail, load the
   // exercises and populate the form from state.
   useEffect(() => {
-    if (props.history.location.state && !historyUsed) {
+    const shouldLoadWorkoutData = props.history.location.state && !historyUsed;
+    if (shouldLoadWorkoutData) {
       const { workout } = props.history.location.state;
 
       if (workout) {
@@ -378,14 +379,12 @@ const CreateWorkout = (props) => {
             targetAreaCode={targetAreaInput.value}
             secondaryTargetCode={secondaryTargetAreaInput.value}
             targetArea={
-              targetAreaInput.value
-                ? wgerDict.exerciseCategoryList[targetAreaInput.value]
-                : null
+              targetAreaInput.value &&
+              wgerDict.exerciseCategoryList[targetAreaInput.value]
             }
             secondaryTargetArea={
-              secondaryTargetAreaInput.value
-                ? wgerDict.exerciseCategoryList[secondaryTargetAreaInput.value]
-                : null
+              secondaryTargetAreaInput.value &&
+              wgerDict.exerciseCategoryList[secondaryTargetAreaInput.value]
             }
             formIsValid={formIsValid}
             clearAllFormInputs={clearAllFormInputs}

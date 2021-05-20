@@ -83,34 +83,30 @@ const WorkoutListItem = (props) => {
 
   const addSetBtn = <button onClick={addSet}>Add another set</button>;
 
-  const sets = props.sets.length
-    ? props.sets.map((set, i) => (
-        <SetDetails
-          key={uniqid()}
-          reps={set.reps}
-          weight={set.weight}
-          minutes={set.minutes}
-          seconds={set.seconds}
-          focus={exerciseFocus}
-          id={props.id}
-          setNumber={i + 1}
-          numberOfSets={props.sets.length}
-        />
-      ))
-    : null;
+  const sets =
+    props.sets.length &&
+    props.sets.map((set, i) => (
+      <SetDetails
+        key={uniqid()}
+        reps={set.reps}
+        weight={set.weight}
+        minutes={set.minutes}
+        seconds={set.seconds}
+        focus={exerciseFocus}
+        id={props.id}
+        setNumber={i + 1}
+        numberOfSets={props.sets.length}
+      />
+    ));
 
   return (
     <li className={classes.WorkoutListItem}>
       <div>{props.name}</div>
       {focusSelectMenu}
-      {sets ? <ul style={{ listStyle: 'none' }}>{sets}</ul> : null}
+      {sets && <ul style={{ listStyle: 'none' }}>{sets}</ul>}
       <div>
-        {!props.isFirstExercise && !props.inRecordMode
-          ? moveUpInOrderBtn
-          : null}
-        {!props.isLastExercise && !props.inRecordMode
-          ? moveDownInOrderBtn
-          : null}
+        {!props.isFirstExercise && !props.inRecordMode && moveUpInOrderBtn}
+        {!props.isLastExercise && !props.inRecordMode && moveDownInOrderBtn}
       </div>
       {closeWorkoutBtn}
       {addSetBtn}

@@ -35,7 +35,8 @@ const ExerciseDetail = (props) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const url = props.location.state.custom
+    const shouldLoadCustomExercises = props.location.state.custom && user;
+    const url = shouldLoadCustomExercises
       ? `https://workout-81691-default-rtdb.firebaseio.com/customExercises/${user.authUser.uid}/${props.location.state.firebaseSearchId}.json`
       : `https://wger.de/api/v2/exercise/${props.location.state.id}`;
 
@@ -45,7 +46,7 @@ const ExerciseDetail = (props) => {
       .catch((err) => {
         setError({ ...error, isError: true, code: 'noExercise' });
       });
-  }, [props.location.state, user.authUser.uid, error]);
+  }, [props.location.state, user, error]);
 
   useEffect(() => {
     if (exercise) {
@@ -133,12 +134,14 @@ const ExerciseDetail = (props) => {
               : []
           }
         />
-        <button
-          className={isFavorite ? classes.Favorite : null}
-          onClick={onSubmit}
-        >
-          Favorite
-        </button>
+        {user && (
+          <button
+            className={isFavorite ? classes.Favorite : null}
+            onClick={onSubmit}
+          >
+            Favorite
+          </button>
+        )}
         {buildingWorkout ? (
           <AddToWorkoutBtn
             history={props.history}

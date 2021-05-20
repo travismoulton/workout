@@ -80,11 +80,11 @@ const RecordWorkout = (props) => {
 
   // If an exercise is removed, updated suggested workout and re-render
   useEffect(() => {
-    if (
+    const exerciseRemoved =
       exercises.length &&
       suggestedWorkout &&
-      exercises.length !== suggestedWorkout.exercises.length
-    )
+      exercises.length !== suggestedWorkout.exercises.length;
+    if (exerciseRemoved)
       setSuggestedWorkout({ ...suggestedWorkout, exercises });
   }, [exercises, suggestedWorkout]);
 
@@ -125,8 +125,10 @@ const RecordWorkout = (props) => {
           </p>
         ),
       });
-      // Stops function execution in RecordWorkoutBtn so the workout isn't recorded
-      throw new Error();
+
+      throw new Error(
+        'Workout update failed. Stop function execution so the recordWorkout will not hit firebase'
+      );
     });
   };
 

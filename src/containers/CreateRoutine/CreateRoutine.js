@@ -59,7 +59,9 @@ const CreateRoutine = (props) => {
   const { user } = useSelector((state) => state.auth);
 
   useEffect(() => {
-    if (user && !workoutSelectMenu.elementConfig.options.length)
+    const shouldBuildWorkoutSelectMenuOptions =
+      user && !workoutSelectMenu.elementConfig.options.length;
+    if (shouldBuildWorkoutSelectMenuOptions)
       axios({
         method: 'get',
         url: `https://workout-81691-default-rtdb.firebaseio.com/workouts/${user.authUser.uid}.json`,
@@ -98,7 +100,8 @@ const CreateRoutine = (props) => {
   ];
 
   useEffect(() => {
-    if (props.history.location.state && !historyUsed) {
+    const shouldLoadRoutineData = props.history.location.state && !historyUsed;
+    if (shouldLoadRoutineData) {
       const { routine } = props.history.location.state;
 
       if (routine) {

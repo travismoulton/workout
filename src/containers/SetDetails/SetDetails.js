@@ -298,7 +298,7 @@ const SetDetails = (props) => {
       <p>Set # {props.setNumber}</p>
       <div className={classes.Form}>{form}</div>
       {btnRow}
-      {props.numberOfSets > 1 ? removeSetBtn : null}
+      {props.numberOfSets > 1 && removeSetBtn}
     </li>
   );
 };

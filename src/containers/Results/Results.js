@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 
+import Spinner from '../../components/UI/Spinner/Spinner';
 import ExerciseResult from '../../components/ExerciseResult/ExerciseResult';
 import wgerDict from '../../shared/wgerDict';
 
@@ -21,7 +22,9 @@ const Results = (props) => {
   const { user } = useSelector((state) => state.auth);
 
   useEffect(() => {
-    if (props.location.state.wger && !exerciseResults.length) {
+    const shouldFetchWgerExercises =
+      props.location.state.wger && !exerciseResults.length;
+    if (shouldFetchWgerExercises) {
       const param =
         props.location.state.category === 'exercisecategory'
           ? `category=${props.location.state.id}`
@@ -51,7 +54,9 @@ const Results = (props) => {
   }, [props.location.state, exerciseResults, error]);
 
   useEffect(() => {
-    if (props.location.state.custom && !exerciseResults.length) {
+    const shouldFetchCustomExercises =
+      props.location.state.custom && !exerciseResults.length && user;
+    if (shouldFetchCustomExercises) {
       (async () => {
         await axios
           .get(
@@ -70,7 +75,7 @@ const Results = (props) => {
           });
       })();
     }
-  }, [props.location.state, exerciseResults, user.authUser.uid, error]);
+  }, [props.location.state, exerciseResults, user, error]);
 
   useEffect(() => {
     if (favorites)
@@ -110,7 +115,7 @@ const Results = (props) => {
             ? props.location.state.subCategory
             : 'My custom exercises'}
         </h3>
-        {exerciseResults.length && <ul>{displayResults}</ul>}
+        {exerciseResults.length ? <ul>{displayResults}</ul> : <Spinner />}
       </div>
     </>
   );

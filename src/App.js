@@ -164,9 +164,7 @@ function App(props) {
 
   return (
     <div className="App">
-      {loaded ? (
-        <Layout isAuthenticated={isAuthenticated}>{routes}</Layout>
-      ) : null}
+      {loaded && <Layout isAuthenticated={isAuthenticated}>{routes}</Layout>}
     </div>
   );
 }
