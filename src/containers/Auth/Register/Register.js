@@ -103,6 +103,7 @@ const Register = (props) => {
         .then((userCredential) => {
           props.firebase.updateUserProfile(userNameInput.value).then(() => {
             dispatch(authReset());
+            props.history.push('/');
           });
         })
         .catch((err) => {
@@ -110,9 +111,7 @@ const Register = (props) => {
           dispatch(authReset());
           setErrorMessage(err.message);
         });
-
-      props.history.push('/');
-    } else {
+    } else if (passwordInput.value !== confirmPWInput.value) {
       setErrorMessage('Passwords do not match');
     }
   };
@@ -129,7 +128,7 @@ const Register = (props) => {
 
   return (
     <div>
-      {errorMessage ? <p>{errorMessage}</p> : null}
+      {errorMessage && <p>{errorMessage}</p>}
       {form}
       <button onClick={submitRegister}>Register</button>
     </div>

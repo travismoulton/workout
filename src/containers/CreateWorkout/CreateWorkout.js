@@ -1,15 +1,13 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import uniqid, { time } from 'uniqid';
-import axios from 'axios';
 
 import Input from '../../components/UI/Input/Input';
 import WorkoutListItem from '../WorkoutListItem/WorkoutListItem';
 import SubmitWorkoutBtn from '../../components/SubmitWorkoutBtn/SubmitWorkoutBtn';
 import Spinner from '../../components/UI/Spinner/Spinner';
+import FavoritesSelectMenu from './FavoritesSelectMenu/FavoritesSelectMenu';
 import {
   startSearchMode,
-  addExercise,
   setFormData,
   setExercises,
   setEntireForm,
@@ -20,14 +18,12 @@ import { updateObject, checkValidityHandler } from '../../shared/utility';
 import wgerDict from '../../shared/wgerDict';
 
 const CreateWorkout = (props) => {
-  const { favorites } = useSelector((state) => state.favorites);
   const { exercises } = useSelector((state) => state.workout);
   const { formData } = useSelector((state) => state.workout);
   const { firebaseId } = useSelector((state) => state.workout);
-  const { user } = useSelector((state) => state.auth);
+
   const dispatch = useDispatch();
-  const [favoritesAsExercises, setFavoritesAsExercises] = useState([]);
-  const [favoritesAsSelectOptions, setFavoritesAsSelectOptions] = useState([]);
+
   const [loaded, setLoaded] = useState(false);
   const [historyUsed, setHistoryUsed] = useState(false);
   const [originalTitle, setOriginalTitle] = useState('');
@@ -109,94 +105,6 @@ const CreateWorkout = (props) => {
     id: 'secondaryTarget',
   });
 
-  const [addFromFavorites, setAddFromFavorites] = useState({
-    elementType: 'select',
-    elementConfig: {
-      options: [],
-    },
-    value: 0,
-    label: 'Add exercise from favorites',
-    validation: {
-      required: false,
-    },
-    valid: true,
-    touched: false,
-    id: 4,
-  });
-
-  const filterFavorites = useCallback(
-    (arr, res) => {
-      for (const key in res.data) {
-        const exercise = favorites.filter(
-          (fav) => fav.exercise.toString() === res.data[key].id.toString()
-        )[0];
-
-        if (exercise) arr.push(res.data[key]);
-      }
-    },
-    [favorites]
-  );
-
-  useEffect(() => {
-    let arr = [];
-
-    (async () => {
-      if (favorites && !favoritesAsExercises.length && !error.isError) {
-        await axios
-          .get(
-            `https://workout-81691-default-rtdb.firebaseio.com/masterExerciseList.json`,
-            { timeout: 5000 }
-          )
-          .then((res) => {
-            filterFavorites(arr, res);
-          })
-          .catch((err) => {
-            setError({ ...error, isError: true });
-          });
-
-        await axios
-          .get(
-            `https://workout-81691-default-rtdb.firebaseio.com/customExercises/${user.authUser.uid}.json`,
-            { timeout: 5000 }
-          )
-          .then((res) => {
-            filterFavorites(arr, res);
-          })
-          .catch((err) => {
-            setError({ ...error, isError: true });
-          });
-
-        setFavoritesAsExercises(arr);
-      }
-    })();
-  }, [
-    favorites,
-    favoritesAsExercises,
-    user.authUser.uid,
-    filterFavorites,
-    error,
-  ]);
-
-  useEffect(() => {
-    // After favoritesAsExercises has been created, create an array of objects to
-    // be used as select options inside the Add from favroites dropdown
-    if (favoritesAsExercises.length && !favoritesAsSelectOptions.length) {
-      setFavoritesAsSelectOptions(
-        favoritesAsExercises.map((exercise) => ({
-          value: exercise.id,
-          displayValue: exercise.name,
-        }))
-      );
-      // Once the select options have been set, load the page
-      setLoaded(true);
-    }
-  }, [favoritesAsExercises, favoritesAsSelectOptions]);
-
-  useEffect(() => {
-    // If there are no favorites, the page can be loaded immediatley
-    if (favorites) if (!favorites.length && !loaded) setLoaded(true);
-  }, [favorites, loaded]);
-
   useEffect(() => {
     if (error.isError) setLoaded(true);
   }, [error, loaded]);
@@ -248,23 +156,6 @@ const CreateWorkout = (props) => {
     secondaryTargetAreaInput,
   ]);
 
-  useEffect(() => {
-    if (
-      favoritesAsSelectOptions.length &&
-      !addFromFavorites.elementConfig.options.length
-    )
-      setAddFromFavorites({
-        ...addFromFavorites,
-        elementConfig: {
-          ...addFromFavorites.elementConfig,
-          options: [
-            { value: 0, displayValue: null },
-            ...favoritesAsSelectOptions,
-          ],
-        },
-      });
-  }, [addFromFavorites, favoritesAsSelectOptions]);
-
   const formFields = [
     workoutNameInput,
     targetAreaInput,
@@ -302,20 +193,6 @@ const CreateWorkout = (props) => {
     />
   ));
 
-  const addExerciseFromFavorites = (e) => {
-    const exercise = favoritesAsExercises.filter(
-      (fav) => fav.id.toString() === e.target.value
-    )[0];
-
-    dispatch(
-      addExercise({
-        name: exercise.name,
-        id: uniqid(`${exercise.id}-`),
-        sets: [{ weight: 0, reps: 1 }],
-      })
-    );
-  };
-
   const onAddExerciseBySearchClick = () => {
     dispatch(startSearchMode());
     props.history.push('/search');
@@ -345,63 +222,65 @@ const CreateWorkout = (props) => {
     </button>
   );
 
-  const finalDisplay = (
+  return (
     <>
-      {error.isError ? error.message : null}
-      {titleForm}
-      <Input
-        elementType={addFromFavorites.elementType}
-        elementConfig={addFromFavorites.elementConfig}
-        label={addFromFavorites.label}
-        value={addFromFavorites.value}
-        changed={(e) => addExerciseFromFavorites(e)}
-      />
+      <div style={{ display: !loaded && 'none' }}>
+        {error.isError ? error.message : null}
+        {titleForm}
 
-      <button onClick={onAddExerciseBySearchClick}>
-        Add from exercise search menu
-      </button>
-      {exercises.length ? (
-        <>
-          <ul style={{ listStyle: 'none' }}>
-            {exercises.map((exercise, i) => (
-              <WorkoutListItem
-                name={exercise.name}
-                key={exercise.id}
-                id={exercise.id}
-                sets={exercise.sets}
-                isFirstExercise={i === 0}
-                isLastExercise={i === exercises.length - 1}
-              />
-            ))}
-          </ul>
-          <SubmitWorkoutBtn
-            title={workoutNameInput.value}
-            targetAreaCode={targetAreaInput.value}
-            secondaryTargetCode={secondaryTargetAreaInput.value}
-            targetArea={
-              targetAreaInput.value &&
-              wgerDict.exerciseCategoryList[targetAreaInput.value]
-            }
-            secondaryTargetArea={
-              secondaryTargetAreaInput.value &&
-              wgerDict.exerciseCategoryList[secondaryTargetAreaInput.value]
-            }
-            formIsValid={formIsValid}
-            clearAllFormInputs={clearAllFormInputs}
-            setInputAsTouched={setInputAsTouched}
-            titleChanged={workoutNameInput.touched}
-            firebaseId={firebaseId}
-            originalTitleEntact={originalTitle === workoutNameInput.value}
-            createNewWorkout={firebaseId === null}
-            history={props.history}
-          />
-          {clearWorkoutBtn}
-        </>
-      ) : null}
+        <FavoritesSelectMenu
+          setLoaded={() => setLoaded(true)}
+          setError={() => setError({ ...error, isError: true })}
+        />
+
+        <button onClick={onAddExerciseBySearchClick}>
+          Add from exercise search menu
+        </button>
+        {exercises.length ? (
+          <>
+            <ul style={{ listStyle: 'none' }}>
+              {exercises.map((exercise, i) => (
+                <WorkoutListItem
+                  name={exercise.name}
+                  key={exercise.id}
+                  id={exercise.id}
+                  sets={exercise.sets}
+                  isFirstExercise={i === 0}
+                  isLastExercise={i === exercises.length - 1}
+                />
+              ))}
+            </ul>
+            <SubmitWorkoutBtn
+              title={workoutNameInput.value}
+              targetAreaCode={targetAreaInput.value}
+              secondaryTargetCode={secondaryTargetAreaInput.value}
+              targetArea={
+                targetAreaInput.value &&
+                wgerDict.exerciseCategoryList[targetAreaInput.value]
+              }
+              secondaryTargetArea={
+                secondaryTargetAreaInput.value &&
+                wgerDict.exerciseCategoryList[secondaryTargetAreaInput.value]
+              }
+              formIsValid={formIsValid}
+              clearAllFormInputs={clearAllFormInputs}
+              setInputAsTouched={setInputAsTouched}
+              titleChanged={workoutNameInput.touched}
+              firebaseId={firebaseId}
+              originalTitleEntact={originalTitle === workoutNameInput.value}
+              createNewWorkout={firebaseId === null}
+              history={props.history}
+            />
+            {clearWorkoutBtn}
+          </>
+        ) : null}
+      </div>
+
+      <div style={{ display: loaded && 'none' }}>
+        <Spinner />
+      </div>
     </>
   );
-
-  return loaded ? finalDisplay : <Spinner />;
 };
 
 export default CreateWorkout;

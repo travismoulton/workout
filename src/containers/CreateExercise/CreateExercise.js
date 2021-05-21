@@ -218,7 +218,9 @@ const CreateExercise = (props) => {
       : updatedInput.id === 'description'
       ? setDescriptionInput(updatedInput)
       : // TODO: Need actional error handling
-        console.log('error');
+        (() => {
+          throw new Error();
+        })();
   };
 
   const inputChangedHandler = (e, input) => {
