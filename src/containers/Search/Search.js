@@ -5,9 +5,13 @@ import { useSelector } from 'react-redux';
 import classes from './Search.module.css';
 import SearchCategory from '../../components/SearchCategory/SearchCategory';
 import SearchSubCategory from '../../components/SearchSubCategory/SearchSubCategory';
+import Spinner from '../../components/UI/Spinner/Spinner';
 
 const Search = (props) => {
   const [subCategories, setSubCategories] = useState([]);
+  const [exerciseCategories, setExerciseCategoires] = useState(null);
+  const [muscles, setMuscles] = useState(null);
+  const [equipment, setEquipment] = useState(null);
   const [categoryOpen, setCategoryOpen] = useState('');
   const [showCustomOption, setShowCustomOption] = useState(false);
   const [loaded, setLoaded] = useState(false);
@@ -43,14 +47,11 @@ const Search = (props) => {
           )
           .then((res) => {
             if (res.data) setShowCustomOption(true);
-            setLoaded(true);
           })
           .catch((err) => {
             setError({ ...error, isError: true });
           });
       })();
-    } else if (!user) {
-      setLoaded(true);
     }
   }, [user, loaded, error]);
 
@@ -58,25 +59,56 @@ const Search = (props) => {
     if (!user && showCustomOption) setShowCustomOption(false);
   }, [user, showCustomOption]);
 
-  const getSubCategories = (category) => {
-    axios
-      .get(`https://wger.de/api/v2/${category}`, { timeout: 5000 })
-      .then((res) => {
-        setSubCategories(res.data.results);
-      })
-      .catch((err) => {
-        setError({ ...error, isError: true });
-      });
+  useEffect(() => {
+    if (!exerciseCategories && !muscles && !equipment) {
+      axios
+        .get(`https://wger.de/api/v2/exercisecategory`, { timeout: 5000 })
+        .then((res) => setExerciseCategoires(res.data.results))
+        .catch(() => setError({ ...error, isError: true }));
+
+      axios
+        .get(`https://wger.de/api/v2/muscle`, { timeout: 5000 })
+        .then((res) => setMuscles(res.data.results))
+        .catch(() => setError({ ...error, isError: true }));
+
+      axios
+        .get(`https://wger.de/api/v2/equipment`, { timeout: 5000 })
+        .then((res) => setEquipment(res.data.results))
+        .catch(() => setError({ ...error, isError: true }));
+    }
+  }, [error, exerciseCategories, muscles, equipment]);
+
+  useEffect(() => {
+    const wgerReady = exerciseCategories && muscles && equipment;
+    if (!loaded)
+      if ((wgerReady && showCustomOption) || (!loaded && wgerReady && !user))
+        setLoaded(true);
+  }, [loaded, exerciseCategories, muscles, equipment, showCustomOption, user]);
+
+  const closeSubCategories = () => {
+    setCategoryOpen(null);
+    setSubCategories([]);
+  };
+
+  const openSubCategory = (category) => {
+    setCategoryOpen(category);
+
+    switch (category) {
+      case 'exercisecategory':
+        return setSubCategories(exerciseCategories);
+      case 'muscle':
+        return setSubCategories(muscles);
+      case 'equipment':
+        return setSubCategories(equipment);
+      default:
+        setSubCategories([]);
+    }
   };
 
   const controlSubCategories = (category) => {
-    if (categoryOpen === category) {
-      setSubCategories([]);
-      setCategoryOpen('');
-    } else {
-      getSubCategories(category);
-      setCategoryOpen(category);
-    }
+    categoryOpen === category
+      ? closeSubCategories()
+      : openSubCategory(category);
   };
 
   const getCustomExercises = () => {
@@ -96,35 +128,41 @@ const Search = (props) => {
   ));
 
   return loaded ? (
-    <div className={classes.Search}>
-      {needLoginMessage}
-      {error.isError && error.message}
-      <SearchCategory
-        categoryName={'Exercise Category'}
-        clicked={() => controlSubCategories('exercisecategory')}
-      />
-      {categoryOpen === 'exercisecategory' && displaySubCategoires}
-      <SearchCategory
-        categoryName={'Muscle'}
-        clicked={() => controlSubCategories('muscle')}
-      />
-      {categoryOpen === 'muscle' && displaySubCategoires}
-      <SearchCategory
-        categoryName={'Equipment'}
-        clicked={() => controlSubCategories('equipment')}
-      />
-      {categoryOpen === 'equipment' && displaySubCategoires}
-      {showCustomOption && (
+    <>
+      <h1 className={classes.Header}>Select a category to search</h1>
+      <div className={classes.Search}>
+        {needLoginMessage}
+        {error.isError && error.message}
         <SearchCategory
-          categoryName={'My custom exercises'}
-          clicked={getCustomExercises}
+          categoryName={'Exercise Category'}
+          clicked={() => controlSubCategories('exercisecategory')}
+          categoryOpen={categoryOpen === 'exercisecategory'}
         />
-      )}
-    </div>
+        {categoryOpen === 'exercisecategory' && displaySubCategoires}
+        <SearchCategory
+          categoryName={'Muscle'}
+          clicked={() => controlSubCategories('muscle')}
+          categoryOpen={categoryOpen === 'muscle'}
+        />
+        {categoryOpen === 'muscle' && displaySubCategoires}
+        <SearchCategory
+          categoryName={'Equipment'}
+          clicked={() => controlSubCategories('equipment')}
+          categoryOpen={categoryOpen === 'Equipment'}
+        />
+        {categoryOpen === 'equipment' && displaySubCategoires}
+        {showCustomOption && (
+          <SearchCategory
+            categoryName={'My custom exercises'}
+            clicked={getCustomExercises}
+          />
+        )}
+      </div>
+    </>
   ) : error.isError ? (
     error.message
   ) : (
-    <></>
+    <Spinner />
   );
 };
 

@@ -4,12 +4,59 @@
   box-sizing: inherit;
 }
 
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700&display=swap');
+
 html {
   font-size: 62.5%;
+  font-family: 'Lato';
+
+  /* Variables */
+  --color-primary: #00bbff; /* DeepSkyBlue */
+  --color-light-grey-1: #f2f2f2;
+  --color-secondary: #ffa600;
+  --color-white: #fff;
+  --color-black: #000;
+
+  --rgba-light-grey-1: 242, 242, 242;
+  --rgba-black: 0, 0, 0;
+  --rgba-primary: 0, 191, 255;
 }
 
 body {
   box-sizing: border-box;
   padding: 3rem;
   font-size: 1.6rem;
+  background-color: var(--color-light-grey-1);
+}
+
+.ArrowRight {
+  width: 0;
+  height: 0;
+  border-top: 0.7rem solid transparent;
+  border-bottom: 0.7rem solid transparent;
+  border-left: 0.7rem solid var(--color-black);
+}
+
+.ArrowDown {
+  width: 0;
+  height: 0;
+  border-left: 0.7rem solid transparent;
+  border-right: 0.7rem solid transparent;
+  border-top: 0.7rem solid var(--color-black);
+}
+
+.ArrowRightWhite {
+  width: 0;
+  height: 0;
+  border-top: 0.7rem solid transparent;
+  border-bottom: 0.7rem solid transparent;
+  border-left: 0.7rem solid var(--color-white);
+}
+
+.ArrowDownWhite {
+  width: 0;
+  height: 0;
+  border-left: 0.7rem solid transparent;
+  border-right: 0.7rem solid transparent;
+  border-top: 0.7rem solid var(--color-white);
 }

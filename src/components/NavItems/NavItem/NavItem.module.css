@@ -3,13 +3,16 @@
 }
 
 .NavItem a {
-  color: #0099ff;
+  color: rgba(var(--rgba-light-grey-1), 0.9);
   text-decoration: none;
   width: 100%;
+  font-size: 1.7rem;
 }
 
 .NavItem a:hover,
 .NavItem a:active,
 .NavItem a.active {
-  color: #004d80;
+  color: var(--color-white);
+  border-bottom: 1px solid;
+  padding-bottom: 0.1rem;
 }
