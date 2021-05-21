@@ -12,16 +12,6 @@ const FavoritesSelectMenu = (props) => {
   const dispatch = useDispatch();
   const [favoritesAsExercises, setFavoritesAsExercises] = useState([]);
   const [favoritesAsSelectOptions, setFavoritesAsSelectOptions] = useState([]);
-  const [loaded, setLoaded] = useState(false);
-  const [error, setError] = useState({
-    isError: false,
-    message: (
-      <p style={{ color: 'red' }}>
-        Sorry, something went wrong trying to get some of your favorites. Please
-        refresh the page or try again later
-      </p>
-    ),
-  });
 
   const [addFromFavorites, setAddFromFavorites] = useState({
     elementType: 'select',
@@ -59,7 +49,7 @@ const FavoritesSelectMenu = (props) => {
         if (
           favorites.length &&
           !favoritesAsExercises.length &&
-          !error.isError
+          !props.isError
         ) {
           await axios
             .get(
@@ -70,7 +60,7 @@ const FavoritesSelectMenu = (props) => {
               filterFavorites(arr, res);
             })
             .catch((err) => {
-              setError({ ...error, isError: true });
+              props.toggleError();
             });
 
           await axios
@@ -82,7 +72,7 @@ const FavoritesSelectMenu = (props) => {
               if (res.data) filterFavorites(arr, res);
             })
             .catch((err) => {
-              setError({ ...error, isError: true });
+              props.toggleError();
             });
 
           setFavoritesAsExercises(arr);
@@ -93,7 +83,7 @@ const FavoritesSelectMenu = (props) => {
     favoritesAsExercises,
     user.authUser.uid,
     filterFavorites,
-    error,
+    props,
   ]);
 
   useEffect(() => {
@@ -107,18 +97,19 @@ const FavoritesSelectMenu = (props) => {
         }))
       );
       // Once the select options have been set, load the page
-      setLoaded(true);
+      props.toggleLoaded();
     }
-  }, [favoritesAsExercises, favoritesAsSelectOptions]);
+  }, [favoritesAsExercises, favoritesAsSelectOptions, props]);
 
   useEffect(() => {
     // If there are no favorites, the page can be loaded immediatley
-    if (favorites) if (!favorites.length && !loaded) setLoaded(true);
-  }, [favorites, loaded]);
+    if (favorites)
+      if (!favorites.length && !props.isLoaded) props.toggleLaoded();
+  }, [favorites, props]);
 
   useEffect(() => {
-    if (error.isError) setLoaded(true);
-  }, [error, loaded]);
+    if (props.isError) props.toggleLoaded();
+  }, [props]);
 
   useEffect(() => {
     if (
@@ -151,15 +142,7 @@ const FavoritesSelectMenu = (props) => {
     );
   };
 
-  useEffect(() => {
-    if (loaded) props.setLoaded();
-  }, [loaded, props]);
-
-  useEffect(() => {
-    if (error.isError) props.setError();
-  }, [error, props]);
-
-  return loaded && favorites.length ? (
+  return favoritesAsExercises.length ? (
     <Input
       elementType={addFromFavorites.elementType}
       elementConfig={addFromFavorites.elementConfig}
