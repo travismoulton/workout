@@ -1,8 +1,26 @@
 .Btn {
   width: 12rem;
   height: 3.5rem;
-  border-radius: 3px;
+  border-radius: 6px;
   box-shadow: var(--box-shadow-1);
-  background-color: var(--color-secondary-light);
-  border: 2px solid var(--color-secondary);
+  background-color: rgba(0, 255, 153, 0.7);
+  border: 2px solid var(--color-primary);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+}
+
+.Btn:active {
+  transform: translateY(10%);
+  box-shadow: var(--box-shadow-2);
+}
+
+.Btn:hover {
+  filter: brightness(120%);
+  cursor: pointer;
+}
+
+.Icon {
+  margin-bottom: 0.3rem;
 }

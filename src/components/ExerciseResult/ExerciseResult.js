@@ -1,30 +1,14 @@
 import { Link } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import slugify from 'slugify';
 
 import AddToWorkoutBtn from '../AddToWorkoutBtn/AddToWorkoutBtn';
 import FavoriteBtn from '../FavoriteBtn/FavoriteBtn';
-import { addToFavorites, removeFromFavorites } from '../../store/actions/';
 import classes from './ExerciseResult.module.css';
 
 const ExerciseResult = (props) => {
   const user = useSelector((state) => state.auth.user);
   const buildingWorkout = useSelector((state) => state.workout.buildingWorkout);
-  // const dispatch = useDispatch();
-
-  // const toggleFavoritesHandler = () =>
-  //   props.isFavorite
-  //     ? dispatch(removeFromFavorites(user.authUser.uid, props.firebaseId))
-  //     : dispatch(addToFavorites(user.authUser.uid, props.exerciseId));
-
-  // const toggleFavoritesBtn = (
-  //   <button
-  //     className={props.isFavorite ? classes.favorite : null}
-  //     onClick={toggleFavoritesHandler}
-  //   >
-  //     Favorite
-  //   </button>
-  // );
 
   return (
     <li className={classes.ExerciseResult}>
@@ -39,12 +23,11 @@ const ExerciseResult = (props) => {
             },
           }}
         >
-          {props.name}
+          <span style={{ marginRight: '.5rem' }}>Name:</span> {props.name}
         </Link>
-        {/* {user && toggleFavoritesBtn} */}
         {user && (
           <FavoriteBtn
-            isFavorte={props.isFavorite}
+            isFavorite={props.isFavorite}
             firebaseId={props.firebaseId}
             exerciseId={props.exerciseId}
           />
@@ -58,8 +41,8 @@ const ExerciseResult = (props) => {
         )}
       </div>
       <div>
-        <span>{props.category}</span>
-        <span>{props.equipment}</span>
+        <span>{props.category && `Category: ${props.category}`}</span>
+        <span>{props.equipment && `Equipment: ${props.equipment}`}</span>
       </div>
     </li>
   );

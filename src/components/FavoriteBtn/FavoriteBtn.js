@@ -1,4 +1,5 @@
 import { useSelector, useDispatch } from 'react-redux';
+import { GoThumbsup, GoThumbsdown } from 'react-icons/go';
 
 import classes from './FavoriteBtn.module.css';
 import { addToFavorites, removeFromFavorites } from '../../store/actions/';
@@ -20,6 +21,11 @@ const FavoriteBtn = (props) => {
   return (
     <button onClick={toggleFavoritesHandler} className={btnClasses.join(' ')}>
       {props.isFavorite ? 'Unfavorite' : 'Favorite'}
+      {props.isFavorite ? (
+        <GoThumbsdown className={classes.Icon} />
+      ) : (
+        <GoThumbsup className={classes.Icon} />
+      )}
     </button>
   );
 };

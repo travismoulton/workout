@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
 
 import ExerciseDetailCategory from '../../components/ExerciseDetails/ExerciseDetailCategory/ExerciseDetailCategory';
 import ExerciseDetailEquipment from '../../components/ExerciseDetails/ExerciseDetailEquipment/ExerciseDetailEquipment';
@@ -9,8 +8,9 @@ import ExerciseDetailDescription from '../../components/ExerciseDetails/Exercise
 import ExerciseDetailMuscles from '../../components/ExerciseDetails/ExerciseDetailMuscles/ExerciseDetailMuscles';
 import AddToWorkoutBtn from '../../components/AddToWorkoutBtn/AddToWorkoutBtn';
 import Modal from '../../components/UI/Modal/Modal';
+import FavoriteBtn from '../../components/FavoriteBtn/FavoriteBtn';
 import classes from './ExerciseDetail.module.css';
-import { addToFavorites, removeFromFavorites } from '../../store/actions';
+import { removeFromFavorites } from '../../store/actions';
 import wgerDict from '../../shared/wgerDict';
 
 const ExerciseDetail = (props) => {
@@ -70,11 +70,6 @@ const ExerciseDetail = (props) => {
       });
   }, [favorites, exercise]);
 
-  const onSubmit = () =>
-    isFavorite
-      ? dispatch(removeFromFavorites(user.authUser.uid, firebaseId))
-      : dispatch(addToFavorites(user.authUser.uid, exercise.id));
-
   const deleteCustomExercise = async () => {
     if (isFavorite)
       dispatch(removeFromFavorites(user.authUser.uid, props.firebaseId));
@@ -105,10 +100,10 @@ const ExerciseDetail = (props) => {
   );
 
   const display = exercise ? (
-    <>
+    <div>
       {error.code === 'delete' && error.message}
       <div>
-        <h3>{exercise.name}</h3>
+        <h1 className={classes.ExerciseName}>{exercise.name}</h1>
         <ExerciseDetailCategory
           category={wgerDict.exerciseCategoryList[exercise.category]}
         />
@@ -135,12 +130,13 @@ const ExerciseDetail = (props) => {
           }
         />
         {user && (
-          <button
-            className={isFavorite ? classes.Favorite : null}
-            onClick={onSubmit}
-          >
-            Favorite
-          </button>
+          <div className={classes.BtnContainer}>
+            <FavoriteBtn
+              isFavorite={isFavorite}
+              firebaseId={firebaseId}
+              exerciseId={exercise.id}
+            />
+          </div>
         )}
         {buildingWorkout ? (
           <AddToWorkoutBtn
@@ -152,7 +148,7 @@ const ExerciseDetail = (props) => {
         {props.location.state.custom ? deleteCustomExerciseBtn : null}
       </div>
       {props.location.state.custom ? modal : null}
-    </>
+    </div>
   ) : null;
 
   const noExerciseError = error.code === 'noExercise' && error.message;

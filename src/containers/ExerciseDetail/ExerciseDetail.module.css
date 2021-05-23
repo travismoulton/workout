@@ -1,3 +1,10 @@
-.Favorite {
-  background-color: #fff;
+.ExerciseName {
+  font-size: 3.5rem;
+  font-weight: 400;
+}
+
+.BtnContainer {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: center;
 }
