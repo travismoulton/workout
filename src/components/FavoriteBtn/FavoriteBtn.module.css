@@ -1,0 +1,8 @@
+.Btn {
+  width: 12rem;
+  height: 3.5rem;
+  border-radius: 3px;
+  box-shadow: var(--box-shadow-1);
+  background-color: var(--color-secondary-light);
+  border: 2px solid var(--color-secondary);
+}

@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import slugiy from 'slugify';
 
-import classes from './SearchSubCategory.module.css';
+import classes from '../SearchCategory/SearchCategory.module.css';
 
 const SearchSubCategory = (props) => {
   return (
@@ -15,7 +15,7 @@ const SearchSubCategory = (props) => {
           wger: true,
         },
       }}
-      className={classes.SearchSubCategory}
+      className={`${classes.SearchCategory} ${classes.SearchCategory__subCategory}`}
     >
       {props.subCategoryName}
     </Link>

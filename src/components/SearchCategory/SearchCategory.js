@@ -1,7 +1,10 @@
 import classes from './SearchCategory.module.css';
 
 const SearchCategory = (props) => (
-  <div className={classes.SearchCategory} onClick={props.clicked}>
+  <div
+    className={`${classes.SearchCategory} ${classes.SearchCategory__mainCategory}`}
+    onClick={props.clicked}
+  >
     {props.categoryName}
     <span
       className={`${

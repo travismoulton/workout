@@ -1,9 +1,11 @@
 .ExerciseResult {
   list-style: none;
-  border: 1px solid #eee;
+  box-shadow: var(--box-shadow-1);
+  border-radius: 3px;
   padding: 1rem;
-  margin-bottom: 0.5rem;
-  background-color: #b3ffff;
+  margin-bottom: 1rem;
+  background-color: var(--color-primary);
+  color: var(--color-white);
   display: flex;
   flex-direction: column;
   min-width: 50rem;
@@ -16,7 +18,7 @@
 
 .ExerciseResult a {
   text-decoration: none;
-  color: #000;
+  color: var(--color-white);
 }
 
 .ExerciseResult button.favorite {
