@@ -1,3 +1,10 @@
+.Set {
+  border-bottom: 1px solid var(--color-primary);
+  width: 73rem;
+  padding-bottom: 1rem;
+  margin-bottom: 3rem;
+}
+
 .Form {
   display: flex;
   justify-content: space-around;

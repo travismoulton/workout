@@ -131,13 +131,14 @@ const FavoritesSelectMenu = (props) => {
       (fav) => fav.id === e.value
     )[0];
 
-    dispatch(
-      addExercise({
-        name: exercise.name,
-        id: uniqid(`${exercise.id}-`),
-        sets: [{ weight: 0, reps: 1 }],
-      })
-    );
+    if (exercise)
+      dispatch(
+        addExercise({
+          name: exercise.name,
+          id: uniqid(`${exercise.id}-`),
+          sets: [{ weight: 0, reps: 1 }],
+        })
+      );
   };
 
   return favoritesAsExercises.length ? (

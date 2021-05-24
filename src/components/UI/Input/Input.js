@@ -7,7 +7,6 @@ const Input = (props) => {
   let inputElement = null;
   const inputClasses = [classes[props.classname]];
   if (props.invalid && props.touched) inputClasses.push(classes.Invalid);
-  console.log(props.classname);
 
   switch (props.elementType) {
     case 'input':
@@ -54,9 +53,9 @@ const Input = (props) => {
     //   break;
 
     case 'select':
-      const DropDownIndicator = (props) => (
+      const DropdownIndicator = (props) => (
         <components.DropdownIndicator {...props}>
-          <FiChevronUp />
+          {props.selectProps.menuIsOpen ? <FiChevronUp /> : <FiChevronDown />}
         </components.DropdownIndicator>
       );
 
@@ -83,7 +82,7 @@ const Input = (props) => {
               onChange={props.changed}
               options={props.elementConfig.options}
               styles={customStyles}
-              components={{ DropDownIndicator }}
+              components={{ DropdownIndicator }}
             />
           </div>
           {props.required ? <span>*</span> : null}

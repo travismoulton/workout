@@ -1,5 +1,5 @@
 .WorkoutListItem {
-  width: 6.5rem;
+  width: 15rem;
   height: 1rem;
   margin-left: 0.5rem;
 }
@@ -35,7 +35,8 @@
   margin-bottom: 1.5rem;
 }
 
-.CreateWorkoutSelect {
+.CreateWorkoutSelect,
+.ExerciseFocusSelect {
   width: 30rem;
 }
 

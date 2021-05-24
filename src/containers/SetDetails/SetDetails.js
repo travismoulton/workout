@@ -294,7 +294,7 @@ const SetDetails = (props) => {
   );
 
   return (
-    <li>
+    <li className={classes.Set}>
       <p>Set # {props.setNumber}</p>
       <div className={classes.Form}>{form}</div>
       {btnRow}

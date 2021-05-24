@@ -23,8 +23,8 @@ const WorkoutListItem = (props) => {
     elementType: 'select',
     elementConfig: {
       options: [
-        { value: 'reps', displayValue: 'Reps' },
-        { value: 'time', displayValue: 'Time' },
+        { value: 'reps', label: 'Reps' },
+        { value: 'time', label: 'Time' },
       ],
     },
     value: 'reps',
@@ -33,10 +33,10 @@ const WorkoutListItem = (props) => {
   });
 
   const changeFocusHandler = (e) => {
-    setExerciseFocusInput({ ...exerciseFocusInput, value: e.target.value });
-    setExerciseFocus(e.target.value);
+    setExerciseFocusInput({ ...exerciseFocusInput, value: e.value });
+    setExerciseFocus(e.value);
 
-    e.target.value === 'time'
+    e.value === 'time'
       ? dispatch(resetSetsToTimeFocus(exercises, props.id))
       : dispatch(resetSetsToRepsFocus(exercises, props.id));
   };
@@ -47,6 +47,7 @@ const WorkoutListItem = (props) => {
       elementType={exerciseFocusInput.elementType}
       changed={changeFocusHandler}
       label={exerciseFocusInput.label}
+      classname={'ExerciseFocusSelect'}
     />
   );
 
@@ -103,7 +104,7 @@ const WorkoutListItem = (props) => {
     <li className={classes.WorkoutListItem}>
       <div>{props.name}</div>
       {focusSelectMenu}
-      {sets && <ul style={{ listStyle: 'none' }}>{sets}</ul>}
+      {sets && <ul className={classes.SetsWrapper}>{sets}</ul>}
       <div>
         {!props.isFirstExercise && !props.inRecordMode && moveUpInOrderBtn}
         {!props.isLastExercise && !props.inRecordMode && moveDownInOrderBtn}
