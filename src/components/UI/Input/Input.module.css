@@ -47,6 +47,7 @@
 .WorkoutName:focus {
   outline: none;
   box-shadow: var(--box-shadow-2);
+  caret-color: var(--color-primary);
 }
 
 .SelectMenuGroup {

@@ -1,3 +1,6 @@
+import Select, { components } from 'react-select';
+import { FiChevronDown, FiChevronUp } from 'react-icons/fi';
+
 import classes from './Input.module.css';
 
 const Input = (props) => {
@@ -25,29 +28,68 @@ const Input = (props) => {
       );
       break;
 
+    // case 'select':
+    //   inputElement = (
+    //     <div className={classes.SelectMenuGroup}>
+    //       {props.label && (
+    //         <label className={classes.SelectLabel}>{props.label}</label>
+    //       )}
+    //       <div>
+    //         <select
+    //           {...props.elementConfig}
+    //           value={props.value}
+    //           onChange={props.changed}
+    //           className={inputClasses.join(' ')}
+    //         >
+    //           {props.elementConfig.options.map((option) => (
+    //             <option value={option.value} key={option.value}>
+    //               {option.displayValue}
+    //             </option>
+    //           ))}
+    //         </select>
+    //       </div>
+    //       {props.required ? <span>*</span> : null}
+    //     </div>
+    //   );
+    //   break;
+
     case 'select':
+      const DropDownIndicator = (props) => (
+        <components.DropdownIndicator {...props}>
+          <FiChevronUp />
+        </components.DropdownIndicator>
+      );
+
+      const customStyles = {
+        option: (provided, state) => ({
+          ...provided,
+          textAlign: 'left',
+          height: '4rem',
+          backgroundColor: state.isSelected
+            ? '#00bbff'
+            : state.isFocused
+            ? '#99e6ff'
+            : '#fff',
+        }),
+      };
       inputElement = (
         <div className={classes.SelectMenuGroup}>
           {props.label && (
             <label className={classes.SelectLabel}>{props.label}</label>
           )}
           <div>
-            <select
-              {...props.elementConfig}
-              value={props.value}
-              onChange={props.changed}
+            <Select
               className={inputClasses.join(' ')}
-            >
-              {props.elementConfig.options.map((option) => (
-                <option value={option.value} key={option.value}>
-                  {option.displayValue}
-                </option>
-              ))}
-            </select>
+              onChange={props.changed}
+              options={props.elementConfig.options}
+              styles={customStyles}
+              components={{ DropDownIndicator }}
+            />
           </div>
           {props.required ? <span>*</span> : null}
         </div>
       );
+
       break;
 
     case 'textarea':

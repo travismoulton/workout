@@ -35,15 +35,15 @@ const WorkoutDetailsForm = (props) => {
     elementType: 'select',
     elementConfig: {
       options: [
-        { value: 0, displayValue: '' },
-        { value: 10, displayValue: 'Abs' },
-        { value: 8, displayValue: 'Arms' },
-        { value: 12, displayValue: 'Back' },
-        { value: 14, displayValue: 'Calves' },
-        { value: 11, displayValue: 'Chest' },
-        { value: 9, displayValue: 'Legs' },
-        { value: 13, displayValue: 'Shoulders' },
-        { value: 1, displayValue: 'All Body' },
+        { value: 0, label: '' },
+        { value: 10, label: 'Abs' },
+        { value: 8, label: 'Arms' },
+        { value: 12, label: 'Back' },
+        { value: 14, label: 'Calves' },
+        { value: 11, label: 'Chest' },
+        { value: 9, label: 'Legs' },
+        { value: 13, label: 'Shoulders' },
+        { value: 1, label: 'All Body' },
       ],
     },
     value: formData.targetArea,
@@ -61,14 +61,14 @@ const WorkoutDetailsForm = (props) => {
     elementType: 'select',
     elementConfig: {
       options: [
-        { value: 0, displayValue: '' },
-        { value: 10, displayValue: 'Abs' },
-        { value: 8, displayValue: 'Arms' },
-        { value: 12, displayValue: 'Back' },
-        { value: 14, displayValue: 'Calves' },
-        { value: 11, displayValue: 'Chest' },
-        { value: 9, displayValue: 'Legs' },
-        { value: 13, displayValue: 'Shoulders' },
+        { value: 0, label: '' },
+        { value: 10, label: 'Abs' },
+        { value: 8, label: 'Arms' },
+        { value: 12, label: 'Back' },
+        { value: 14, label: 'Calves' },
+        { value: 11, label: 'Chest' },
+        { value: 9, label: 'Legs' },
+        { value: 13, label: 'Shoulders' },
       ],
     },
     value: formData.secondaryTarget,
@@ -132,9 +132,10 @@ const WorkoutDetailsForm = (props) => {
   ];
 
   const inputChangedHandler = (e, input) => {
+    if (e.target) e.value = e.target.value;
     const updatedInput = updateObject(input, {
-      value: e.target.value,
-      valid: checkValidityHandler(e.target.value, input.validation),
+      value: e.value,
+      valid: checkValidityHandler(e.value, input.validation),
       touched: true,
     });
 
@@ -146,7 +147,7 @@ const WorkoutDetailsForm = (props) => {
       ? setTargetAreaInput(updatedInput)
       : setSecondaryTargetAreaInput(updatedInput);
 
-    dispatch(setFormData(formData, input.id, e.target.value));
+    dispatch(setFormData(formData, input.id, e.value));
   };
 
   const titleForm = formFields.map((field) => (

@@ -94,7 +94,7 @@ const FavoritesSelectMenu = (props) => {
       setFavoritesAsSelectOptions(
         favoritesAsExercises.map((exercise) => ({
           value: exercise.id,
-          displayValue: exercise.name,
+          label: exercise.name,
         }))
       );
       // Once the select options have been set, load the page
@@ -121,17 +121,14 @@ const FavoritesSelectMenu = (props) => {
         ...addFromFavorites,
         elementConfig: {
           ...addFromFavorites.elementConfig,
-          options: [
-            { value: 0, displayValue: null },
-            ...favoritesAsSelectOptions,
-          ],
+          options: [{ value: 0, label: null }, ...favoritesAsSelectOptions],
         },
       });
   }, [addFromFavorites, favoritesAsSelectOptions]);
 
   const addExerciseFromFavorites = (e) => {
     const exercise = favoritesAsExercises.filter(
-      (fav) => fav.id.toString() === e.target.value
+      (fav) => fav.id === e.value
     )[0];
 
     dispatch(
