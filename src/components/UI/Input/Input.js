@@ -2,8 +2,9 @@ import classes from './Input.module.css';
 
 const Input = (props) => {
   let inputElement = null;
-  const inputClasses = [classes[props.className]];
+  const inputClasses = [classes[props.classname]];
   if (props.invalid && props.touched) inputClasses.push(classes.Invalid);
+  console.log(props.classname);
 
   switch (props.elementType) {
     case 'input':
@@ -26,19 +27,24 @@ const Input = (props) => {
 
     case 'select':
       inputElement = (
-        <div>
-          {props.label ? <label>{props.label}</label> : null}
-          <select
-            {...props.elementConfig}
-            value={props.value}
-            onChange={props.changed}
-          >
-            {props.elementConfig.options.map((option) => (
-              <option value={option.value} key={option.value}>
-                {option.displayValue}
-              </option>
-            ))}
-          </select>
+        <div className={classes.SelectMenuGroup}>
+          {props.label && (
+            <label className={classes.SelectLabel}>{props.label}</label>
+          )}
+          <div>
+            <select
+              {...props.elementConfig}
+              value={props.value}
+              onChange={props.changed}
+              className={inputClasses.join(' ')}
+            >
+              {props.elementConfig.options.map((option) => (
+                <option value={option.value} key={option.value}>
+                  {option.displayValue}
+                </option>
+              ))}
+            </select>
+          </div>
           {props.required ? <span>*</span> : null}
         </div>
       );

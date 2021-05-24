@@ -28,7 +28,9 @@ const rootReducer = combineReducers({
 
 const store = createStore(
   rootReducer,
-  composeEnhancers(applyMiddleware(thunk))
+  process.env.NODE_ENV === 'development'
+    ? composeEnhancers(applyMiddleware(thunk))
+    : applyMiddleware(thunk)
 );
 
 ReactDOM.render(

@@ -26,6 +26,7 @@ const FavoritesSelectMenu = (props) => {
     valid: true,
     touched: false,
     id: 4,
+    className: 'CreateWorkoutSelect',
   });
 
   const filterFavorites = useCallback(
@@ -149,6 +150,7 @@ const FavoritesSelectMenu = (props) => {
       label={addFromFavorites.label}
       value={addFromFavorites.value}
       changed={(e) => addExerciseFromFavorites(e)}
+      classname={addFromFavorites.className}
     />
   ) : null;
 };

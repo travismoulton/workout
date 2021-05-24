@@ -28,6 +28,7 @@ const WorkoutDetailsForm = (props) => {
     valid: formData.workoutName ? true : false,
     touched: false,
     id: 'workoutName',
+    className: 'WorkoutName',
   });
 
   const [targetAreaInput, setTargetAreaInput] = useState({
@@ -53,6 +54,7 @@ const WorkoutDetailsForm = (props) => {
     valid: true,
     touched: false,
     id: 'targetArea',
+    className: 'CreateWorkoutSelect',
   });
 
   const [secondaryTargetAreaInput, setSecondaryTargetAreaInput] = useState({
@@ -77,6 +79,7 @@ const WorkoutDetailsForm = (props) => {
     valid: true,
     touched: false,
     id: 'secondaryTarget',
+    className: 'CreateWorkoutSelect',
   });
 
   useEffect(() => {
@@ -156,6 +159,7 @@ const WorkoutDetailsForm = (props) => {
       label={field.label}
       touched={field.touched}
       invalid={!field.valid}
+      classname={field.className}
     />
   ));
 

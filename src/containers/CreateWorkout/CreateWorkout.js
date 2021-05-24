@@ -7,8 +7,8 @@ import Spinner from '../../components/UI/Spinner/Spinner';
 import FavoritesSelectMenu from './FavoritesSelectMenu/FavoritesSelectMenu';
 import WorkoutDetailsForm from './WorkoutDetailsForm/WorkoutDetailsForm';
 import { startSearchMode } from '../../store/actions';
-
 import wgerDict from '../../shared/wgerDict';
+import classes from './CreateWorkout.module.css';
 
 const CreateWorkout = (props) => {
   const { exercises } = useSelector((state) => state.workout);
@@ -57,7 +57,10 @@ const CreateWorkout = (props) => {
 
   return (
     <>
-      <div style={{ display: !loaded && 'none' }}>
+      <div
+        style={{ display: !loaded && 'none' }}
+        className={classes.CreateWorkout}
+      >
         {error.isError ? error.message : null}
 
         <WorkoutDetailsForm
