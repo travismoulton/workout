@@ -55,6 +55,7 @@ const WorkoutDetailsForm = (props) => {
     touched: false,
     id: 'targetArea',
     className: 'CreateWorkoutSelect',
+    wrapperClass: 'WorkoutDetailsSelectWrapper',
   });
 
   const [secondaryTargetAreaInput, setSecondaryTargetAreaInput] = useState({
@@ -80,6 +81,7 @@ const WorkoutDetailsForm = (props) => {
     touched: false,
     id: 'secondaryTarget',
     className: 'CreateWorkoutSelect',
+    wrapperClass: 'WorkoutDetailsSelectWrapper',
   });
 
   useEffect(() => {
@@ -161,6 +163,7 @@ const WorkoutDetailsForm = (props) => {
       touched={field.touched}
       invalid={!field.valid}
       classname={field.className}
+      wrapperClass={field.wrapperClass}
     />
   ));
 

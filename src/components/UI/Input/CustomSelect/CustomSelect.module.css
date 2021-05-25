@@ -1,11 +1,3 @@
-.SelectMenuGroup {
-  display: flex;
-  justify-content: space-between;
-  width: 60rem;
-  margin-bottom: 1.5rem;
-  margin-left: 5rem;
-}
-
 .SelectLabel {
   font-size: 1.8rem;
 }

@@ -45,3 +45,26 @@
   box-shadow: var(--box-shadow-2);
   caret-color: var(--color-primary);
 }
+
+.SelectMenuGroup {
+  display: flex;
+  justify-content: space-between;
+  width: 60rem;
+  margin-bottom: 1.5rem;
+  margin-left: 5rem;
+}
+
+.WorkoutDetailsSelectWrapper {
+  display: flex;
+  justify-content: space-between;
+  width: 60rem;
+  margin-bottom: 1.5rem;
+  margin-left: 5rem;
+}
+
+.ExerciseFocusSelectWrapper {
+  display: flex;
+  justify-content: space-between;
+  width: 80%;
+  align-items: center;
+}

@@ -42,20 +42,14 @@ const CustomSelect = (props) => {
     }),
   };
   return (
-    <div className={classes.SelectMenuGroup}>
-      {props.label && (
-        <label className={classes.SelectLabel}>{props.label}</label>
-      )}
-      <Select
-        className={classes[props.inputClasses]}
-        onChange={props.changed}
-        options={props.options}
-        styles={customStyles}
-        components={{ DropdownIndicator }}
-        defaultValue={defaultValue}
-      />
-      {props.required ? <span>*</span> : null}
-    </div>
+    <Select
+      className={classes[props.inputClasses]}
+      onChange={props.changed}
+      options={props.options}
+      styles={customStyles}
+      components={{ DropdownIndicator }}
+      defaultValue={defaultValue}
+    />
   );
 };
 

@@ -49,6 +49,7 @@ const WorkoutListItem = (props) => {
       changed={changeFocusHandler}
       label={exerciseFocusInput.label}
       classname={'ExerciseFocusSelect'}
+      wrapperClass={'ExerciseFocusSelectWrapper'}
     />
   );
 

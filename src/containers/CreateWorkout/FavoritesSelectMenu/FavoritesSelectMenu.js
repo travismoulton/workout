@@ -149,6 +149,7 @@ const FavoritesSelectMenu = (props) => {
       value={addFromFavorites.value}
       changed={addExerciseFromFavorites}
       classname={addFromFavorites.className}
+      wrapperClass="WorkoutDetailsSelectWrapper"
     />
   ) : null;
 };

@@ -27,14 +27,20 @@ const Input = (props) => {
 
     case 'select':
       inputElement = (
-        <CustomSelect
-          inputClasses={inputClasses.join(' ')}
-          label={props.label}
-          required={props.required}
-          changed={props.changed}
-          options={props.elementConfig.options}
-          value={props.value}
-        />
+        <div className={classes[props.wrapperClass]}>
+          {props.label && (
+            <label className={classes.SelectLabel}>{props.label}</label>
+          )}
+          <CustomSelect
+            inputClasses={inputClasses.join(' ')}
+            label={props.label}
+            required={props.required}
+            changed={props.changed}
+            options={props.elementConfig.options}
+            value={props.value}
+          />
+          {props.required ? <span>*</span> : null}
+        </div>
       );
 
       break;
