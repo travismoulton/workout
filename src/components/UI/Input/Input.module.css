@@ -35,11 +35,6 @@
   margin-bottom: 1.5rem;
 }
 
-.CreateWorkoutSelect,
-.ExerciseFocusSelect {
-  width: 30rem;
-}
-
 .WorkoutName::placeholder {
   padding-left: 1rem;
   font-size: 1.8rem;
@@ -49,16 +44,4 @@
   outline: none;
   box-shadow: var(--box-shadow-2);
   caret-color: var(--color-primary);
-}
-
-.SelectMenuGroup {
-  display: flex;
-  justify-content: space-between;
-  width: 60rem;
-  margin-bottom: 1.5rem;
-  margin-left: 5rem;
-}
-
-.SelectLabel {
-  font-size: 1.8rem;
 }
