@@ -33,6 +33,7 @@ const Input = (props) => {
           required={props.required}
           changed={props.changed}
           options={props.elementConfig.options}
+          value={props.value}
         />
       );
 

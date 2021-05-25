@@ -136,7 +136,7 @@ const FavoritesSelectMenu = (props) => {
         addExercise({
           name: exercise.name,
           id: uniqid(`${exercise.id}-`),
-          sets: [{ weight: 0, reps: 1 }],
+          sets: [{ weight: 0, reps: 0 }],
         })
       );
   };
@@ -147,7 +147,7 @@ const FavoritesSelectMenu = (props) => {
       elementConfig={addFromFavorites.elementConfig}
       label={addFromFavorites.label}
       value={addFromFavorites.value}
-      changed={(e) => addExerciseFromFavorites(e)}
+      changed={addExerciseFromFavorites}
       classname={addFromFavorites.className}
     />
   ) : null;

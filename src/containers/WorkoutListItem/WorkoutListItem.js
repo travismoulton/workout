@@ -18,6 +18,7 @@ const WorkoutListItem = (props) => {
   const [exerciseFocus, setExerciseFocus] = useState('reps');
   const { exercises } = useSelector((state) => state.workout);
   const dispatch = useDispatch();
+  console.log('render');
 
   const [exerciseFocusInput, setExerciseFocusInput] = useState({
     elementType: 'select',

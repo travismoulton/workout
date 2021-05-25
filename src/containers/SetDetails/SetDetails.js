@@ -15,7 +15,7 @@ const SetDetails = (props) => {
       options: (() => {
         let arr = [];
         for (let i = 0; i < 75; i++)
-          arr.push({ value: i * 5, displayValue: i * 5 });
+          arr.push({ value: i * 5, label: (i * 5).toString() });
         return arr;
       })(),
     },
@@ -29,7 +29,8 @@ const SetDetails = (props) => {
     elementConfig: {
       options: (() => {
         let arr = [];
-        for (let i = 1; i < 25; i++) arr.push({ value: i, displayValue: i });
+        for (let i = 0; i < 25; i++)
+          arr.push({ value: i, label: i.toString() });
         return arr;
       })(),
     },
@@ -43,7 +44,8 @@ const SetDetails = (props) => {
     elementConfig: {
       options: (() => {
         let arr = [];
-        for (let i = 0; i < 90; i++) arr.push({ value: i, displayValue: i });
+        for (let i = 0; i < 90; i++)
+          arr.push({ value: i, label: i.toString() });
         return arr;
       })(),
     },
@@ -57,7 +59,8 @@ const SetDetails = (props) => {
     elementConfig: {
       options: (() => {
         let arr = [];
-        for (let i = 0; i < 61; i++) arr.push({ value: i, displayValue: i });
+        for (let i = 0; i < 61; i++)
+          arr.push({ value: i, label: i.toString() });
         return arr;
       })(),
     },
@@ -67,52 +70,53 @@ const SetDetails = (props) => {
   });
 
   const setWeight = (e) => {
-    setWeightInput({ ...weightInput, value: e.target.value * 1 });
+    console.log(e.value);
+    setWeightInput({ ...weightInput, value: e.value * 1 });
     dispatch(
       updateExerciseData(
         exercises,
         props.id,
         'weight',
-        e.target.value * 1,
+        e.value * 1,
         props.setNumber - 1
       )
     );
   };
 
   const setNumReps = (e) => {
-    setRepsInput({ ...repsInput, value: e.target.value * 1 });
+    setRepsInput({ ...repsInput, value: e.value * 1 });
     dispatch(
       updateExerciseData(
         exercises,
         props.id,
         'reps',
-        e.target.value * 1,
+        e.value * 1,
         props.setNumber - 1
       )
     );
   };
 
   const setNumMinutes = (e) => {
-    setMinutesInput({ ...minutesInput, value: e.target.value * 1 });
+    setMinutesInput({ ...minutesInput, value: e.value * 1 });
     dispatch(
       updateExerciseData(
         exercises,
         props.id,
         'minutes',
-        e.target.value * 1,
+        e.value * 1,
         props.setNumber - 1
       )
     );
   };
 
   const setNumSeconds = (e) => {
-    setSecondsInput({ ...secondsInput, value: e.target.value * 1 });
+    setSecondsInput({ ...secondsInput, value: e.value * 1 });
     dispatch(
       updateExerciseData(
         exercises,
         props.id,
         'seconds',
-        e.target.value * 1,
+        e.value * 1,
         props.setNumber - 1
       )
     );
@@ -244,7 +248,7 @@ const SetDetails = (props) => {
       value={field.value}
       changed={updateFunctions[i]}
       label={field.label}
-      classname="WorkoutListItem"
+      classname="SetDetailsSelect"
     />
   ));
 

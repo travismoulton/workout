@@ -10,6 +10,10 @@ const CustomSelect = (props) => {
     </components.DropdownIndicator>
   );
 
+  const defaultValue = props.options.filter(
+    (option) => option.value === props.value
+  )[0];
+
   const customStyles = {
     option: (provided, state) => ({
       ...provided,
@@ -48,6 +52,7 @@ const CustomSelect = (props) => {
         options={props.options}
         styles={customStyles}
         components={{ DropdownIndicator }}
+        defaultValue={defaultValue}
       />
       {props.required ? <span>*</span> : null}
     </div>
