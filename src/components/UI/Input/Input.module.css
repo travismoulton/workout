@@ -68,3 +68,15 @@
   width: 80%;
   align-items: center;
 }
+
+.SetDetailsSelectWrapper {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 40%;
+  position: relative;
+}
+
+.SetDetailsSelectWrapper label {
+  margin-right: 1rem;
+}

@@ -18,6 +18,7 @@ const CustomSelect = (props) => {
     option: (provided, state) => ({
       ...provided,
       textAlign: 'left',
+
       height: '4rem',
       backgroundColor: state.isSelected
         ? '#00bbff'
@@ -32,6 +33,10 @@ const CustomSelect = (props) => {
       boxShadow: state.menuIsOpen && '0 2px 2px 2px rgba(0, 191, 255, 0.3)',
       borderColor: state.menuIsOpen ? '#00bbff' : 'hsl(0, 0%, 80%)',
 
+      // clipPath:
+      //   props.setClipPath && 'polygon(15% 0%, 100% 0%, 85% 100%, 0% 100%)',
+      // padding: props.setClipPath && '0 2rem',
+      // zIndex: props.setClipPath && '2',
       ':focus': {
         ...provided[':focus'],
       },

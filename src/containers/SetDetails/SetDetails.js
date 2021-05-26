@@ -35,7 +35,7 @@ const SetDetails = (props) => {
       })(),
     },
     value: props.reps,
-    label: 'Number of reps',
+    label: 'Reps',
     id: 3,
   });
 
@@ -230,6 +230,18 @@ const SetDetails = (props) => {
     );
   };
 
+  const btnFunctions =
+    props.focus === 'reps'
+      ? [
+          [decrementWeight, incrementWeight],
+          [decrementReps, incrementReps],
+        ]
+      : [
+          [decrementMinutes, incrementMinutes],
+          decrementSeconds,
+          incrementSeconds,
+        ];
+
   const formFields =
     props.focus === 'reps'
       ? [weightInput, repsInput]
@@ -249,41 +261,13 @@ const SetDetails = (props) => {
       changed={updateFunctions[i]}
       label={field.label}
       classname="SetDetailsSelect"
+      wrapperClass="SetDetailsSelectWrapper"
+      setClipPath
+      SetDetails
+      decrementFunction={btnFunctions[i][0]}
+      incrementFunction={btnFunctions[i][1]}
     />
   ));
-
-  const btnRow = (
-    <div className={classes.ButtonRow}>
-      <span className={classes.ButtonPair}>
-        <button
-          className={classes.DecrementBtn}
-          onClick={props.focus === 'reps' ? decrementWeight : decrementMinutes}
-        >
-          -
-        </button>
-        <button
-          className={classes.IncrementBtn}
-          onClick={props.focus === 'reps' ? incrementWeight : incrementMinutes}
-        >
-          +
-        </button>
-      </span>
-      <span className={classes.ButtonPair}>
-        <button
-          className={classes.DecrementBtn}
-          onClick={props.focus === 'reps' ? decrementReps : decrementSeconds}
-        >
-          -
-        </button>
-        <button
-          className={classes.IncrementBtn}
-          onClick={props.focus === 'reps' ? incrementReps : incrementSeconds}
-        >
-          +
-        </button>
-      </span>
-    </div>
-  );
 
   const removeSetBtn = (
     <button
@@ -301,7 +285,7 @@ const SetDetails = (props) => {
     <li className={classes.Set}>
       <p>Set # {props.setNumber}</p>
       <div className={classes.Form}>{form}</div>
-      {btnRow}
+      {/* {btnRow} */}
       {props.numberOfSets > 1 && removeSetBtn}
     </li>
   );

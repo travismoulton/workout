@@ -1,5 +1,7 @@
 import classes from './Input.module.css';
 import CustomSelect from './CustomSelect/CustomSelect';
+import IncrementBtn from '../../IncrementBtn/IncrementBtn';
+import DecrementBtn from '../../DecrementBtn/DecrementBtn';
 
 const Input = (props) => {
   let inputElement = null;
@@ -31,15 +33,30 @@ const Input = (props) => {
           {props.label && (
             <label className={classes.SelectLabel}>{props.label}</label>
           )}
-          <CustomSelect
-            inputClasses={inputClasses.join(' ')}
-            label={props.label}
-            required={props.required}
-            changed={props.changed}
-            options={props.elementConfig.options}
-            value={props.value}
-          />
-          {props.required ? <span>*</span> : null}
+          <span
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            {props.SetDetails && (
+              <DecrementBtn clicked={props.decrementFunction} />
+            )}
+            <CustomSelect
+              inputClasses={inputClasses.join(' ')}
+              label={props.label}
+              required={props.required}
+              changed={props.changed}
+              options={props.elementConfig.options}
+              value={props.value}
+              // setClipPath={props.setClipPath}
+            />
+            {props.SetDetails && (
+              <IncrementBtn clicked={props.incrementFunction} />
+            )}
+            {props.required ? <span>*</span> : null}
+          </span>
         </div>
       );
 

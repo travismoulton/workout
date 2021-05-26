@@ -9,25 +9,3 @@
   display: flex;
   justify-content: space-around;
 }
-
-.ButtonRow {
-  display: flex;
-  justify-content: space-around;
-  margin: 0.5rem 0;
-}
-
-.IncrementBtn {
-  background-color: #66ff66;
-  color: #fff;
-  width: 3rem;
-  height: 3rem;
-  border-radius: 2px;
-}
-
-.DecrementBtn {
-  background-color: #ff1a1a;
-  color: #fff;
-  width: 3rem;
-  height: 3rem;
-  border-radius: 2px;
-}

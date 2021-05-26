@@ -1,6 +1,7 @@
 .WorkoutListItem {
   border: 1px solid var(--color-primary);
-  background-color: #d9d9d9;
+  background-color: rgba(var(--rgba-dark-grey), 0.6);
+
   padding: 1rem;
   width: 75rem;
   min-height: 16rem;
@@ -9,6 +10,7 @@
   justify-content: space-between;
   align-items: center;
   position: relative;
+  margin: 1rem auto;
 }
 
 .SetsWrapper {
