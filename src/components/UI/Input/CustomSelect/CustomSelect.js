@@ -18,7 +18,6 @@ const CustomSelect = (props) => {
     option: (provided, state) => ({
       ...provided,
       textAlign: 'left',
-
       height: '4rem',
       backgroundColor: state.isSelected
         ? '#00bbff'
@@ -37,9 +36,7 @@ const CustomSelect = (props) => {
       //   props.setClipPath && 'polygon(15% 0%, 100% 0%, 85% 100%, 0% 100%)',
       // padding: props.setClipPath && '0 2rem',
       // zIndex: props.setClipPath && '2',
-      ':focus': {
-        ...provided[':focus'],
-      },
+
       ':hover': {
         ...provided[':hover'],
         borderColor: '#00bbff',

@@ -48,7 +48,7 @@ const CreateWorkout = (props) => {
 
   const clearWorkoutBtn = (
     <button
-      style={{ display: 'block', margin: '.5rem auto' }}
+      className={`GlobalBtn-1 ${classes.ClearBtn}`}
       onClick={() => setShouldClearFormInputs(true)}
     >
       Clear form
@@ -88,12 +88,15 @@ const CreateWorkout = (props) => {
           isLoaded={loaded}
         />
 
-        <button onClick={onAddExerciseBySearchClick}>
+        <button
+          className={`GlobalBtn-1 ${classes.AddBySearchBtn}`}
+          onClick={onAddExerciseBySearchClick}
+        >
           Add from exercise search menu
         </button>
         {exercises.length ? (
           <>
-            <ul style={{ listStyle: 'none' }}>
+            <ul className={classes.WorkoutList}>
               {exercises.map((exercise, i) => (
                 <WorkoutListItem
                   name={exercise.name}

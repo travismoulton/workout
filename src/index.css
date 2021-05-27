@@ -28,6 +28,7 @@ html {
   --box-shadow-1: 0 1px 1px 1px rgba(0, 0, 0, 0.1);
   --box-shadow-2: 0 2px 2px 2px rgba(0, 0, 0, 0.1);
   --box-shadow-primary: 0 2px 2px 2px rgba(0, 191, 255, 0.1);
+  --box-shadow-primary-2: 0 2px 2px 2px rgba(0, 191, 255, 0.3);
 }
 
 ::selection {
@@ -71,4 +72,23 @@ body {
   border-left: 0.7rem solid transparent;
   border-right: 0.7rem solid transparent;
   border-top: 0.7rem solid var(--color-white);
+}
+
+.GlobalBtn-1 {
+  background-color: rgba(var(--rgba-primary), 0.7);
+  height: 3.5rem;
+  border-radius: 3px;
+  border: none;
+  box-shadow: var(--box-shadow-2);
+  color: var(--color-white);
+}
+
+.GlobalBtn-1:active {
+  transform: translateY(10%);
+  box-shadow: var(--box-shadow-1);
+}
+
+.GlobalBtn-1:hover {
+  filter: brightness(120%);
+  cursor: pointer;
 }

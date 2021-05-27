@@ -10,6 +10,7 @@ import {
   setFirebaseId,
 } from '../../../store/actions';
 import { updateObject, checkValidityHandler } from '../../../shared/utility';
+import classes from './WorkoutDetailsForm.module.css';
 
 const WorkoutDetailsForm = (props) => {
   const { formData } = useSelector((state) => state.workout);
@@ -152,7 +153,7 @@ const WorkoutDetailsForm = (props) => {
     dispatch(setFormData(formData, input.id, e.value));
   };
 
-  const titleForm = formFields.map((field) => (
+  const detailsForm = formFields.map((field) => (
     <Input
       elementType={field.elementType}
       elementConfig={field.elementConfig}
@@ -196,7 +197,7 @@ const WorkoutDetailsForm = (props) => {
     }
   }, [props, clearAllWorkoutData]);
 
-  return titleForm;
+  return detailsForm;
 };
 
 export default WorkoutDetailsForm;

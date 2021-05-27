@@ -27,22 +27,35 @@
 }
 
 .WorkoutName {
-  box-shadow: var(--box-shadow-1);
-  border-radius: 3px;
+  background-color: hsl(0, 0%, 100%);
+  border-color: hsl(0, 0%, 80%);
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 4px;
   width: 30rem;
   height: 3.7rem;
-  padding: 1rem 2rem;
+  padding: 0.2rem 0.8rem;
   margin-bottom: 1.5rem;
+  position: relative;
 }
 
 .WorkoutName::placeholder {
-  padding-left: 1rem;
-  font-size: 1.8rem;
+  color: hsl(0, 0%, 30%);
+  position: absolute;
+  margin-left: 2px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.6rem;
+}
+
+.WorkoutName:hover {
+  border-color: var(--color-primary);
 }
 
 .WorkoutName:focus {
   outline: none;
-  box-shadow: var(--box-shadow-2);
+  border-color: var(--color-primary);
+  box-shadow: var(--box-shadow-primary-2);
   caret-color: var(--color-primary);
 }
 

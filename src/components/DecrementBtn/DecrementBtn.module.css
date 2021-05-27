@@ -10,8 +10,15 @@
   align-items: center;
   font-size: 2.5rem;
   margin-right: 0.5rem;
+  box-shadow: var(--box-shadow-2);
 }
 
 .DecrementBtn:active {
   box-shadow: var(--box-shadow-1);
+  transform: translateY(10%);
+}
+
+.DecrementBtn:hover {
+  filter: brightness(120%);
+  cursor: pointer;
 }

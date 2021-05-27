@@ -271,6 +271,7 @@ const SetDetails = (props) => {
 
   const removeSetBtn = (
     <button
+      className={`GlobalBtn-1 ${classes.Btn}`}
       onClick={() =>
         dispatch(
           removeSetFromExercise(exercises, props.id, props.setNumber - 1)

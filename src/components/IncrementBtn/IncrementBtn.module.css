@@ -9,8 +9,15 @@
   padding-right: 1rem;
   font-size: 2.5rem;
   margin-left: 0.5rem;
+  box-shadow: var(--box-shadow-2);
 }
 
 .IncrementBtn:active {
   box-shadow: var(--box-shadow-1);
+  transform: translateY(10%);
+}
+
+.IncrementBtn:hover {
+  filter: brightness(120%);
+  cursor: pointer;
 }

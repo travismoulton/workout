@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { resetWorkoutStore } from '../../store/actions';
+import classes from './SubmitWorkoutBtn.module.css';
 
 const SubmitWorkoutBtn = (props) => {
   const [error, setError] = useState({
@@ -112,7 +113,7 @@ const SubmitWorkoutBtn = (props) => {
 
   return (
     <>
-      <button onClick={onSubmit}>
+      <button className={`GlobalBtn-1 ${classes.Btn}`} onClick={onSubmit}>
         {props.createNewWorkout ? 'Create Workout' : 'Update workout'}
       </button>
       {error.isError ? error.msg : null}

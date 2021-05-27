@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import uniqid from 'uniqid';
+import { BsArrowDownShort, BsArrowUpShort } from 'react-icons/bs';
 
+import RemoveExerciseBtn from './RemoveExerciseBtn/RemoveExerciseBtn';
 import SetDetails from '../SetDetails/SetDetails';
 import Input from '../../components/UI/Input/Input';
 import {
@@ -18,7 +20,6 @@ const WorkoutListItem = (props) => {
   const [exerciseFocus, setExerciseFocus] = useState('reps');
   const { exercises } = useSelector((state) => state.workout);
   const dispatch = useDispatch();
-  console.log('render');
 
   const [exerciseFocusInput, setExerciseFocusInput] = useState({
     elementType: 'select',
@@ -53,28 +54,21 @@ const WorkoutListItem = (props) => {
     />
   );
 
-  const closeWorkoutBtn = (
-    <div
-      className={classes.CloseWorkoutBtn}
-      onClick={() => dispatch(removeExercise(exercises, props.id))}
-    >
-      &times;
-    </div>
-  );
-
   const moveUpInOrderBtn = (
     <button
+      className={`GlobalBtn-1 ${classes.OrderBtn}`}
       onClick={() => dispatch(changeExerciseOrder(exercises, props.id, 'up'))}
     >
-      Up
+      Move Exercise Up <BsArrowUpShort size="2em" color="#fff" />
     </button>
   );
 
   const moveDownInOrderBtn = (
     <button
+      className={`GlobalBtn-1 ${classes.OrderBtn}`}
       onClick={() => dispatch(changeExerciseOrder(exercises, props.id, 'down'))}
     >
-      Down
+      Move Exercise Down <BsArrowDownShort size="2em" color="#fff" />
     </button>
   );
 
@@ -84,7 +78,11 @@ const WorkoutListItem = (props) => {
       : dispatch(addTimeFocusedSetToExercise(exercises, props.id));
   };
 
-  const addSetBtn = <button onClick={addSet}>Add another set</button>;
+  const addSetBtn = (
+    <button className={`GlobalBtn-1 ${classes.AddSetBtn}`} onClick={addSet}>
+      Add another set
+    </button>
+  );
 
   const sets =
     props.sets.length &&
@@ -107,12 +105,12 @@ const WorkoutListItem = (props) => {
       <div>{props.name}</div>
       {focusSelectMenu}
       {sets && <ul className={classes.SetsWrapper}>{sets}</ul>}
-      <div>
+      <div className={classes.BtnRow}>
         {!props.isFirstExercise && !props.inRecordMode && moveUpInOrderBtn}
+        {addSetBtn}
         {!props.isLastExercise && !props.inRecordMode && moveDownInOrderBtn}
       </div>
-      {closeWorkoutBtn}
-      {addSetBtn}
+      <RemoveExerciseBtn id={props.id} />
     </li>
   );
 };

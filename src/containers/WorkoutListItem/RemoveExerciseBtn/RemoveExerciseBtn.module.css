@@ -1,0 +1,18 @@
+.CloseWorkoutBtnContainer {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+}
+
+.CloseWorkoutBtn {
+  color: rgba(var(--rgba-primary), 0.7);
+}
+
+.CloseWorkoutBtn:hover {
+  color: rgba(var(--rgba-primary), 0.5);
+  cursor: pointer;
+}
+
+.CloseWorkoutBtn:active {
+  transform: translateY(10%);
+}

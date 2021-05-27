@@ -108,7 +108,7 @@ const SubmitExerciseBtn = (props) => {
     </Tooltip>
   ) : null;
 
-  const showTooltipTestFunc = (e) => {
+  const showToolTip = (e) => {
     if (!props.formIsValid) {
       const btnCoordinateData = e.target.getBoundingClientRect();
       setTooltipData({
@@ -131,7 +131,7 @@ const SubmitExerciseBtn = (props) => {
         disabled={!props.formIsValid}
         onClick={submitValidFormHandler}
         style={{ cursor: !props.formIsValid ? 'not-allowed' : 'auto' }}
-        onMouseOver={showTooltipTestFunc}
+        onMouseOver={showToolTip}
         onMouseOut={hideToolTip}
       >
         Submit Exercise

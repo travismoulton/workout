@@ -1,3 +1,18 @@
 .CreateWorkout {
   width: 100rem;
 }
+
+.AddBySearchBtn {
+  width: 23.75rem;
+}
+
+.ClearBtn {
+  display: block;
+  margin: 1rem auto;
+  width: 15rem;
+}
+
+.WorkoutList {
+  list-style: none;
+  padding: 0;
+}
