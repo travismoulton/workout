@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import { updateObject, checkValidityHandler } from '../../shared/utility';
 import Input from '../../components/UI/Input/Input';
 import SubmitRoutineBtn from '../../components/SubmitRoutineBtn/SubmitRoutineBtn';
+import classes from './CreateRoutine.module.css';
 
 const CreateRoutine = (props) => {
   const [historyUsed, setHistoryUsed] = useState(false);
@@ -68,11 +69,11 @@ const CreateRoutine = (props) => {
         timeout: 5000,
       })
         .then((res) => {
-          const userWorkouts = [{ displayValue: 'Rest', value: 'Rest' }];
+          const userWorkouts = [{ label: 'Rest', value: 'Rest' }];
 
           for (const key in res.data)
             userWorkouts.push({
-              displayValue: res.data[key].title,
+              label: res.data[key].title,
               value: key,
             });
 
@@ -127,7 +128,7 @@ const CreateRoutine = (props) => {
     const select = { ...workoutSelectMenu, value: selectedWorkouts[i] };
     const changed = (e) => {
       const tempWorkouts = [...selectedWorkouts];
-      tempWorkouts[i] = e.target.value;
+      tempWorkouts[i] = e.value;
       setSelectedWorkouts(tempWorkouts);
     };
     return (
@@ -138,6 +139,8 @@ const CreateRoutine = (props) => {
         changed={(e) => changed(e)}
         label={day}
         key={day}
+        classname="RoutineSelect"
+        wrapperClass="RoutineSelectWrapper"
       />
     );
   });
@@ -167,11 +170,13 @@ const CreateRoutine = (props) => {
 
   const display = (
     <>
+      <h1 className={classes.H1}>Create a new routine</h1>
       <Input
         elementType={routineNameInput.elementType}
         elementConfig={routineNameInput.elementConfig}
         value={routineNameInput.value}
         changed={(e) => inputChangedHandler(e, routineNameInput)}
+        classname="RoutineName"
       />
       {workoutSelectMenus}
       <SubmitRoutineBtn

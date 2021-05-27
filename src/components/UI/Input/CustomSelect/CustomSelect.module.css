@@ -3,10 +3,12 @@
 }
 
 .CreateWorkoutSelect,
-.ExerciseFocusSelect {
+.ExerciseFocusSelect,
+.CreateExerciseSelect {
   width: 30rem;
 }
 
-.SetDetailsSelect {
+.SetDetailsSelect,
+.RoutineSelect {
   width: 20rem;
 }

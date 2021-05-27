@@ -4,7 +4,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #f4f4d7;
+  background-color: var(--color-primary);
+  color: var(--color-white);
   position: fixed;
   transform: translateX(-50%);
 }
@@ -15,7 +16,7 @@
   height: 0;
   border-left: 0.9rem solid transparent;
   border-right: 0.9rem solid transparent;
-  border-top: 0.9rem solid #f4f4d7;
+  border-top: 0.9rem solid var(--color-primary);
   position: absolute;
   bottom: -0.9rem;
 }

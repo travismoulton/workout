@@ -112,7 +112,11 @@ const SubmitRoutineBtn = (props) => {
 
   return (
     <>
-      <button onClick={onSubmit}>
+      <button
+        className="GlobalBtn-1"
+        onClick={onSubmit}
+        style={{ width: '20rem', marginTop: '2rem' }}
+      >
         {props.createNewRoutine ? 'Create new routine' : 'Edit routine'}
       </button>
       {error.isError ? error.msg : null}

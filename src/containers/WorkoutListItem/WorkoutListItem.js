@@ -8,7 +8,6 @@ import SetDetails from '../SetDetails/SetDetails';
 import Input from '../../components/UI/Input/Input';
 import {
   changeExerciseOrder,
-  removeExercise,
   resetSetsToTimeFocus,
   resetSetsToRepsFocus,
   addSetToExercise,
@@ -110,7 +109,7 @@ const WorkoutListItem = (props) => {
         {addSetBtn}
         {!props.isLastExercise && !props.inRecordMode && moveDownInOrderBtn}
       </div>
-      <RemoveExerciseBtn id={props.id} />
+      <RemoveExerciseBtn id={props.id} exerciseName={props.name} />
     </li>
   );
 };

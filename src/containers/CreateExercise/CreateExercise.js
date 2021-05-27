@@ -30,7 +30,7 @@ const CreateExercise = (props) => {
     elementType: 'input',
     elementConfig: {
       type: 'text',
-      placeholder: 'Workout name',
+      placeholder: 'Exercise name',
     },
     value: '',
     validation: {
@@ -39,6 +39,7 @@ const CreateExercise = (props) => {
     valid: false,
     touched: false,
     id: 'name',
+    className: 'ExerciseName',
   });
   const [descriptionInput, setDescriptionInput] = useState({
     elementType: 'textarea',
@@ -52,21 +53,22 @@ const CreateExercise = (props) => {
     valid: false,
     touched: false,
     id: 'description',
+    className: 'CreateExerciseDescription',
   });
   const [categoryInput, setCategoryInput] = useState({
     elementType: 'select',
     elementConfig: {
       options: [
-        { value: '', displayValue: '' },
-        { value: 10, displayValue: 'Abs' },
-        { value: 8, displayValue: 'Arms' },
-        { value: 12, displayValue: 'Back' },
-        { value: 14, displayValue: 'Calves' },
-        { value: 11, displayValue: 'Chest' },
-        { value: 9, displayValue: 'Legs' },
-        { value: 13, displayValue: 'Shoulders' },
-        { value: 99, displayValue: 'All Body' },
-        { value: 98, displayValue: 'Cardio' },
+        { value: '', label: '' },
+        { value: 10, label: 'Abs' },
+        { value: 8, label: 'Arms' },
+        { value: 12, label: 'Back' },
+        { value: 14, label: 'Calves' },
+        { value: 11, label: 'Chest' },
+        { value: 9, label: 'Legs' },
+        { value: 13, label: 'Shoulders' },
+        { value: 99, label: 'All Body' },
+        { value: 98, label: 'Cardio' },
       ],
     },
     value: 0,
@@ -77,11 +79,12 @@ const CreateExercise = (props) => {
     valid: false,
     touched: false,
     id: 'category',
+    className: 'CreateExerciseSelect',
   });
   const [primaryMuscleInput, setPrimaryMuscleInputInput] = useState({
     elementType: 'select',
     elementConfig: {
-      options: [{ value: 0, displayValue: '' }],
+      options: [{ value: '', label: '' }],
     },
     value: 0,
     label: 'Primary Muscle',
@@ -91,6 +94,7 @@ const CreateExercise = (props) => {
     valid: true,
     touched: false,
     id: 'primaryMuscle',
+    className: 'CreateExerciseSelect',
   });
 
   const checkBoxTemplate = {
@@ -178,9 +182,9 @@ const CreateExercise = (props) => {
 
   useEffect(() => {
     if (!muscleSelectOptionsDone) {
-      let options = [{ value: 0, displayValue: '' }];
+      let options = [{ value: 0, label: '' }];
       for (const key in wgerDict.muscles) {
-        options.push({ value: key, displayValue: wgerDict.muscles[key].name });
+        options.push({ value: key, label: wgerDict.muscles[key].name });
       }
       setPrimaryMuscleInputInput({
         ...primaryMuscleInput,
@@ -244,6 +248,7 @@ const CreateExercise = (props) => {
       key={field.id}
       changed={(e) => inputChangedHandler(e, field)}
       required={field.validation.required}
+      classname={field.className}
     />
   ));
 
