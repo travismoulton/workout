@@ -13,7 +13,7 @@ const Input = (props) => {
       if (props.elementConfig.type === 'text')
         inputClasses.push(classes.TextInput);
       inputElement = (
-        <>
+        <div style={{ position: 'relative' }}>
           {props.label ? <label>{props.label}</label> : null}
           <input
             {...props.elementConfig}
@@ -22,8 +22,10 @@ const Input = (props) => {
             autoComplete="false"
             className={inputClasses.join(' ')}
           />
-          {props.required ? <span>*</span> : null}
-        </>
+          {props.required ? (
+            <span className={classes.InputAsteric}>*</span>
+          ) : null}
+        </div>
       );
       break;
 
@@ -50,12 +52,13 @@ const Input = (props) => {
               changed={props.changed}
               options={props.elementConfig.options}
               value={props.value}
-              // setClipPath={props.setClipPath}
             />
             {props.SetDetails && (
               <IncrementBtn clicked={props.incrementFunction} />
             )}
-            {props.required ? <span>*</span> : null}
+            {props.required ? (
+              <span className={classes.SelectAsteric}>*</span>
+            ) : null}
           </span>
         </div>
       );

@@ -53,12 +53,6 @@ const wgerDict = {
       image_url_main: '/static/images/muscles/main/muscle-12.svg',
       image_url_secondary: '/static/images/muscles/secondary/muscle-12.svg',
     },
-    14: {
-      name: 'Obliquus externus abdominis',
-      is_front: true,
-      image_url_main: '/static/images/muscles/main/muscle-14.svg',
-      image_url_secondary: '/static/images/muscles/secondary/muscle-14.svg',
-    },
     4: {
       name: 'Pectoralis major',
       is_front: true,
@@ -82,6 +76,12 @@ const wgerDict = {
       is_front: true,
       image_url_main: '/static/images/muscles/main/muscle-3.svg',
       image_url_secondary: '/static/images/muscles/secondary/muscle-3.svg',
+    },
+    14: {
+      name: 'Obliquus externus abdominis',
+      is_front: true,
+      image_url_main: '/static/images/muscles/main/muscle-14.svg',
+      image_url_secondary: '/static/images/muscles/secondary/muscle-14.svg',
     },
     15: {
       name: 'Soleus',

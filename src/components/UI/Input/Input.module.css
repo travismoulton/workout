@@ -127,3 +127,16 @@
   margin-bottom: 1.5rem;
   position: relative;
 }
+
+.SelectAsteric {
+  margin-left: 0.4rem;
+  margin-bottom: 1.9rem;
+  font-size: 2rem;
+}
+
+.InputAsteric {
+  position: absolute;
+  margin-left: 0.3rem;
+  top: -0.3rem;
+  font-size: 2rem;
+}

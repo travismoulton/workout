@@ -1,11 +1,22 @@
-.EquipmentCheckboxes {
-  display: flex;
-  flex-wrap: wrap;
-  width: 60%;
+.CheckBoxGroup {
+  display: grid;
+  grid-template-columns: auto auto;
+  align-items: center;
   justify-content: center;
   margin: 0 auto;
 }
 
-.EquipmentCheckboxes div {
-  margin: 0.5rem;
+.CheckBoxGroup div {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 auto;
+  padding: 0.2rem 1rem;
+}
+
+.EquipmentBoxes div {
+  width: 15rem;
+}
+
+.MuscleBoxes div {
+  width: 25rem;
 }

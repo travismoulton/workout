@@ -127,10 +127,9 @@ const SubmitExerciseBtn = (props) => {
     <>
       {error.isError ? error.msg : null}
       <button
-        className={classes.Btn}
+        className={`GlobalBtn-1 ${classes.Btn}`}
         disabled={!props.formIsValid}
         onClick={submitValidFormHandler}
-        style={{ cursor: !props.formIsValid ? 'not-allowed' : 'auto' }}
         onMouseOver={showToolTip}
         onMouseOut={hideToolTip}
       >

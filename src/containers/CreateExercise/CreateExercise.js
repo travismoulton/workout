@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
+// import ExerciseNameInput from './ExerciseNameInput/ExerciseNameInput';
 import Input from '../../components/UI/Input/Input';
 import SubmitExerciseBtn from './SubmitExerciseBtn/SubmitExerciseBtn';
 import { updateObject, checkValidityHandler } from '../../shared/utility';
@@ -8,6 +9,8 @@ import wgerDict from '../../shared/wgerDict';
 import classes from './CreateExercise.module.css';
 
 const CreateExercise = (props) => {
+  // const [exerciseName, setExerciseName] = useState(null);
+  // const [description, setDescription] = useState(null);
   const { user } = useSelector((state) => state.auth);
   const [muscleSelectOptionsDone, setMuscleSelectOptionsDone] = useState(false);
   const [formIsValid, setFormIsValid] = useState(false);
@@ -228,9 +231,11 @@ const CreateExercise = (props) => {
   };
 
   const inputChangedHandler = (e, input) => {
+    if (e.target) e.value = e.target.value;
+
     const updatedInput = updateObject(input, {
-      value: e.target.value,
-      valid: checkValidityHandler(e.target.value, input.validation),
+      value: e.value,
+      valid: checkValidityHandler(e.value.toString(), input.validation),
       touched: true,
     });
 
@@ -272,9 +277,13 @@ const CreateExercise = (props) => {
     <>
       {form}
       <h4>Select all needed equipment</h4>
-      <div className={classes.EquipmentCheckboxes}>{equipmentCheckboxes}</div>
+      <div className={`${classes.CheckBoxGroup} ${classes.EquipmentBoxes}`}>
+        {equipmentCheckboxes}
+      </div>
       <h4>Select all secondary muscles worked</h4>
-      <div className={classes.EquipmentCheckboxes}>{muscleCheckboxes}</div>
+      <div className={`${classes.CheckBoxGroup} ${classes.MuscleBoxes}`}>
+        {muscleCheckboxes}
+      </div>
       <SubmitExerciseBtn
         formIsValid={formIsValid}
         nameIsValid={exerciseNameInput.valid}
