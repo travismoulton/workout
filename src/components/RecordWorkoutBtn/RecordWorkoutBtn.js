@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import axios from 'axios';
 
+import classes from './RecordWorkoutBtn.module.css';
 import Modal from '../UI/Modal/Modal';
 
 const RecordWorkoutBtn = (props) => {
@@ -64,6 +65,7 @@ const RecordWorkoutBtn = (props) => {
     <>
       {modal}
       <button
+        className={`GlobalBtn-1 ${classes.Btn}`}
         onClick={
           props.updated ? () => setShowModal(true) : recordWorkoutHandler
         }

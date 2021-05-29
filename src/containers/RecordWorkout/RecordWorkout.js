@@ -8,6 +8,7 @@ import Spinner from '../../components/UI/Spinner/Spinner';
 import RecordADifferentWorkout from '../../components/RecordADifferentWorkout/RecordADifferentWorkout';
 import ChangeWorkoutRecordDate from './ChangeRecordWorkoutDate/ChangeWorkoutRecordDate';
 import { setExercises, resetWorkoutStore } from '../../store/actions';
+import classes from './RecordWorkout.module.css';
 
 const RecordWorkout = (props) => {
   const [workoutDate, setWorkoutDate] = useState(new Date());
@@ -133,13 +134,19 @@ const RecordWorkout = (props) => {
   };
 
   const recordADifferentWorkoutBtn = (
-    <button onClick={() => setShowRecordDifferentWorkoutModal(true)}>
+    <button
+      className={`GlobalBtn-1 ${classes.OpenModalBtn}`}
+      onClick={() => setShowRecordDifferentWorkoutModal(true)}
+    >
       Record a different workout today
     </button>
   );
 
   const recordDifferentDayBtn = (
-    <button onClick={() => setShowChangeDateModal(true)}>
+    <button
+      className={`GlobalBtn-1 ${classes.OpenModalBtn}`}
+      onClick={() => setShowChangeDateModal(true)}
+    >
       Record a workout for a different day
     </button>
   );
@@ -186,7 +193,7 @@ const RecordWorkout = (props) => {
       {suggestedWorkout ? <h3>{suggestedWorkout.title}</h3> : <h3>Rest</h3>}
       {recordADifferentWorkoutBtn}
       {recordDifferentDayBtn}
-      {displayExercises}
+      <div className={classes.WorkoutContainer}>{displayExercises}</div>
       {suggestedWorkout && exercises.length ? (
         <RecordWorkoutBtn
           workout={suggestedWorkout}

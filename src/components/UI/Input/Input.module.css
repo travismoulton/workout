@@ -94,6 +94,13 @@
   margin-left: 5rem;
 }
 
+.RecordWorkoutModalSelectWrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 50rem;
+}
+
 .ExerciseFocusSelectWrapper {
   display: flex;
   justify-content: space-between;

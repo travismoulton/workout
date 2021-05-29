@@ -9,6 +9,7 @@
 }
 
 .SetDetailsSelect,
-.RoutineSelect {
+.RoutineSelect,
+.RecordWorkoutModalSelect {
   width: 20rem;
 }

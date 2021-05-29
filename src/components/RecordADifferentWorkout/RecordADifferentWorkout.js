@@ -104,9 +104,8 @@ const RecordADifferentWorkout = (props) => {
     const filteredOptions = [];
 
     unfilteredOptions.forEach((unfiltered) => {
-      !filteredOptions.filter(
-        (filtered) => filtered.displayValue === unfiltered.displayValue
-      ).length && filteredOptions.push(unfiltered);
+      !filteredOptions.filter((filtered) => filtered.label === unfiltered.label)
+        .length && filteredOptions.push(unfiltered);
     });
 
     return filteredOptions;
@@ -116,7 +115,7 @@ const RecordADifferentWorkout = (props) => {
     if (routineWorkouts.length && !initialRoutineMenuSet) {
       const menuOptions = routineWorkouts.map((workout) => ({
         value: workout.firebaseId,
-        displayValue: workout.title,
+        label: workout.title,
       }));
 
       setActiveRoutineSelectMenu({
@@ -124,7 +123,7 @@ const RecordADifferentWorkout = (props) => {
         elementConfig: {
           ...activeRoutineSelectMenu.elementConfig,
           options: [
-            { value: '', displayValue: '' },
+            { value: '', label: '' },
             ...filterMenuOptions(menuOptions),
           ],
         },
@@ -137,13 +136,13 @@ const RecordADifferentWorkout = (props) => {
     if (allWorkouts.length && !initalWorkoutMenuSet) {
       const menuOptions = allWorkouts.map((workout) => ({
         value: workout.firebaseId,
-        displayValue: workout.title,
+        label: workout.title,
       }));
       setAllWorkoutSelectMenu({
         ...allWorkoutSelectMenu,
         elementConfig: {
           ...allWorkoutSelectMenu.elementConfig,
-          options: [{ value: '', displayValue: '' }, ...menuOptions],
+          options: [{ value: '', label: '' }, ...menuOptions],
         },
       });
       setInitialWorkoutMenuSet(true);
@@ -159,9 +158,11 @@ const RecordADifferentWorkout = (props) => {
       changed={(e) =>
         setActiveRoutineSelectMenu({
           ...activeRoutineSelectMenu,
-          value: e.target.value,
+          value: e.value,
         })
       }
+      classname="RecordWorkoutModalSelect"
+      wrapperClass="RecordWorkoutModalSelectWrapper"
     />
   );
 
@@ -174,9 +175,11 @@ const RecordADifferentWorkout = (props) => {
       changed={(e) =>
         setAllWorkoutSelectMenu({
           ...allWorkoutSelectMenu,
-          value: e.target.value,
+          value: e.value,
         })
       }
+      classname="RecordWorkoutModalSelect"
+      wrapperClass="RecordWorkoutModalSelectWrapper"
     />
   );
 
@@ -192,7 +195,10 @@ const RecordADifferentWorkout = (props) => {
   };
 
   const switchWorkoutBtn = (menu) => (
-    <button onClick={() => switchWorkoutAndCloseModal(menu)}>
+    <button
+      className={`GlobalBtn-1`}
+      onClick={() => switchWorkoutAndCloseModal(menu)}
+    >
       Choose workout
     </button>
   );
@@ -222,7 +228,9 @@ const RecordADifferentWorkout = (props) => {
       !allWorkoutSelectMenu.elementConfig.options.length
         ? noAvailableWorkoutsMsg
         : null}
-      <button onClick={props.closeModal}>Cancel</button>
+      <button className={`GlobalBtn-1`} onClick={props.closeModal}>
+        Cancel
+      </button>
     </Modal>
   );
 
