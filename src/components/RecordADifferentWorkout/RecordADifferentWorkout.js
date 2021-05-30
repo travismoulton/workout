@@ -163,6 +163,7 @@ const RecordADifferentWorkout = (props) => {
       }
       classname="RecordWorkoutModalSelect"
       wrapperClass="RecordWorkoutModalSelectWrapper"
+      notSearchable
     />
   );
 
@@ -180,6 +181,7 @@ const RecordADifferentWorkout = (props) => {
       }
       classname="RecordWorkoutModalSelect"
       wrapperClass="RecordWorkoutModalSelectWrapper"
+      notSearchable
     />
   );
 

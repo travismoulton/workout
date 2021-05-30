@@ -1,9 +1,12 @@
 .CheckBoxGroup {
   display: grid;
-  grid-template-columns: auto auto;
   align-items: center;
   justify-content: center;
   margin: 0 auto;
+}
+
+.EquipmentBoxes {
+  grid-template-columns: auto auto;
 }
 
 .CheckBoxGroup div {

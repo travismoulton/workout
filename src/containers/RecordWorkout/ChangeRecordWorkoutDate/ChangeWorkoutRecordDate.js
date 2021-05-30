@@ -2,6 +2,7 @@ import { useState } from 'react';
 
 import Input from '../../../components/UI/Input/Input';
 import Modal from '../../../components/UI/Modal/Modal';
+import DatePicker from '../../../components/UI/DatePicker/DatePicker';
 
 const ChangeWorkoutRecordDate = (props) => {
   const [dateInput, setDateInput] = useState({
@@ -49,5 +50,18 @@ const ChangeWorkoutRecordDate = (props) => {
     </Modal>
   );
 };
+
+// const ChangeWorkoutRecordDate = (props) => {
+//   const onChange = () => {
+//     console.log('onChange');
+//   };
+//   return (
+//     <Modal show={props.show} modalClosed={props.closeModal}>
+//       <DatePicker onChange={onChange} />
+//       {/* {cancelBtn}
+//       {changeDateBtn} */}
+//     </Modal>
+//   );
+// };
 
 export default ChangeWorkoutRecordDate;

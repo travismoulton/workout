@@ -52,6 +52,7 @@ const Input = (props) => {
               changed={props.changed}
               options={props.elementConfig.options}
               value={props.value}
+              isSearchable={!props.notSearchable}
             />
             {props.SetDetails && (
               <IncrementBtn clicked={props.incrementFunction} />

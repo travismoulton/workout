@@ -16,6 +16,6 @@
 
 .modal-exit-active {
   opacity: 0;
-  transform: translateY((-100vh));
+  transform: translateY(-100vh);
   transition: opacity transform 0.3s;
 }

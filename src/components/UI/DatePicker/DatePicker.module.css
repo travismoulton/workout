@@ -1,0 +1,49 @@
+.DatePicker {
+  float: left;
+  position: relative;
+}
+
+.DatePicker * {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+
+.Input {
+  float: left;
+  width: 15rem;
+  height: 3.5rem;
+  overflow: hidden;
+  border-radius: 2rem;
+}
+
+.Input input:focus {
+  outline: none;
+}
+
+.Input input {
+  width: 125%;
+  background-color: #f5f5f5;
+  border: none;
+  height: 3.5rem;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+
+.Container {
+  float: left;
+  position: absolute;
+  left: 0;
+  top: 4rem;
+  width: 30rem;
+  min-height: 35rem;
+  background: var(--color-white);
+  box-shadow: 1rem 1rem 4rem rgba(0, 0, 0, 0.2);
+  border-radius: 2px;
+  overflow: hidden;
+  padding: 2.5rem 3rem;
+}
