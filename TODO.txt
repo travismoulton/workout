@@ -5,6 +5,9 @@
 //4: Add functionality to have user's picture through firebase
 
 
-LEFTOFF: //  Handling the error in create-workout select menu
+LEFTOFF: // 
+
+1: Not highlight the current day be default
+2: Need to close the date picker on selection of a date
 
 

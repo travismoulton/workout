@@ -83,7 +83,7 @@ const DatePicker = (props) => {
   }
 
   function getMonthDetails(year, month) {
-    const firstDay = new Date(year, month).getDate(); // Get day of the month
+    const firstDay = new Date(year, month).getDay();
     const numberOfDays = getNumberOfDays(year, month);
     const monthArr = [];
     const rows = 6;
@@ -93,7 +93,6 @@ const DatePicker = (props) => {
 
     for (let row = 0; row < rows; row++) {
       for (let col = 0; col < columns; col++) {
-        console.log(index);
         currentDay = getDayDetails({
           index,
           numberOfDays,
@@ -178,7 +177,7 @@ const DatePicker = (props) => {
   const setYear = (offset) => {
     const year = stateLevelYear + offset;
     setStateLevelYear(year);
-    setMonthDetails(year, stateLevelMonth);
+    setMonthDetails(getMonthDetails(year, stateLevelMonth));
   };
 
   const setMonth = (offset) => {
@@ -193,8 +192,12 @@ const DatePicker = (props) => {
       year++;
     }
 
+    // console.log(year, month);
+
+    // console.log(getMonthDetails(year, month));
+
     setStateLevelMonth(month);
-    setMonthDetails(year, month);
+    setMonthDetails(getMonthDetails(year, month));
     if (year !== stateLevelYear) setStateLevelYear(year);
   };
 
@@ -205,12 +208,13 @@ const DatePicker = (props) => {
   });
 
   const renderCalendar = () => {
+    console.log(monthDetails);
     const days = monthDetails.map((day, i) => (
       <div
         className={`${classes.CDayContainer} ${
-          day.month !== 0 && classes.Disabled
-        } ${isCurrentDay(day) && classes.Highlight} ${
-          isSelectedDay(day) && classes.HighlightGreen
+          day.month !== 0 ? classes.Disabled : ''
+        } ${isCurrentDay(day) ? classes.Highlight : ''} ${
+          isSelectedDay(day) ? classes.HighlightGreen : ''
         }`}
         key={i}
       >
@@ -239,7 +243,12 @@ const DatePicker = (props) => {
   return (
     <div className={classes.DatePicker}>
       <div className={classes.Input} onClick={() => setShowDatePicker(true)}>
-        <input type="date" onChange={updateDateFromInput} ref={inputRef} />
+        <input
+          type="text"
+          onChange={updateDateFromInput}
+          ref={inputRef}
+          placeholder="MM/DD/YYYY"
+        />
       </div>
       {showDatePicker && (
         <div className={classes.Container}>
