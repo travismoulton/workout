@@ -38,30 +38,26 @@ const ChangeWorkoutRecordDate = (props) => {
 
   return (
     <Modal show={props.show} modalClosed={props.closeModal}>
-      <Input
-        elementType={dateInput.elementType}
-        elementConfig={dateInput.elementConfig}
-        label={dateInput.label}
-        value={dateInput.value}
-        changed={(e) => setDateInput({ ...dateInput, value: e.target.value })}
-      />
-      {cancelBtn}
-      {changeDateBtn}
+      <DatePicker />
+      {/* {cancelBtn}
+      {changeDateBtn} */}
     </Modal>
   );
 };
 
-// const ChangeWorkoutRecordDate = (props) => {
-//   const onChange = () => {
-//     console.log('onChange');
-//   };
+export default ChangeWorkoutRecordDate;
+
 //   return (
 //     <Modal show={props.show} modalClosed={props.closeModal}>
-//       <DatePicker onChange={onChange} />
-//       {/* {cancelBtn}
-//       {changeDateBtn} */}
+//       <Input
+//         elementType={dateInput.elementType}
+//         elementConfig={dateInput.elementConfig}
+//         label={dateInput.label}
+//         value={dateInput.value}
+//         changed={(e) => setDateInput({ ...dateInput, value: e.target.value })}
+//       />
+//       {cancelBtn}
+//       {changeDateBtn}
 //     </Modal>
 //   );
 // };
-
-export default ChangeWorkoutRecordDate;

@@ -50,17 +50,16 @@ const DatePicker = (props) => {
     if (showDatePicker) setShowDatePicker(false);
   };
 
-  const getNumberOfDays = (year, month) =>
-    40 - new Date(year, month, 40).getDate();
+  function getNumberOfDays(year, month) {
+    return 40 - new Date(year, month, 40).getDate();
+  }
 
-  const getDayDetails = (args) => {
+  function getDayDetails(args) {
     const date = args.index - args.firstDay;
-    // getting the day as a value 0 - 6
     const day = args.index % 7;
     let prevMonth = args.month - 1;
     let prevYear = args.year - 1;
 
-    // If january, move the calendar back to last year
     if (prevMonth < 0) {
       prevMonth = 11;
       prevYear--;
@@ -68,11 +67,6 @@ const DatePicker = (props) => {
 
     const prevMonthNumberOfDays = getNumberOfDays(prevYear, prevMonth);
 
-    // At the begining of the month, for days from the previous month calculate the appropriate date
-    // by subtracting the number of days from that month by the index.
-
-    // If it is not from the current month, get the date by using date modulus number of days. This
-    // will account for days that spill into the next month.
     const _date =
       (date < 0 ? prevMonthNumberOfDays + date : date % args.numberOfDays) + 1;
 
@@ -86,9 +80,9 @@ const DatePicker = (props) => {
       timeStamp,
       dayString: daysMap[day],
     };
-  };
+  }
 
-  const getMonthDetails = (year, month) => {
+  function getMonthDetails(year, month) {
     const firstDay = new Date(year, month).getDate(); // Get day of the month
     const numberOfDays = getNumberOfDays(year, month);
     const monthArr = [];
@@ -97,8 +91,9 @@ const DatePicker = (props) => {
     let currentDay = null;
     let index = 0;
 
-    rows.forEach((row) => {
-      columns.forEach((column) => {
+    for (let row = 0; row < rows; row++) {
+      for (let col = 0; col < columns; col++) {
+        console.log(index);
         currentDay = getDayDetails({
           index,
           numberOfDays,
@@ -108,11 +103,11 @@ const DatePicker = (props) => {
         });
         monthArr.push(currentDay);
         index++;
-      });
-    });
+      }
+    }
 
     return monthArr;
-  };
+  }
 
   const isCurrentDay = (day) => day.timeStamp === todayTimeStamp;
 
@@ -169,18 +164,130 @@ const DatePicker = (props) => {
     }
   };
 
+  const setDateToInput = (timeStamp) => {
+    const dateString = getDateStringFromTimestamp(timeStamp);
+    inputRef.current.value = dateString;
+  };
+
+  const onDateClick = (day) => {
+    setSelectedDay(day.timeStamp);
+    setDateToInput(day.timeStamp);
+    if (props.onChange) props.onChange(day.timeStamp);
+  };
+
+  const setYear = (offset) => {
+    const year = stateLevelYear + offset;
+    setStateLevelYear(year);
+    setMonthDetails(year, stateLevelMonth);
+  };
+
+  const setMonth = (offset) => {
+    let month = stateLevelMonth + offset;
+    let year = stateLevelYear;
+
+    if (month === -1) {
+      month = 11;
+      year--;
+    } else if (month === 12) {
+      month = 0;
+      year++;
+    }
+
+    setStateLevelMonth(month);
+    setMonthDetails(year, month);
+    if (year !== stateLevelYear) setStateLevelYear(year);
+  };
+
   useEffect(() => {
     window.addEventListener('click', addBackDrop);
 
     return window.removeEventListener('click', addBackDrop);
   });
 
+  const renderCalendar = () => {
+    const days = monthDetails.map((day, i) => (
+      <div
+        className={`${classes.CDayContainer} ${
+          day.month !== 0 && classes.Disabled
+        } ${isCurrentDay(day) && classes.Highlight} ${
+          isSelectedDay(day) && classes.HighlightGreen
+        }`}
+        key={i}
+      >
+        <div className={classes.CdcDay}>
+          <span onClick={() => onDateClick(day)}>{day.date}</span>
+        </div>
+      </div>
+    ));
+
+    const daysArr = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+
+    return (
+      <div className={classes.CalendarContainer}>
+        <div className={classes.Head}>
+          {daysArr.map((day, i) => (
+            <div key={i} className={classes.Head__name}>
+              {day}
+            </div>
+          ))}
+        </div>
+        <div className={classes.Body}>{days}</div>
+      </div>
+    );
+  };
+
   return (
     <div className={classes.DatePicker}>
       <div className={classes.Input} onClick={() => setShowDatePicker(true)}>
-        <input type="date" />
+        <input type="date" onChange={updateDateFromInput} ref={inputRef} />
       </div>
-      {showDatePicker ? <div className={classes.Container}></div> : ''}
+      {showDatePicker && (
+        <div className={classes.Container}>
+          <div className={classes.Container__head}>
+            <div className={classes.Container__head__btn}>
+              <div
+                className={classes.Container__head__btn__inner}
+                onClick={() => setYear(-1)}
+              >
+                <span className={classes.LeftArrows}></span>
+              </div>
+            </div>
+            <div className={classes.Container__head__btn}>
+              <div
+                className={classes.Container__head__btn__inner}
+                onClick={() => setMonth(-1)}
+              >
+                <span className={classes.LeftArrow}></span>
+              </div>
+            </div>
+            <div className={classes.Container__head__inner}>
+              <div className={classes.Container__head__inner__year}>
+                {stateLevelYear}
+              </div>
+              <div className={classes.Container__head__inner__month}>
+                {getMonthStr(stateLevelMonth)}
+              </div>
+            </div>
+            <div className={classes.Container__head__btn}>
+              <div
+                className={classes.Container__head__btn__inner}
+                onClick={() => setMonth(1)}
+              >
+                <span className={classes.RightArrow}></span>
+              </div>
+            </div>
+            <div className={classes.Container__head__btn}>
+              <div
+                className={classes.Container__head__btn__inner}
+                onClick={() => setYear(1)}
+              >
+                <span className={classes.RightArrows}></span>
+              </div>
+            </div>
+          </div>
+          <div className={classes.Container__body}>{renderCalendar()}</div>
+        </div>
+      )}
     </div>
   );
 };
