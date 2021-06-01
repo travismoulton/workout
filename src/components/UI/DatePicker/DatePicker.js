@@ -1,3 +1,4 @@
+import React from 'react';
 import { useState, useEffect, useRef } from 'react';
 
 import classes from './DatePicker.module.css';
@@ -28,27 +29,35 @@ const DatePicker = (props) => {
     'December',
   ];
 
-  const dayInMilliSeconds = 6 * 60 * 24 * 1000;
-
-  // Getting a time stamp of the current day at noon
-  const todayTimeStamp =
-    Date.now() -
-    (Date.now() % dayInMilliSeconds) +
-    new Date().getTimezoneOffset() * 1000 * 60;
-
   const DATE = new Date();
+
+  const todayTimeStamp = new Date(
+    DATE.getFullYear(),
+    DATE.getMonth(),
+    DATE.getDate()
+  ).getTime();
+
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [stateLevelYear, setStateLevelYear] = useState(DATE.getFullYear());
   const [stateLevelMonth, setStateLevelMonth] = useState(DATE.getMonth());
   const [selectedDay, setSelectedDay] = useState(todayTimeStamp);
   const [monthDetails, setMonthDetails] = useState(
-    getMonthDetails(stateLevelYear, stateLevelMonth)
+    getMonthDetails(DATE.getFullYear(), DATE.getMonth())
   );
   const inputRef = useRef(null);
+  const calendarRef = useRef(null);
 
-  const addBackDrop = (e) => {
-    if (showDatePicker) setShowDatePicker(false);
+  const hideDatePicker = (e) => {
+    if (calendarRef.current)
+      if (showDatePicker && !calendarRef.current.contains(e.target))
+        setShowDatePicker(false);
   };
+
+  useEffect(() => {
+    window.addEventListener('click', hideDatePicker);
+
+    return () => window.removeEventListener('click', hideDatePicker);
+  });
 
   function getNumberOfDays(year, month) {
     return 40 - new Date(year, month, 40).getDate();
@@ -76,6 +85,7 @@ const DatePicker = (props) => {
     return {
       date: _date,
       day,
+      year: args.year,
       month,
       timeStamp,
       dayString: daysMap[day],
@@ -119,10 +129,6 @@ const DatePicker = (props) => {
     const [year, month, date] = dateDetails;
 
     return { year, month, date };
-
-    // const year = dateDetails[0];
-    // const month = dateDetails[1];
-    // const date = dateDetails[2];
   };
 
   const getMonthStr = (month) =>
@@ -148,7 +154,7 @@ const DatePicker = (props) => {
     setSelectedDay(date);
 
     // Not sure about this. I believe it's so I can pass the date to parent component
-    if (props.onChange) props.onChange(date);
+    // if (props.onChange) props.onChange(date);
   };
 
   const updateDateFromInput = () => {
@@ -171,7 +177,9 @@ const DatePicker = (props) => {
   const onDateClick = (day) => {
     setSelectedDay(day.timeStamp);
     setDateToInput(day.timeStamp);
-    if (props.onChange) props.onChange(day.timeStamp);
+
+    props.onChange(new Date(day.timeStamp));
+    setShowDatePicker(false);
   };
 
   const setYear = (offset) => {
@@ -192,23 +200,12 @@ const DatePicker = (props) => {
       year++;
     }
 
-    // console.log(year, month);
-
-    // console.log(getMonthDetails(year, month));
-
     setStateLevelMonth(month);
     setMonthDetails(getMonthDetails(year, month));
     if (year !== stateLevelYear) setStateLevelYear(year);
   };
 
-  useEffect(() => {
-    window.addEventListener('click', addBackDrop);
-
-    return window.removeEventListener('click', addBackDrop);
-  });
-
   const renderCalendar = () => {
-    console.log(monthDetails);
     const days = monthDetails.map((day, i) => (
       <div
         className={`${classes.CDayContainer} ${
@@ -248,10 +245,11 @@ const DatePicker = (props) => {
           onChange={updateDateFromInput}
           ref={inputRef}
           placeholder="MM/DD/YYYY"
+          className={classes.ClickableInput}
         />
       </div>
       {showDatePicker && (
-        <div className={classes.Container}>
+        <div className={classes.Container} ref={calendarRef}>
           <div className={classes.Container__head}>
             <div className={classes.Container__head__btn}>
               <div

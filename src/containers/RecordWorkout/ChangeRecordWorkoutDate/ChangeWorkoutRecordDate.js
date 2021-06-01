@@ -1,28 +1,17 @@
 import { useState } from 'react';
 
-import Input from '../../../components/UI/Input/Input';
 import Modal from '../../../components/UI/Modal/Modal';
 import DatePicker from '../../../components/UI/DatePicker/DatePicker';
+import classes from './ChangeWorkoutRecordDate.module.css';
 
 const ChangeWorkoutRecordDate = (props) => {
-  const [dateInput, setDateInput] = useState({
-    elementType: 'input',
-    elementConfig: {
-      type: 'date',
-    },
-    value: '',
-    validation: {
-      required: false,
-    },
-    label: 'Select workout date',
-    valid: true,
-    touched: false,
-    id: 'date',
-  });
+  const [date, setDate] = useState(new Date());
 
   const selectNewDate = () => {
-    const dateStr = dateInput.value.split('-');
-    props.changeDate(new Date(dateStr[0], --dateStr[1], dateStr[2]));
+    const dateStr = date.toISOString().split('-');
+    props.changeDate(
+      new Date(+dateStr[0], --dateStr[1], +dateStr[2].substring(0, 2))
+    );
   };
 
   const changeDateAndCloseModal = () => {
@@ -31,33 +20,31 @@ const ChangeWorkoutRecordDate = (props) => {
   };
 
   const changeDateBtn = (
-    <button onClick={changeDateAndCloseModal}>Change Date</button>
+    <button
+      className={`GlobalBtn-1 ${classes.Btn}`}
+      onClick={changeDateAndCloseModal}
+    >
+      Change Date
+    </button>
   );
 
-  const cancelBtn = <button onClick={props.closeModal}>Cancel</button>;
+  const cancelBtn = (
+    <button className={`GlobalBtn-1 ${classes.Btn}`} onClick={props.closeModal}>
+      Cancel
+    </button>
+  );
 
   return (
     <Modal show={props.show} modalClosed={props.closeModal}>
-      <DatePicker />
-      {/* {cancelBtn}
-      {changeDateBtn} */}
+      <div className={classes.Container}>
+        <DatePicker onChange={(date) => setDate(date)} />
+        <div className={classes.BtnRow}>
+          {changeDateBtn}
+          {cancelBtn}
+        </div>
+      </div>
     </Modal>
   );
 };
 
 export default ChangeWorkoutRecordDate;
-
-//   return (
-//     <Modal show={props.show} modalClosed={props.closeModal}>
-//       <Input
-//         elementType={dateInput.elementType}
-//         elementConfig={dateInput.elementConfig}
-//         label={dateInput.label}
-//         value={dateInput.value}
-//         changed={(e) => setDateInput({ ...dateInput, value: e.target.value })}
-//       />
-//       {cancelBtn}
-//       {changeDateBtn}
-//     </Modal>
-//   );
-// };

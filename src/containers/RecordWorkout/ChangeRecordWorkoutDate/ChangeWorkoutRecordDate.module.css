@@ -1,0 +1,17 @@
+.Btn {
+  width: 12rem;
+  margin: 1rem 0;
+}
+
+.Container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.BtnRow {
+  display: flex;
+  justify-content: space-between;
+  width: 35%;
+}
