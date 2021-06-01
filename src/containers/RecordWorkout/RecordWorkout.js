@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
 
@@ -13,7 +13,6 @@ import classes from './RecordWorkout.module.css';
 const RecordWorkout = (props) => {
   const [workoutDate, setWorkoutDate] = useState(new Date());
   const [suggestedWorkout, setSuggestedWorkout] = useState(null);
-  const [exercisesDispatched, setExercisesDispatched] = useState(false);
   const [loading, setLoading] = useState(true);
   const [showChangeDateModal, setShowChangeDateModal] = useState(false);
   const [showRecordDifferentWorkoutModal, setShowRecordDifferentWorkoutModal] =
@@ -24,6 +23,12 @@ const RecordWorkout = (props) => {
   const { exercises } = useSelector((state) => state.workout);
   const { updated } = useSelector((state) => state.workout);
   const dispatch = useDispatch();
+
+  const workoutDateRef = useRef(null);
+
+  useEffect(() => {
+    workoutDateRef.current = workoutDate;
+  }, []);
 
   useEffect(() => {
     const unlisten = props.history.listen((location, action) => {
@@ -36,48 +41,64 @@ const RecordWorkout = (props) => {
     return workoutDate.getDay() === 0 ? 6 : workoutDate.getDay() - 1;
   }, [workoutDate]);
 
+  const getWorkoutBasedOnDay = useCallback(() => {
+    if (activeRoutine) {
+      const workoutFirebaseId = activeRoutine.workouts[adjustDateForSunday()];
+
+      if (workoutFirebaseId !== 'Rest') {
+        (async () =>
+          await axios
+            .get(
+              `https://workout-81691-default-rtdb.firebaseio.com/workouts/${user.authUser.uid}/${workoutFirebaseId}.json`,
+              { timeout: 5000 }
+            )
+            .then((res) => {
+              setSuggestedWorkout({
+                ...res.data,
+                firebaseId: workoutFirebaseId,
+              });
+              dispatch(setExercises(res.data.exercises));
+              if (loading) setLoading(false);
+            })
+            .catch((err) => {
+              setError({
+                isError: true,
+                message: (
+                  <p>
+                    Sorry, we can't load your workouts right now. Please refresh
+                    the page or try again later
+                  </p>
+                ),
+                code: 'activeRoutineError',
+              });
+            }))();
+      } else if (workoutFirebaseId === 'Rest') {
+        setSuggestedWorkout(null);
+        if (exercises.length) dispatch(setExercises([]));
+        if (loading) setLoading(false);
+      }
+    } else if (!activeRoutine && loading) setLoading(false);
+  }, [
+    adjustDateForSunday,
+    activeRoutine,
+    user.authUser.uid,
+    loading,
+    dispatch,
+    exercises,
+  ]);
+
+  useEffect(() => {
+    if (workoutDateRef.current !== workoutDate) {
+      getWorkoutBasedOnDay();
+      workoutDateRef.current = workoutDate;
+    }
+  }, [getWorkoutBasedOnDay, workoutDate, dispatch, suggestedWorkout]);
+
   useEffect(() => {
     if (!suggestedWorkout) {
-      if (activeRoutine) {
-        const workoutFirebaseId = activeRoutine.workouts[adjustDateForSunday()];
-
-        if (workoutFirebaseId !== 'Rest') {
-          (async () =>
-            await axios
-              .get(
-                `https://workout-81691-default-rtdb.firebaseio.com/workouts/${user.authUser.uid}/${workoutFirebaseId}.json`,
-                { timeout: 5000 }
-              )
-              .then((res) =>
-                setSuggestedWorkout({
-                  ...res.data,
-                  firebaseId: workoutFirebaseId,
-                })
-              )
-              .catch((err) => {
-                setError({
-                  isError: true,
-                  message: (
-                    <p>
-                      Sorry, we can't load your workouts right now. Please
-                      refresh the page or try again later
-                    </p>
-                  ),
-                  code: 'activeRoutineError',
-                });
-              }))();
-        } else if (workoutFirebaseId === 'Rest') setLoading(false);
-      } else if (!activeRoutine) setLoading(false);
+      getWorkoutBasedOnDay();
     }
-  }, [suggestedWorkout, adjustDateForSunday, activeRoutine, user.authUser.uid]);
-
-  useEffect(() => {
-    if (suggestedWorkout && !exercisesDispatched) {
-      dispatch(setExercises(suggestedWorkout.exercises));
-      setExercisesDispatched(true);
-      setLoading(false);
-    }
-  }, [suggestedWorkout, dispatch, exercisesDispatched]);
+  }, [suggestedWorkout, getWorkoutBasedOnDay]);
 
   // If an exercise is removed, updated suggested workout and re-render
   useEffect(() => {
@@ -88,6 +109,8 @@ const RecordWorkout = (props) => {
     if (exerciseRemoved)
       setSuggestedWorkout({ ...suggestedWorkout, exercises });
   }, [exercises, suggestedWorkout]);
+
+  useEffect(() => {});
 
   const displayExercises =
     suggestedWorkout &&
@@ -151,7 +174,7 @@ const RecordWorkout = (props) => {
     </button>
   );
 
-  const switchWorkout = (workoutId) => {
+  function switchWorkout(workoutId) {
     workoutId
       ? axios
           .get(
@@ -184,7 +207,7 @@ const RecordWorkout = (props) => {
           ),
           code: 'noSelectedWorkout',
         });
-  };
+  }
 
   const finalDisplay = (
     <>

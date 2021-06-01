@@ -266,6 +266,7 @@ const SetDetails = (props) => {
       SetDetails
       decrementFunction={btnFunctions[i][0]}
       incrementFunction={btnFunctions[i][1]}
+      notSearchable
     />
   ));
 

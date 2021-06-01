@@ -50,6 +50,7 @@ const WorkoutListItem = (props) => {
       label={exerciseFocusInput.label}
       classname={'ExerciseFocusSelect'}
       wrapperClass={'ExerciseFocusSelectWrapper'}
+      notSearchable
     />
   );
 
