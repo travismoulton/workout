@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import slugify from 'slugify';
 
-import classes from './WorkoutLink.module.css';
+import classes from '../../UserProfile.module.css';
 
 const WorkoutLink = (props) => {
   const deleteWorkoutAndCloseModal = () => {
@@ -41,36 +41,38 @@ const WorkoutLink = (props) => {
   };
 
   return (
-    <>
-      <div className={classes.Workout}>
-        <div className={classes.TopRow}>
-          <p>{props.title}</p>
-        </div>
-        <div className={classes.FlexRow}>
-          {props.targetArea ? <p>Target Area: {props.targetArea}</p> : null}
-
-          {props.secondaryTarget ? (
-            <p>Secondary Target: {props.secondaryTarget}</p>
-          ) : null}
-
-          {props.exerciseCount ? (
-            <p>Exercise Count: {props.exerciseCount}</p>
-          ) : null}
-        </div>
-        <div className={classes.FlexRow}>
-          <Link
-            className={classes.WorkoutLink}
-            to={{
-              pathname: `/workout-detail/${slugify(props.title)}`,
-              state: { workout: props.workout },
-            }}
-          >
-            <button>Edit this workout</button>
-          </Link>
-          <button onClick={displayModal}>Delete this workout</button>
-        </div>
+    <div className={classes.WorkoutLink}>
+      <div className={classes.TopRow}>
+        <p className={classes.Title}>
+          <span>Workout name:</span> {props.title}
+        </p>
       </div>
-    </>
+      <div className={classes.FlexRow}>
+        {props.targetArea ? <p>Target Area: {props.targetArea}</p> : null}
+
+        {props.secondaryTarget ? (
+          <p>Secondary Target: {props.secondaryTarget}</p>
+        ) : null}
+
+        {props.exerciseCount ? (
+          <p>Exercise Count: {props.exerciseCount}</p>
+        ) : null}
+      </div>
+      <div className={classes.FlexRow}>
+        <Link
+          className={classes.Link}
+          to={{
+            pathname: `/workout-detail/${slugify(props.title)}`,
+            state: { workout: props.workout },
+          }}
+        >
+          <button className="GlobalBtn-2">Edit this workout</button>
+        </Link>
+        <button className="GlobalBtn-2" onClick={displayModal}>
+          Delete this workout
+        </button>
+      </div>
+    </div>
   );
 };
 

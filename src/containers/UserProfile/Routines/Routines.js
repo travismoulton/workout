@@ -3,13 +3,14 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
-import RoutineLink from '../../../components/RoutineLink/RoutineLink';
-import '../UserProfile.css';
+import RoutineLink from './RoutineLink/RoutineLink';
+import '../UserProfile.module.css';
 import {
   setRoutines,
   setActiveRoutine,
   toggleRoutineRefresh,
 } from '../../../store/actions';
+import classes from '../UserProfile.module.css';
 
 const Routines = (props) => {
   const [randomState, setRandomState] = useState(false);
@@ -135,11 +136,15 @@ const Routines = (props) => {
   );
 
   return (
-    <div className="Routines">
-      <span className="SectionHeader" onClick={props.triggerRoutinesShowing}>
+    <div className={classes.Container}>
+      <div className={classes.Header} onClick={props.triggerRoutinesShowing}>
         <h3>My Routines</h3>
-        <div className={props.showRoutines ? 'ArrowDown' : 'ArrowRight'}></div>
-      </span>
+        <div
+          className={`${classes.Arrow} ${
+            props.showRoutines ? 'ArrowDownWhite' : 'ArrowRightWhite'
+          }`}
+        ></div>
+      </div>
       {props.showRoutines && routineLinks}
     </div>
   );

@@ -83,12 +83,26 @@ body {
   color: var(--color-white);
 }
 
-.GlobalBtn-1:active {
+.GlobalBtn-2 {
+  background-color: rgba(255, 255, 255, 1);
+  color: var(--color-primary);
+  height: 3.5rem;
+  border-radius: 3px;
+  border: none;
+  box-shadow: var(--box-shadow-2);
+}
+
+.GlobalBtn-1:active,
+.GlobalBtn-2:active {
   transform: translateY(10%);
   box-shadow: var(--box-shadow-1);
 }
 
 .GlobalBtn-1:hover {
   filter: brightness(120%);
+  cursor: pointer;
+}
+
+.GlobalBtn-2:hover {
   cursor: pointer;
 }

@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 
-import classes from './RecordedWorkoutLink.module.css';
+import classes from '../../UserProfile.module.css';
 
 const RecordedWorkoutLink = (props) => {
   const date = new Date(props.date.year, props.date.month, props.date.day);
@@ -10,14 +10,14 @@ const RecordedWorkoutLink = (props) => {
       <div className={classes.Record}>
         <p>{props.title}</p>
         <p>{date.toString().substring(0, 15)}</p>
-        <div className={classes.BtnRow}>
+        <div className={classes.FlexRow}>
           <Link
             className={classes.Link}
             to={`/recorded-workout-detail/${props.firebaseId}`}
           >
-            <button>View details</button>
+            <button className="GlobalBtn-2">View details</button>
           </Link>
-          <button onClick={props.deleteRecordedWorkout}>
+          <button className="GlobalBtn-2" onClick={props.deleteRecordedWorkout}>
             Delete this record
           </button>
         </div>

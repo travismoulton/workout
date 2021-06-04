@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 
-import classes from './RoutineLink.module.css';
+import classes from '../../UserProfile.module.css';
 
 const RoutineLink = (props) => {
   const deleteRoutineAndCloseModal = () => {
@@ -20,7 +20,7 @@ const RoutineLink = (props) => {
   };
 
   return (
-    <div className={classes.Wrapper}>
+    <div className={classes.RoutineLink}>
       <div className={classes.TopRow}>{props.title}</div>
       <div>
         <p>Number of workouts: {props.numberOfWorkouts}</p>
@@ -32,15 +32,18 @@ const RoutineLink = (props) => {
             Set as current routine
           </button>
         )}
-
-        <button onClick={displayModal}>Delete this routine</button>
+      </div>
+      <div className={classes.FlexRow}>
+        <button className="GlobalBtn-2" onClick={displayModal}>
+          Delete this routine
+        </button>
         <Link
           to={{
             pathname: `/create-routine/${props.title}`,
             state: { routine: props.routine },
           }}
         >
-          <button>Edit this routine</button>
+          <button className="GlobalBtn-2">Edit this routine</button>
         </Link>
       </div>
     </div>

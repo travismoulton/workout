@@ -3,8 +3,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
-import WorkoutLink from '../../../components/WorkoutLink/WorkoutLink';
-import '../UserProfile.css';
+import WorkoutLink from './WorkoutLink/WorkoutLink';
+import classes from '../UserProfile.module.css';
 import { setWorkouts, toggleRoutineRefresh } from '../../../store/actions';
 
 const Workouts = (props) => {
@@ -119,11 +119,15 @@ const Workouts = (props) => {
   );
 
   return (
-    <div className="Workouts">
-      <span className="SectionHeader" onClick={props.triggerWorkoutsShowing}>
+    <div className={classes.Container}>
+      <div className={classes.Header} onClick={props.triggerWorkoutsShowing}>
         <h3>My Workouts</h3>
-        <div className={props.showWorkouts ? 'ArrowDown' : 'ArrowRight'}></div>
-      </span>
+        <div
+          className={`${classes.Arrow} ${
+            props.showWorkouts ? 'ArrowDownWhite' : 'ArrowRightWhite'
+          }`}
+        ></div>
+      </div>
       {props.showWorkouts && workoutLinks}
     </div>
   );

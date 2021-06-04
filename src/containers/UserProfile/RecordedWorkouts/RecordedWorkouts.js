@@ -2,8 +2,8 @@ import { useState, useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
 
-import RecordedWorkoutLink from '../../../components/RecordedWorkoutLink/RecordedWorkoutLink';
-import '../UserProfile.css';
+import RecordedWorkoutLink from './RecordedWorkoutLink/RecordedWorkoutLink';
+import classes from '../UserProfile.module.css';
 import { setRecordedWorkouts } from '../../../store/actions';
 
 const RecordedWorkouts = (props) => {
@@ -101,16 +101,18 @@ const RecordedWorkouts = (props) => {
     ));
 
   return (
-    <div className="RecordedWorkout">
-      <span
-        className="SectionHeader"
+    <div className={classes.Container}>
+      <div
+        className={classes.Header}
         onClick={props.triggerRecordedWorkoutsShowing}
       >
         <h3>My Recorded Workouts</h3>
         <div
-          className={props.showRecordedWorkouts ? 'ArrowDown' : 'ArrowRight'}
+          className={`${classes.Arrow} ${
+            props.showRecordedWorkouts ? 'ArrowDownWhite' : 'ArrowRightWhite'
+          }`}
         ></div>
-      </span>
+      </div>
       {props.showRecordedWorkouts && recordedWorkoutLinks}
     </div>
   );
