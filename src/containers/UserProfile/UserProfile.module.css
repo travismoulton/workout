@@ -78,7 +78,8 @@
 .Record:hover > div > a > button,
 .RoutineLink:hover > div > button,
 .RoutineLink:hover > div > a > button {
-  background-color: black;
+  filter: brightness(80%);
+  box-shadow: var(--box-shadow-1);
 }
 
 .WorkoutLink .Title span {
@@ -97,4 +98,15 @@
 .FlexRow {
   display: flex;
   justify-content: space-around;
+}
+
+.ModalBtn {
+  width: 10rem;
+}
+
+.ModalBtnWrapper {
+  width: 50%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
 }

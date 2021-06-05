@@ -24,16 +24,24 @@ const WorkoutLink = (props) => {
             taken out of that routine. Do you wish to continue?
           </p>
         ) : null}
-        <button onClick={props.toggleModal}>No</button>
-        <button
-          onClick={
-            props.belongsToRoutine
-              ? deleteWorkoutRemoveFromRoutineAndCloseModal
-              : deleteWorkoutAndCloseModal
-          }
-        >
-          Yes
-        </button>
+        <div className={classes.ModalBtnWrapper}>
+          <button
+            className={`GlobalBtn-1 ${classes.ModalBtn}`}
+            onClick={props.toggleModal}
+          >
+            Cancel
+          </button>
+          <button
+            className={`GlobalBtn-1 ${classes.ModalBtn}`}
+            onClick={
+              props.belongsToRoutine
+                ? deleteWorkoutRemoveFromRoutineAndCloseModal
+                : deleteWorkoutAndCloseModal
+            }
+          >
+            Yes
+          </button>
+        </div>
       </>
     );
     props.setModalContent(modalContent);
