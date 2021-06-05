@@ -9,6 +9,8 @@ const ExerciseListItem = (props) => {
       index={i + 1}
       reps={set.reps}
       weight={set.weight}
+      minutes={set.minutes}
+      seconds={set.seconds}
       key={uniqid()}
     />
   ));
@@ -16,7 +18,7 @@ const ExerciseListItem = (props) => {
     <li className={classes.ListItem}>
       <p>{props.title}</p>
       <div className={classes.DetailRow}>
-        <ul style={{ listStyle: 'none', padding: '0' }}>{setDetails}</ul>
+        <ul className={classes.SetDetails}>{setDetails}</ul>
       </div>
     </li>
   );

@@ -4,6 +4,7 @@ import axios from 'axios';
 import uniqid from 'uniqid';
 
 import ExerciseListItem from './ExerciseListItem/ExerciseListItem';
+import classes from './RecordedWorkoutDetail.module.css';
 
 const RecordedWorkoutDetail = (props) => {
   const [axiosError, setAxiosError] = useState({
@@ -49,15 +50,13 @@ const RecordedWorkoutDetail = (props) => {
 
   const display = workout ? (
     <>
-      <h3>{workout.title}</h3>
-      <p>
+      <h3 className={classes.Title}>{workout.title}</h3>
+      <h4 className={classes.Date}>
         {new Date(workout.date.year, workout.date.month, workout.date.day)
           .toString()
           .substring(0, 15)}
-      </p>
-      {exercises ? (
-        <ul style={{ listStyle: 'none', padding: '0' }}>{exercises}</ul>
-      ) : null}
+      </h4>
+      {exercises ? <ul className={classes.Exercises}>{exercises}</ul> : null}
     </>
   ) : null;
 

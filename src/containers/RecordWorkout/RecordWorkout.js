@@ -121,6 +121,7 @@ const RecordWorkout = (props) => {
         id={exercise.id}
         sets={exercise.sets}
         inRecordMode={true}
+        focus={exercise.focus}
       />
     ));
 

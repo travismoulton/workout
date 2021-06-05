@@ -11,6 +11,7 @@ const AddExerciseBtn = (props) => {
         name: props.name,
         id: uniqid(`${props.id}-`),
         sets: [{ weight: 0, reps: 1 }],
+        focus: 'reps',
       })
     );
     props.history.push('/create-workout');

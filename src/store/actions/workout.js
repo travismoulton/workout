@@ -67,19 +67,27 @@ export const addTimeFocusedSetToExercise = (exercises, exerciseId) => {
 export const resetSetsToTimeFocus = (exercises, exerciseId) => {
   const newExercises = exercises.map((exercise) =>
     exercise.id === exerciseId
-      ? { ...exercise, sets: [{ minutes: 0, seconds: 0 }] }
+      ? { ...exercise, sets: [{ minutes: 0, seconds: 0 }], focus: 'time' }
       : exercise
   );
-  return { type: SET_EXERCISES, exercises: newExercises, updated: true };
+  return {
+    type: SET_EXERCISES,
+    exercises: newExercises,
+    updated: true,
+  };
 };
 
 export const resetSetsToRepsFocus = (exercises, exerciseId) => {
   const newExercises = exercises.map((exercise) =>
     exercise.id === exerciseId
-      ? { ...exercise, sets: [{ weight: 0, reps: 0 }] }
+      ? { ...exercise, sets: [{ weight: 0, reps: 0 }], focus: 'reps' }
       : exercise
   );
-  return { type: SET_EXERCISES, exercises: newExercises, updated: true };
+  return {
+    type: SET_EXERCISES,
+    exercises: newExercises,
+    updated: true,
+  };
 };
 
 export const removeSetFromExercise = (exercises, exerciseId, setIndex) => {

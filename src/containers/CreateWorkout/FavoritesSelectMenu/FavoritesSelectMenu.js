@@ -137,6 +137,7 @@ const FavoritesSelectMenu = (props) => {
           name: exercise.name,
           id: uniqid(`${exercise.id}-`),
           sets: [{ weight: 0, reps: 0 }],
+          focus: 'reps',
         })
       );
   };

@@ -105,6 +105,7 @@ const CreateWorkout = (props) => {
                   sets={exercise.sets}
                   isFirstExercise={i === 0}
                   isLastExercise={i === exercises.length - 1}
+                  focus={exercise.focus}
                 />
               ))}
             </ul>

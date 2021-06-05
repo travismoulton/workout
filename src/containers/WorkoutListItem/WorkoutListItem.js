@@ -16,7 +16,7 @@ import {
 import classes from './WorkoutListItem.module.css';
 
 const WorkoutListItem = (props) => {
-  const [exerciseFocus, setExerciseFocus] = useState('reps');
+  const [exerciseFocus, setExerciseFocus] = useState(props.focus || 'reps');
   const { exercises } = useSelector((state) => state.workout);
   const dispatch = useDispatch();
 
