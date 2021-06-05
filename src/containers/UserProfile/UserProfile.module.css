@@ -82,8 +82,10 @@
   box-shadow: var(--box-shadow-1);
 }
 
-.WorkoutLink .Title span {
-  margin-right: 3rem;
+.Title {
+  display: flex;
+  justify-content: space-between;
+  width: 50%;
 }
 
 .Link {
@@ -109,4 +111,45 @@
   margin: 0 auto;
   display: flex;
   justify-content: space-between;
+}
+
+@media only screen and (max-width: 800px) {
+  .WorkoutLink,
+  .RoutineLink,
+  .Record {
+    width: 50rem;
+  }
+
+  .Details {
+    display: none;
+  }
+
+  .BtnRow {
+    margin-top: 5rem;
+  }
+
+  .Title {
+    width: 90%;
+  }
+}
+
+@media only screen and (max-width: 550px) {
+  .WorkoutLink,
+  .RoutineLink,
+  .Record {
+    width: 30rem;
+  }
+
+  .BtnRow {
+    margin-top: 2rem;
+  }
+
+  .Title {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .Title span {
+    margin-bottom: 1rem;
+  }
 }

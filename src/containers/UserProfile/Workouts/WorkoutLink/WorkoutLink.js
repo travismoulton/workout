@@ -55,7 +55,7 @@ const WorkoutLink = (props) => {
           <span>Workout name:</span> {props.title}
         </p>
       </div>
-      <div className={classes.FlexRow}>
+      <div className={`${classes.FlexRow} ${classes.Details}`}>
         {props.targetArea ? <p>Target Area: {props.targetArea}</p> : null}
 
         {props.secondaryTarget ? (
@@ -66,7 +66,7 @@ const WorkoutLink = (props) => {
           <p>Exercise Count: {props.exerciseCount}</p>
         ) : null}
       </div>
-      <div className={classes.FlexRow}>
+      <div className={`${classes.FlexRow} ${classes.BtnRow}`}>
         <Link
           className={classes.Link}
           to={{
