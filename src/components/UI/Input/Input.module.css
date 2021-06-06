@@ -89,9 +89,14 @@
 .WorkoutDetailsSelectWrapper {
   display: flex;
   justify-content: space-between;
-  width: 60rem;
+  width: auto;
   margin-bottom: 1.5rem;
-  margin-left: 5rem;
+  flex-direction: column;
+  margin-left: 0;
+}
+
+.WorkoutDetailsSelectWrapper label {
+  margin-bottom: 1rem;
 }
 
 .RecordWorkoutModalSelectWrapper {

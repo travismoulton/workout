@@ -57,10 +57,7 @@ const CreateWorkout = (props) => {
 
   return (
     <>
-      <div
-        style={{ display: !loaded && 'none' }}
-        className={classes.CreateWorkout}
-      >
+      <div style={{ display: !loaded && 'none' }}>
         {error.isError ? error.message : null}
 
         <WorkoutDetailsForm

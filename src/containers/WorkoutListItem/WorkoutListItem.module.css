@@ -4,7 +4,7 @@
   background-color: white;
 
   padding: 1rem;
-  width: 75rem;
+  /* width: 75rem; */
   min-height: 16rem;
   display: flex;
   flex-direction: column;
@@ -61,4 +61,10 @@
 .CloseWorkoutBtn:hover {
   color: rgba(var(--rgba-primary), 0.5);
   cursor: pointer;
+}
+
+@media only screen and (max-width: 800px) {
+  .WorkoutListItem {
+    width: 100%;
+  }
 }
