@@ -97,9 +97,14 @@
   justify-content: center;
 }
 
-.FlexRow {
+.FlexRow,
+.ThreeBtnRow {
   display: flex;
   justify-content: space-around;
+}
+
+.Btn {
+  width: 15rem;
 }
 
 .ModalBtn {
@@ -138,6 +143,13 @@
   .RoutineLink,
   .Record {
     width: 30rem;
+    font-size: 1.4rem;
+    padding: 1rem 0;
+  }
+
+  .Btn {
+    width: 10rem;
+    font-size: 1.3rem;
   }
 
   .BtnRow {
@@ -151,5 +163,23 @@
 
   .Title span {
     margin-bottom: 1rem;
+  }
+
+  .ThreeBtnRow {
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    display: flex;
+    height: 15rem;
+  }
+
+  .ThreeBtnContainer {
+    height: 22.5rem;
+  }
+}
+@media only screen and (max-width: 450px) {
+  .Header {
+    width: 25rem;
+    font-size: 1.6rem;
   }
 }

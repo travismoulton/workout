@@ -31,20 +31,33 @@ const RoutineLink = (props) => {
     props.toggleModal();
   };
 
+  // const threeBtnRowClass
+
   return (
-    <div className={classes.RoutineLink}>
+    <div
+      className={`${classes.RoutineLink} ${
+        !props.isActiveRoutine && classes.ThreeBtnContainer
+      }`}
+    >
       <div className={classes.TopRow}>{props.title}</div>
       <div>
         <p>Number of workouts: {props.numberOfWorkouts}</p>
 
         {props.isActiveRoutine && <p>This is your current routine</p>}
       </div>
-      <div className={classes.FlexRow}>
-        <button className="GlobalBtn-2" onClick={displayModal}>
-          Delete this routine
+      <div
+        className={
+          props.isActiveRoutine ? classes.FlexRow : classes.ThreeBtnRow
+        }
+      >
+        <button className={`GlobalBtn-2 ${classes.Btn}`} onClick={displayModal}>
+          Delete routine
         </button>
         {!props.isActiveRoutine && (
-          <button className="GlobalBtn-2" onClick={props.setActiveRoutine}>
+          <button
+            className={`GlobalBtn-2 ${classes.Btn}`}
+            onClick={props.setActiveRoutine}
+          >
             Set as current routine
           </button>
         )}
@@ -54,7 +67,7 @@ const RoutineLink = (props) => {
             state: { routine: props.routine },
           }}
         >
-          <button className="GlobalBtn-2">Edit this routine</button>
+          <button className={`GlobalBtn-2 ${classes.Btn}`}>Edit routine</button>
         </Link>
       </div>
     </div>

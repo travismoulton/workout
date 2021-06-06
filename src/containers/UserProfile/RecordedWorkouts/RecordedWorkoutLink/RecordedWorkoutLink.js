@@ -15,9 +15,14 @@ const RecordedWorkoutLink = (props) => {
             className={classes.Link}
             to={`/recorded-workout-detail/${props.firebaseId}`}
           >
-            <button className="GlobalBtn-2">View details</button>
+            <button className={`GlobalBtn-2 ${classes.Btn}`}>
+              View details
+            </button>
           </Link>
-          <button className="GlobalBtn-2" onClick={props.deleteRecordedWorkout}>
+          <button
+            className={`GlobalBtn-2 ${classes.Btn}`}
+            onClick={props.deleteRecordedWorkout}
+          >
             Delete this record
           </button>
         </div>

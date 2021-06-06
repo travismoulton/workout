@@ -74,10 +74,10 @@ const WorkoutLink = (props) => {
             state: { workout: props.workout },
           }}
         >
-          <button className="GlobalBtn-2">Edit this workout</button>
+          <button className={`GlobalBtn-2 ${classes.Btn}`}>Edit workout</button>
         </Link>
-        <button className="GlobalBtn-2" onClick={displayModal}>
-          Delete this workout
+        <button className={`GlobalBtn-2 ${classes.Btn}`} onClick={displayModal}>
+          Delete workout
         </button>
       </div>
     </div>
