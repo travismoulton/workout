@@ -13,3 +13,15 @@
 .Btn {
   margin-top: 1rem;
 }
+
+@media only screen and (max-width: 800px) {
+  .Form {
+    flex-direction: column;
+    justify-content: center;
+    align-items: baseline;
+  }
+
+  .Set {
+    width: 100%;
+  }
+}

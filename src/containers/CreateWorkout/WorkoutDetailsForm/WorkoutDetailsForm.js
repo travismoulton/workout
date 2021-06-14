@@ -10,7 +10,7 @@ import {
   setFirebaseId,
 } from '../../../store/actions';
 import { updateObject, checkValidityHandler } from '../../../shared/utility';
-import classes from './WorkoutDetailsForm.module.css';
+// import classes from './WorkoutDetailsForm.module.css';
 
 const WorkoutDetailsForm = (props) => {
   const { formData } = useSelector((state) => state.workout);

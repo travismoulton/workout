@@ -102,7 +102,7 @@ const WorkoutListItem = (props) => {
 
   return (
     <li className={classes.WorkoutListItem}>
-      <div>{props.name}</div>
+      <div className={classes.WorkoutTitle}>{props.name}</div>
       {focusSelectMenu}
       {sets && <ul className={classes.SetsWrapper}>{sets}</ul>}
       <div className={classes.BtnRow}>

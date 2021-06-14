@@ -42,6 +42,7 @@ const RemoveWorkoutBtn = (props) => {
         onMouseOut={hideToolTip}
         className={classes.CloseWorkoutBtnContainer}
         onClick={() => dispatch(removeExercise(exercises, props.id))}
+        onTouchStart={() => dispatch(removeExercise(exercises, props.id))}
       >
         <AiOutlineCloseCircle
           className={classes.CloseWorkoutBtn}

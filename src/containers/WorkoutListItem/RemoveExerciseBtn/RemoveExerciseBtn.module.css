@@ -16,3 +16,10 @@
 .CloseWorkoutBtn:active {
   transform: translateY(10%);
 }
+
+@media only screen and (max-width: 400px) {
+  .CloseWorkoutBtnContainer {
+    top: 0.3rem;
+    right: 0.3rem;
+  }
+}

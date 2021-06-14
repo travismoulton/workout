@@ -20,3 +20,10 @@
   position: absolute;
   bottom: -0.9rem;
 }
+
+@media only screen and (max-width: 800px) {
+  .Tooltip,
+  .Tooltip::after {
+    display: none;
+  }
+}

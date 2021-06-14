@@ -53,11 +53,7 @@
 .RoutineName::placeholder,
 .ExerciseName::placeholder,
 .CreateExerciseDescription::placeholder {
-  color: hsl(0, 0%, 30%);
-  position: absolute;
-  margin-left: 2px;
-  top: 50%;
-  transform: translateY(-50%);
+  color: #4d4d4d;
   font-size: 1.6rem;
 }
 
@@ -113,6 +109,22 @@
   align-items: center;
 }
 
+@media only screen and (max-width: 600px) {
+  .ExerciseFocusSelectWrapper {
+    width: 100%;
+  }
+}
+
+@media only screen and (max-width: 400px) {
+  .ExerciseFocusSelectWrapper {
+    flex-direction: column;
+  }
+
+  .ExerciseFocusSelectWrapper label {
+    margin-bottom: 0.6rem;
+  }
+}
+
 .SetDetailsSelectWrapper {
   display: flex;
   justify-content: space-around;
@@ -123,6 +135,35 @@
 
 .SetDetailsSelectWrapper label {
   margin-right: 1rem;
+}
+
+@media only screen and (max-width: 800px) {
+  .SetDetailsSelectWrapper {
+    width: 100%;
+    justify-content: center;
+    margin-top: 1rem;
+  }
+
+  .SetDetailsSelectWrapper label {
+    margin-left: 3rem;
+    width: 5rem;
+    text-align: left;
+  }
+
+  .SetDetailsSelectWrapper span {
+    margin: 0 auto;
+  }
+}
+
+@media only screen and (max-width: 400px) {
+  .SetDetailsSelectWrapper {
+    flex-direction: column;
+  }
+
+  .SetDetailsSelectWrapper label {
+    margin-left: 0;
+    margin-bottom: 0.6rem;
+  }
 }
 
 .CreateExerciseDescription {

@@ -238,8 +238,7 @@ const SetDetails = (props) => {
         ]
       : [
           [decrementMinutes, incrementMinutes],
-          decrementSeconds,
-          incrementSeconds,
+          [decrementSeconds, incrementSeconds],
         ];
 
   const formFields =
