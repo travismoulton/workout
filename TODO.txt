@@ -7,7 +7,5 @@
 
 LEFTOFF: // 
 
-1: Not highlight the current day be default
-2: Need to close the date picker on selection of a date
 
 

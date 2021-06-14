@@ -105,7 +105,7 @@ const FavoritesSelectMenu = (props) => {
   useEffect(() => {
     // If there are no favorites, the page can be loaded immediatley
     if (favorites)
-      if (!favorites.length && !props.isLoaded) props.toggleLaoded();
+      if (!favorites.length && !props.isLoaded) props.toggleLoaded();
   }, [favorites, props]);
 
   useEffect(() => {

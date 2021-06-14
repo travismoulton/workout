@@ -13,7 +13,7 @@ const Search = (props) => {
   const [muscles, setMuscles] = useState(null);
   const [equipment, setEquipment] = useState(null);
   const [categoryOpen, setCategoryOpen] = useState('');
-  const [showCustomOption, setShowCustomOption] = useState(false);
+  const [showCustomOption, setShowCustomOption] = useState(null);
   const [loaded, setLoaded] = useState(false);
   const [error, setError] = useState({
     isError: false,
@@ -46,7 +46,7 @@ const Search = (props) => {
             { timeout: 5000 }
           )
           .then((res) => {
-            if (res.data) setShowCustomOption(true);
+            res.data ? setShowCustomOption(true) : setShowCustomOption(false);
           })
           .catch((err) => {
             setError({ ...error, isError: true });
@@ -80,9 +80,8 @@ const Search = (props) => {
 
   useEffect(() => {
     const wgerReady = exerciseCategories && muscles && equipment;
-    if (!loaded)
-      if ((wgerReady && showCustomOption) || (!loaded && wgerReady && !user))
-        setLoaded(true);
+    if (!loaded && wgerReady)
+      if ((user && showCustomOption !== null) || !user) setLoaded(true);
   }, [loaded, exerciseCategories, muscles, equipment, showCustomOption, user]);
 
   const closeSubCategories = () => {
