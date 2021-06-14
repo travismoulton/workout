@@ -88,7 +88,12 @@ const ExerciseDetail = (props) => {
   };
 
   const deleteCustomExerciseBtn = (
-    <button onClick={() => setShowModal(true)}>Delete exercise</button>
+    <button
+      className={`GlobalBtn-1 ${classes.DeleteBtn}`}
+      onClick={() => setShowModal(true)}
+    >
+      Delete exercise
+    </button>
   );
 
   const modal = (

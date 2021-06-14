@@ -204,6 +204,10 @@
   position: relative;
 }
 
+.CreateExerciseSelectWrapper {
+  margin-right: -1.2rem;
+}
+
 .SelectAsteric {
   margin-left: 0.4rem;
   margin-bottom: 1.9rem;

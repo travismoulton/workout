@@ -83,6 +83,7 @@ const CreateExercise = (props) => {
     touched: false,
     id: 'category',
     className: 'CreateExerciseSelect',
+    wrapperClass: 'CreateExerciseSelectWrapper',
   });
   const [primaryMuscleInput, setPrimaryMuscleInputInput] = useState({
     elementType: 'select',
@@ -254,6 +255,7 @@ const CreateExercise = (props) => {
       changed={(e) => inputChangedHandler(e, field)}
       required={field.validation.required}
       classname={field.className}
+      wrapperClass={field.wrapperClass}
     />
   ));
 

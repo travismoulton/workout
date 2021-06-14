@@ -8,3 +8,8 @@
   display: flex;
   justify-content: center;
 }
+
+.DeleteBtn {
+  width: 12rem;
+  margin-top: 1rem;
+}

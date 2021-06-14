@@ -15,23 +15,21 @@ const RoutineLink = (props) => {
         <div className={classes.ModalBtnWrapper}>
           <button
             className={`GlobalBtn-1 ${classes.ModalBtn}`}
-            onClick={props.toggleModal}
-          >
-            Cancel
-          </button>
-          <button
-            className={`GlobalBtn-1 ${classes.ModalBtn}`}
             onClick={deleteRoutineAndCloseModal}
           >
             Yes
+          </button>
+          <button
+            className={`GlobalBtn-1 ${classes.ModalBtn}`}
+            onClick={props.toggleModal}
+          >
+            Cancel
           </button>
         </div>
       </>
     );
     props.toggleModal();
   };
-
-  // const threeBtnRowClass
 
   return (
     <div

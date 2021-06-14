@@ -27,12 +27,6 @@ const WorkoutLink = (props) => {
         <div className={classes.ModalBtnWrapper}>
           <button
             className={`GlobalBtn-1 ${classes.ModalBtn}`}
-            onClick={props.toggleModal}
-          >
-            Cancel
-          </button>
-          <button
-            className={`GlobalBtn-1 ${classes.ModalBtn}`}
             onClick={
               props.belongsToRoutine
                 ? deleteWorkoutRemoveFromRoutineAndCloseModal
@@ -40,6 +34,12 @@ const WorkoutLink = (props) => {
             }
           >
             Yes
+          </button>
+          <button
+            className={`GlobalBtn-1 ${classes.ModalBtn}`}
+            onClick={props.toggleModal}
+          >
+            Cancel
           </button>
         </div>
       </>

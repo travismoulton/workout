@@ -118,6 +118,24 @@
   justify-content: space-between;
 }
 
+@media only screen and (max-width: 650px) {
+  .ModalBtnWrapper {
+    width: 80%;
+  }
+}
+
+@media only screen and (max-width: 450px) {
+  .ModalBtnWrapper {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .ModalBtnWrapper .ModalBtn:last-child {
+    margin-top: 1rem;
+  }
+}
+
 @media only screen and (max-width: 800px) {
   .WorkoutLink,
   .RoutineLink,

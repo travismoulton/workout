@@ -3,11 +3,16 @@
   padding: 0;
   list-style: none;
   display: flex;
-  justify-content: space-between;
+
   align-items: center;
   height: 100%;
   width: 100%;
   color: var(--color-secondary);
+}
+
+.IsAuthenticated,
+.NotAuthenticated {
+  justify-content: space-between;
 }
 
 @media only screen and (max-width: 800px) {
@@ -15,10 +20,15 @@
     flex-direction: column;
     align-items: flex-start;
   }
-}
-
-@media only screen and (min-width: 800px) {
   .DrawerToggle {
     display: none;
+  }
+
+  .NotAuthenticated {
+    justify-content: start;
+  }
+
+  .NotAuthenticated li {
+    margin-bottom: 5rem;
   }
 }

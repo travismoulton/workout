@@ -6,10 +6,13 @@ import classes from './NavItems.module.css';
 
 const NavItems = (props) => {
   const user = useSelector((state) => state.auth.user);
+  const style = user
+    ? [classes.NavItems, classes.IsAuthenticated]
+    : [classes.NavItems, classes.NotAuthenticated];
 
   return (
     <>
-      <ul className={classes.NavItems}>
+      <ul className={style.join(' ')}>
         <NavItem link="/search">Search</NavItem>
         {props.isAuthenticated ? (
           <>
