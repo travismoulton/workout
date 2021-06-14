@@ -49,6 +49,19 @@
   width: 20rem;
 }
 
+@media only screen and (max-width: 325px) {
+  .WorkoutName,
+  .ExerciseName {
+    width: 100%;
+  }
+}
+
+@media only screen and (max-width: 225px) {
+  .RoutineName {
+    width: 100%;
+  }
+}
+
 .WorkoutName::placeholder,
 .RoutineName::placeholder,
 .ExerciseName::placeholder,

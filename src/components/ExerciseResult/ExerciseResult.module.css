@@ -24,3 +24,39 @@
 .ExerciseResult button.favorite {
   background-color: #fff;
 }
+
+@media only screen and (max-width: 800px) {
+  .ExerciseResult {
+    width: 75%;
+    margin: 0.5rem auto;
+  }
+}
+
+@media only screen and (max-width: 650px) {
+  .ExerciseResult {
+    min-width: 0rem;
+    width: 85%;
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  .ExerciseResult {
+    width: 75%;
+  }
+
+  .ExerciseResult div {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .ExerciseResult *:not(:last-child) {
+    margin-bottom: 0.5rem;
+  }
+}
+
+@media only screen and (max-width: 400px) {
+  .ExerciseResult {
+    width: 90%;
+  }
+}

@@ -108,15 +108,17 @@ const Results = (props) => {
 
   return (
     <>
-      <div>
-        {error.isError && error.message}
-        <h3>
-          {props.location.state.wger
-            ? props.location.state.subCategory
-            : 'My custom exercises'}
-        </h3>
-        {exerciseResults.length ? <ul>{displayResults}</ul> : <Spinner />}
-      </div>
+      {error.isError && error.message}
+      <h3>
+        {props.location.state.wger
+          ? props.location.state.subCategory
+          : 'My custom exercises'}
+      </h3>
+      {exerciseResults.length ? (
+        <ul style={{ padding: '0' }}>{displayResults}</ul>
+      ) : (
+        <Spinner />
+      )}
     </>
   );
 };
