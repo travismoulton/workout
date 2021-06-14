@@ -102,6 +102,16 @@
   width: 50rem;
 }
 
+@media only screen and (max-width: 750px) {
+  .RecordWorkoutModalSelectWrapper {
+    flex-direction: column;
+  }
+
+  .RecordWorkoutModalSelectWrapper label {
+    margin-bottom: 0.6rem;
+  }
+}
+
 .ExerciseFocusSelectWrapper {
   display: flex;
   justify-content: space-between;

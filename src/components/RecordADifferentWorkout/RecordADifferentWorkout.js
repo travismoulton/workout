@@ -169,7 +169,7 @@ const RecordADifferentWorkout = (props) => {
 
   const workoutBasedInput = (
     <Input
-      label={'Choose from all your workouts'}
+      label="Choose from all your workouts"
       value={allWorkoutSelectMenu.value}
       elementConfig={allWorkoutSelectMenu.elementConfig}
       elementType={allWorkoutSelectMenu.elementType}
@@ -230,7 +230,10 @@ const RecordADifferentWorkout = (props) => {
       !allWorkoutSelectMenu.elementConfig.options.length
         ? noAvailableWorkoutsMsg
         : null}
-      <button className={`GlobalBtn-1`} onClick={props.closeModal}>
+      <button
+        className={`GlobalBtn-1 ${classes.CancelBtn}`}
+        onClick={props.closeModal}
+      >
         Cancel
       </button>
     </Modal>
