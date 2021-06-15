@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 import { authFail, authStart, authReset } from '../../../store/actions/index';
 import Input from '../../../components/UI/Input/Input';
+import classes from './Register.module.css';
 
 const Register = (props) => {
   const [emailInput, setEmailInput] = useState({
@@ -17,6 +19,7 @@ const Register = (props) => {
     },
     valid: false,
     touched: false,
+    label: 'Email Adress',
     id: 1,
   });
 
@@ -30,6 +33,7 @@ const Register = (props) => {
     validation: {
       required: true,
     },
+    label: 'Username',
     valid: false,
     touched: false,
     id: 2,
@@ -45,6 +49,7 @@ const Register = (props) => {
     validation: {
       required: true,
     },
+    label: 'Password',
     valid: false,
     touched: false,
     id: 3,
@@ -54,12 +59,13 @@ const Register = (props) => {
     elementType: 'input',
     elementConfig: {
       type: 'password',
-      placeholder: 'Password',
+      placeholder: 'Confirm Password',
     },
     value: '',
     validation: {
       required: true,
     },
+    label: 'Confirm Password',
     valid: false,
     touched: false,
     id: 4,
@@ -123,15 +129,26 @@ const Register = (props) => {
       key={el.id}
       value={el.value}
       changed={updateFunctions[i]}
+      label={el.label}
+      classname="RegisterInput"
+      wrapperClass="RegisterInputWrapper"
     />
   ));
 
   return (
-    <div>
+    <>
       {errorMessage && <p>{errorMessage}</p>}
       {form}
-      <button onClick={submitRegister}>Register</button>
-    </div>
+      <button className={`GlobalBtn-1 ${classes.Btn}`} onClick={submitRegister}>
+        Register
+      </button>
+      <p>
+        Already have an account?{' '}
+        <Link className={classes.Link} to="/login">
+          Login here
+        </Link>
+      </p>
+    </>
   );
 };
 

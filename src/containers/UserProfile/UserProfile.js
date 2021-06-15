@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import Workouts from './Workouts/Workouts';
 import Routines from './Routines/Routines';
 import RecordedWorkouts from './RecordedWorkouts/RecordedWorkouts';
-
+import ChangePasswordLink from './ChangePasswordLink/ChangePasswordLink';
 import Modal from '../../components/UI/Modal/Modal';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import classes from './UserProfile.module.css';
@@ -132,6 +132,7 @@ const UserProfile = (props) => {
           toggleError={() => setError({ ...error, isError: true })}
           isError={error.isError}
         />
+        <ChangePasswordLink />
 
         {modal}
       </div>

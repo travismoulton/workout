@@ -10,10 +10,18 @@ const Input = (props) => {
 
   switch (props.elementType) {
     case 'input':
-      if (props.elementConfig.type === 'text')
+      if (
+        props.elementConfig.type === 'text' ||
+        props.elementConfig.type === 'password' ||
+        props.elementConfig.type === 'email'
+      )
         inputClasses.push(classes.TextInput);
+
       inputElement = (
-        <div style={{ position: 'relative' }}>
+        <div
+          className={classes[props.wrapperClass]}
+          style={{ position: 'relative' }}
+        >
           {props.label ? <label>{props.label}</label> : null}
           <input
             {...props.elementConfig}
@@ -22,9 +30,7 @@ const Input = (props) => {
             autoComplete="false"
             className={inputClasses.join(' ')}
           />
-          {props.required ? (
-            <span className={classes.InputAsteric}>*</span>
-          ) : null}
+          {props.required && <span className={classes.InputAsteric}>*</span>}
         </div>
       );
       break;
@@ -57,9 +63,7 @@ const Input = (props) => {
             {props.SetDetails && (
               <IncrementBtn clicked={props.incrementFunction} />
             )}
-            {props.required ? (
-              <span className={classes.SelectAsteric}>*</span>
-            ) : null}
+            {props.required && <span className={classes.SelectAsteric}>*</span>}
           </span>
         </div>
       );
@@ -69,7 +73,7 @@ const Input = (props) => {
     case 'textarea':
       inputElement = (
         <div>
-          {props.label ? <label>{props.label}</label> : null}
+          {props.label && <label>{props.label}</label>}
           <textarea
             {...props.elementConfig}
             value={props.value}
@@ -77,7 +81,7 @@ const Input = (props) => {
             autoComplete="false"
             className={inputClasses.join(' ')}
           ></textarea>
-          {props.required ? <span>*</span> : null}
+          {props.required && <span>*</span>}
         </div>
       );
       break;

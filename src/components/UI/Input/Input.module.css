@@ -28,7 +28,10 @@
 
 .WorkoutName,
 .RoutineName,
-.ExerciseName {
+.ExerciseName,
+.UpdatePasswordInput,
+.LoginInput,
+.RegisterInput {
   background-color: hsl(0, 0%, 100%);
   border-color: hsl(0, 0%, 80%);
   border-style: solid;
@@ -36,12 +39,20 @@
   border-radius: 4px;
   height: 3.7rem;
   padding: 0.2rem 0.8rem;
-  margin-bottom: 1.5rem;
   position: relative;
 }
 
 .WorkoutName,
+.RoutineName,
 .ExerciseName {
+  margin-bottom: 1.5rem;
+}
+
+.WorkoutName,
+.ExerciseName,
+.UpdatePasswordInput,
+.LoginInput,
+.RegisterInput {
   width: 30rem;
 }
 
@@ -51,7 +62,10 @@
 
 @media only screen and (max-width: 325px) {
   .WorkoutName,
-  .ExerciseName {
+  .ExerciseName,
+  .UpdatePasswordInput,
+  .LoginInput,
+  .RegisterInput {
     width: 100%;
   }
 }
@@ -65,7 +79,10 @@
 .WorkoutName::placeholder,
 .RoutineName::placeholder,
 .ExerciseName::placeholder,
-.CreateExerciseDescription::placeholder {
+.UpdatePasswordInput::placeholder,
+.CreateExerciseDescription::placeholder,
+.LoginInput::placeholder,
+.RegisterInput::placeholder {
   color: #4d4d4d;
   font-size: 1.6rem;
 }
@@ -73,14 +90,20 @@
 .WorkoutName:hover,
 .RoutineName:hover,
 .ExerciseName:hover,
-.CreateExerciseDescription:hover {
+.CreateExerciseDescription:hover,
+.UpdatePasswordInput:hover,
+.LoginInput:hover,
+.RegisterInput:hover {
   border-color: var(--color-primary);
 }
 
 .WorkoutName:focus,
 .RoutineName:focus,
 .ExerciseName:focus,
-.CreateExerciseDescription:focus {
+.CreateExerciseDescription:focus,
+.UpdatePasswordInput:focus,
+.LoginInput:focus,
+.RegisterInput:focus {
   outline: none;
   border-color: var(--color-primary);
   box-shadow: var(--box-shadow-primary-2);
@@ -219,4 +242,29 @@
   margin-left: 0.3rem;
   top: -0.3rem;
   font-size: 2rem;
+}
+
+.UpdatePasswordInputWrapper,
+.LoginInputWrapper,
+.RegisterInputWrapper {
+  width: 50rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 auto 1.5rem auto;
+}
+
+@media only screen and (max-width: 600px) {
+  .UpdatePasswordInputWrapper,
+  .LoginInputWrapper,
+  .RegisterInputWrapper {
+    flex-direction: column;
+    width: auto;
+  }
+
+  .UpdatePasswordInputWrapper label,
+  .LoginInputWrapper label,
+  .RegisterInputWrapper label {
+    margin-bottom: 1rem;
+  }
 }

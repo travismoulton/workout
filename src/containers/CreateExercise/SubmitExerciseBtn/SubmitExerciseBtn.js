@@ -125,7 +125,7 @@ const SubmitExerciseBtn = (props) => {
 
   return (
     <>
-      {error.isError ? error.msg : null}
+      {error.isError && error.msg}
       <button
         className={`GlobalBtn-1 ${classes.Btn}`}
         disabled={!props.formIsValid}

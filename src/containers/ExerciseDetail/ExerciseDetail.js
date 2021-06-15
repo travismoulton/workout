@@ -104,57 +104,57 @@ const ExerciseDetail = (props) => {
     </Modal>
   );
 
-  const display = exercise ? (
-    <div>
+  const display = exercise && (
+    <>
       {error.code === 'delete' && error.message}
-      <div>
-        <h1 className={classes.ExerciseName}>{exercise.name}</h1>
-        <ExerciseDetailCategory
-          category={wgerDict.exerciseCategoryList[exercise.category]}
-        />
-        <ExerciseDetailEquipment
-          equipment={
-            exercise.equipment
-              ? exercise.equipment.map((el) => wgerDict.equipment[el])
-              : []
-          }
-        />
-        <ExerciseDetailDescription description={description} />
-        <ExerciseDetailMuscles
-          muscles={
-            exercise.muscles
-              ? exercise.muscles.map((muscle) => wgerDict.muscles[muscle])
-              : []
-          }
-          secondary={
-            exercise.muscles_secondary
-              ? exercise.muscles_secondary.map(
-                  (muscle) => wgerDict.muscles[muscle]
-                )
-              : []
-          }
-        />
-        {user && (
-          <div className={classes.BtnContainer}>
-            <FavoriteBtn
-              isFavorite={isFavorite}
-              firebaseId={firebaseId}
-              exerciseId={exercise.id}
-            />
-          </div>
-        )}
-        {buildingWorkout ? (
-          <AddToWorkoutBtn
-            history={props.history}
-            id={exercise.id}
-            name={exercise.name}
+
+      <h1 className={classes.ExerciseName}>{exercise.name}</h1>
+      <ExerciseDetailCategory
+        category={wgerDict.exerciseCategoryList[exercise.category]}
+      />
+      <ExerciseDetailEquipment
+        equipment={
+          exercise.equipment
+            ? exercise.equipment.map((el) => wgerDict.equipment[el])
+            : []
+        }
+      />
+      <ExerciseDetailDescription description={description} />
+      <ExerciseDetailMuscles
+        muscles={
+          exercise.muscles
+            ? exercise.muscles.map((muscle) => wgerDict.muscles[muscle])
+            : []
+        }
+        secondary={
+          exercise.muscles_secondary
+            ? exercise.muscles_secondary.map(
+                (muscle) => wgerDict.muscles[muscle]
+              )
+            : []
+        }
+      />
+      {user && (
+        <div className={classes.BtnContainer}>
+          <FavoriteBtn
+            isFavorite={isFavorite}
+            firebaseId={firebaseId}
+            exerciseId={exercise.id}
           />
-        ) : null}
-        {props.location.state.custom ? deleteCustomExerciseBtn : null}
-      </div>
+        </div>
+      )}
+      {buildingWorkout && (
+        <AddToWorkoutBtn
+          history={props.history}
+          id={exercise.id}
+          name={exercise.name}
+        />
+      )}
+      {props.location.state.custom ? deleteCustomExerciseBtn : null}
+
       {props.location.state.custom ? modal : null}
-    </div>
-  ) : null;
+    </>
+  );
 
   const noExerciseError = error.code === 'noExercise' && error.message;
 

@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import Input from '../UI/Input/Input';
 import { updateObject, checkValidityHandler } from '../../shared/utility';
+import classes from './UpdatePassword.module.css';
 
 const UpdatePassword = (props) => {
   const { email } = useSelector((state) => state.auth.user.authUser);
@@ -96,7 +97,7 @@ const UpdatePassword = (props) => {
     checkFormValidity(updatedInput);
   };
 
-  const form = formFields.map((field, i) => (
+  const form = formFields.map((field) => (
     <Input
       key={field.id}
       elementConfig={field.elementConfig}
@@ -104,6 +105,8 @@ const UpdatePassword = (props) => {
       label={field.label}
       value={field.value}
       changed={(e) => inputChangedHandler(e, field)}
+      classname="UpdatePasswordInput"
+      wrapperClass="UpdatePasswordInputWrapper"
     />
   ));
 
@@ -141,7 +144,8 @@ const UpdatePassword = (props) => {
   const submitBtn = (
     <button
       disabled={!formIsValid}
-      style={{ cursor: !formIsValid ? 'not-allowed' : 'default' }}
+      // style={{ cursor: !formIsValid ? 'not-allowed' : 'default' }}
+      className={`GlobalBtn-1 ${classes.Btn}`}
       onClick={onSumbit}
     >
       Update your password
@@ -150,12 +154,16 @@ const UpdatePassword = (props) => {
 
   return (
     <>
+      <h3 className={classes.Header}>Update my password</h3>
       {error ? error.message : null}
       {form}
       {submitBtn}
       <p>
         Don't know your current password?{' '}
-        <Link to="/forgot-password">Click here</Link> to reset it
+        <Link className={classes.Link} to="/forgot-password">
+          Click here
+        </Link>{' '}
+        to reset it
       </p>
     </>
   );

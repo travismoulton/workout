@@ -22,6 +22,7 @@ const Login = (props) => {
     validation: {
       required: true,
     },
+    label: 'Email address',
     valid: false,
     touched: false,
     id: 1,
@@ -37,6 +38,7 @@ const Login = (props) => {
     validation: {
       required: true,
     },
+    label: 'Password',
     valid: false,
     touched: false,
     id: 2,
@@ -88,6 +90,9 @@ const Login = (props) => {
       key={el.id}
       value={el.value}
       changed={updateFunctions[i]}
+      label={el.label}
+      classname="LoginInput"
+      wrapperClass="LoginInputWrapper"
     />
   ));
 
@@ -97,11 +102,21 @@ const Login = (props) => {
       <div>
         {errorMessage ? <p>{errorMessage}</p> : null}
         {form}
-        <button onClick={submitLogin}>Login</button>
+        <button className={`GlobalBtn-1 ${classes.Btn}`} onClick={submitLogin}>
+          Login
+        </button>
       </div>
       <div className={classes.Links}>
-        <Link to="/register">Register</Link>
-        <Link to="/forgot-password">Forgot Password?</Link>
+        <p>
+          Don't have an account?{' '}
+          <Link className={classes.Link} to="/register">
+            Register
+          </Link>{' '}
+          here
+        </p>
+        <Link className={classes.Link} to="/forgot-password">
+          Forgot Password?
+        </Link>
       </div>
     </>
   );
