@@ -6,6 +6,7 @@ import RecordedWorkouts from './RecordedWorkouts/RecordedWorkouts';
 import ChangePasswordLink from './ChangePasswordLink/ChangePasswordLink';
 import Modal from '../../components/UI/Modal/Modal';
 import Spinner from '../../components/UI/Spinner/Spinner';
+import Message from './Message/Message';
 import classes from './UserProfile.module.css';
 
 const UserProfile = (props) => {
@@ -48,21 +49,22 @@ const UserProfile = (props) => {
   useEffect(() => {
     if (props.history.location.state && !messageFinished && !showMessage) {
       const { message } = props.history.location.state;
-      setShowMessage(<p className={classes.Message}>{message}</p>);
+      setShowMessage(<Message messageText={message} show />);
     }
   }, [showMessage, messageFinished, props.history.location.state]);
 
   useEffect(() => {
     let timer;
     if (showMessage) {
+      const { message } = props.history.location.state;
       timer = setTimeout(() => {
-        setShowMessage(null);
+        setShowMessage(<Message messageText={message} />);
         setMessageFinished(true);
       }, 2000);
     }
 
     return timer ? () => clearTimeout(timer) : null;
-  }, [showMessage]);
+  }, [showMessage, props.history.location.state]);
 
   const triggerWorkoutsShowing = () => {
     setWorkoutsShowing(workoutsShowing ? false : true);
