@@ -31,7 +31,8 @@
 .ExerciseName,
 .UpdatePasswordInput,
 .LoginInput,
-.RegisterInput {
+.RegisterInput,
+.ResetPasswordInput {
   background-color: hsl(0, 0%, 100%);
   border-color: hsl(0, 0%, 80%);
   border-style: solid;
@@ -52,7 +53,8 @@
 .ExerciseName,
 .UpdatePasswordInput,
 .LoginInput,
-.RegisterInput {
+.RegisterInput,
+.ResetPasswordInput {
   width: 30rem;
 }
 
@@ -65,7 +67,8 @@
   .ExerciseName,
   .UpdatePasswordInput,
   .LoginInput,
-  .RegisterInput {
+  .RegisterInput,
+  .ResetPasswordInput {
     width: 100%;
   }
 }
@@ -82,7 +85,8 @@
 .UpdatePasswordInput::placeholder,
 .CreateExerciseDescription::placeholder,
 .LoginInput::placeholder,
-.RegisterInput::placeholder {
+.RegisterInput::placeholder,
+.ResetPasswordInput::placeholder {
   color: #4d4d4d;
   font-size: 1.6rem;
 }
@@ -93,7 +97,8 @@
 .CreateExerciseDescription:hover,
 .UpdatePasswordInput:hover,
 .LoginInput:hover,
-.RegisterInput:hover {
+.RegisterInput:hover,
+.ResetPasswordInput:hover {
   border-color: var(--color-primary);
 }
 
@@ -103,7 +108,8 @@
 .CreateExerciseDescription:focus,
 .UpdatePasswordInput:focus,
 .LoginInput:focus,
-.RegisterInput:focus {
+.RegisterInput:focus,
+.ResetPasswordInput:focus {
   outline: none;
   border-color: var(--color-primary);
   box-shadow: var(--box-shadow-primary-2);
@@ -246,7 +252,8 @@
 
 .UpdatePasswordInputWrapper,
 .LoginInputWrapper,
-.RegisterInputWrapper {
+.RegisterInputWrapper,
+.ResetPasswordInputWrapper {
   width: 50rem;
   display: flex;
   justify-content: space-between;
@@ -257,14 +264,16 @@
 @media only screen and (max-width: 600px) {
   .UpdatePasswordInputWrapper,
   .LoginInputWrapper,
-  .RegisterInputWrapper {
+  .RegisterInputWrapper,
+  .ResetPasswordInputWrapper {
     flex-direction: column;
     width: auto;
   }
 
   .UpdatePasswordInputWrapper label,
   .LoginInputWrapper label,
-  .RegisterInputWrapper label {
+  .RegisterInputWrapper label,
+  .ResetPasswordInputWrapper label {
     margin-bottom: 1rem;
   }
 }

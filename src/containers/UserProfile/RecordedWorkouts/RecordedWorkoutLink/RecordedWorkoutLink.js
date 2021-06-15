@@ -11,10 +11,7 @@ const RecordedWorkoutLink = (props) => {
         <p>{props.title}</p>
         <p>{date.toString().substring(0, 15)}</p>
         <div className={classes.FlexRow}>
-          <Link
-            className={classes.Link}
-            to={`/recorded-workout-detail/${props.firebaseId}`}
-          >
+          <Link to={`/recorded-workout-detail/${props.firebaseId}`}>
             <button className={`GlobalBtn-2 ${classes.Btn}`}>
               View details
             </button>

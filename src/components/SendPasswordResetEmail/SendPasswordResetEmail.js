@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
+import classes from './SendPasswordResetEmail.module.css';
 import Input from '../UI/Input/Input';
 
 const SendPasswordResetEmail = (props) => {
@@ -32,7 +33,9 @@ const SendPasswordResetEmail = (props) => {
       props.firebase
         .doPasswordReset(emailInput.value)
         .then(() => setPasswordReset(true))
-        .catch((err) => setError({ msg: <p>{err.message}</p> }));
+        .catch((err) =>
+          setError({ msg: <p style={{ color: 'red' }}>{err.message}</p> })
+        );
     } else {
       setError({
         isError: true,
@@ -46,7 +49,11 @@ const SendPasswordResetEmail = (props) => {
     }
   };
 
-  const submitBtn = <button onClick={onSubmit}>Reset password</button>;
+  const submitBtn = (
+    <button className={`GlobalBtn-1 ${classes.Btn}`} onClick={onSubmit}>
+      Reset password
+    </button>
+  );
 
   const inputField = (
     <Input
@@ -55,20 +62,23 @@ const SendPasswordResetEmail = (props) => {
       label={emailInput.label}
       changed={(e) => setEmailInput({ ...emailInput, value: e.target.value })}
       value={emailInput.value}
+      classname="ResetPasswordInput"
+      wrapperClass="ResetPasswordInputWrapper"
     />
   );
 
   const afterRestDisplay = passwordRest ? (
-    <>
+    <div className={classes.AfterResetDisplay}>
       <p>If an account with that password exists, an email will be sent.</p>
-      <Link to="/login">
+      <Link className={classes.Link} to="/login">
         Return to the login page after resetting your password
       </Link>
-    </>
+    </div>
   ) : null;
 
   return (
     <>
+      <h3 className={classes.Header}>Send a password reset email</h3>
       {error ? error.msg : null}
       {afterRestDisplay}
       {inputField}

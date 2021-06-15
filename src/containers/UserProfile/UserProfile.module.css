@@ -99,10 +99,6 @@
   width: 50%;
 }
 
-.Link {
-  text-decoration: none;
-}
-
 .TopRow {
   display: flex;
   justify-content: center;
@@ -211,4 +207,9 @@
     width: 25rem;
     font-size: 1.6rem;
   }
+}
+
+.UpdatePasswordLink {
+  margin-left: auto;
+  margin-right: auto;
 }

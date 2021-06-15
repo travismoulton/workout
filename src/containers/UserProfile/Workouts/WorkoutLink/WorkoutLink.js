@@ -68,7 +68,6 @@ const WorkoutLink = (props) => {
       </div>
       <div className={`${classes.FlexRow} ${classes.BtnRow}`}>
         <Link
-          className={classes.Link}
           to={{
             pathname: `/workout-detail/${slugify(props.title)}`,
             state: { workout: props.workout },
