@@ -2,6 +2,7 @@ import { useDispatch } from 'react-redux';
 import uniqid from 'uniqid';
 
 import { addExercise } from '../../store/actions';
+import classes from './AddToWorkoutBtn.module.css';
 
 const AddExerciseBtn = (props) => {
   const dispatch = useDispatch();
@@ -17,7 +18,11 @@ const AddExerciseBtn = (props) => {
     props.history.push('/create-workout');
   };
 
-  return <button onClick={addWorkoutAndRedirect}>Add to workout</button>;
+  return (
+    <button className={classes.Btn} onClick={addWorkoutAndRedirect}>
+      Add to workout
+    </button>
+  );
 };
 
 export default AddExerciseBtn;

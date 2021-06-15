@@ -113,7 +113,7 @@ const Workouts = (props) => {
       />
     ))
   ) : (
-    <Link to="/create-workout">
+    <Link className={classes.NoWorkoutsAvailable} to="/create-workout">
       No workouts available, click here to create a workout
     </Link>
   );

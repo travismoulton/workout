@@ -130,7 +130,7 @@ const Routines = (props) => {
       />
     ))
   ) : (
-    <Link to="/create-routine">
+    <Link className={classes.NoRoutinesAvailable} to="/create-routine">
       No routines available, click here to create a routine
     </Link>
   );

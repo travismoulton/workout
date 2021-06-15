@@ -1,11 +1,4 @@
-//1: Go through and configure the enter button to act as expected on each component -- Maybe
-//2: Add a feature to text search for workouts?
-  => Would need to grab all exercises on page load from firebase. Then just search against those.
-
-//4: Add functionality to have user's picture through firebase
-
-
-LEFTOFF: // 
-
-
+//1: When adding through search, need to fix styling
+//2: Need to update style on User profile message and animate the exit
+//3: Need to properly configure read / write privlages on firebase
 

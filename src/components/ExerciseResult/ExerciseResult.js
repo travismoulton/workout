@@ -25,20 +25,22 @@ const ExerciseResult = (props) => {
         >
           <span style={{ marginRight: '.5rem' }}>Name:</span> {props.name}
         </Link>
-        {user && (
-          <FavoriteBtn
-            isFavorite={props.isFavorite}
-            firebaseId={props.firebaseId}
-            exerciseId={props.exerciseId}
-          />
-        )}
-        {buildingWorkout && (
-          <AddToWorkoutBtn
-            name={props.name}
-            id={props.exerciseId}
-            history={props.history}
-          />
-        )}
+        <div className={classes.BtnPairContainer}>
+          {user && (
+            <FavoriteBtn
+              isFavorite={props.isFavorite}
+              firebaseId={props.firebaseId}
+              exerciseId={props.exerciseId}
+            />
+          )}
+          {buildingWorkout && (
+            <AddToWorkoutBtn
+              name={props.name}
+              id={props.exerciseId}
+              history={props.history}
+            />
+          )}
+        </div>
       </div>
       <div>
         <span>{props.category && `Category: ${props.category}`}</span>

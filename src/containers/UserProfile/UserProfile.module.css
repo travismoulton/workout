@@ -1,7 +1,7 @@
 .Message {
   color: #80ff80;
   position: absolute;
-  top: 9rem;
+  top: 7rem;
   left: 44%;
   font-size: 2rem;
 }
@@ -212,4 +212,11 @@
 .UpdatePasswordLink {
   margin-left: auto;
   margin-right: auto;
+}
+
+.NoWorkoutsAvailable,
+.NoRoutinesAvailable {
+  margin-bottom: 2rem;
+  font-size: 1.8rem;
+  color: var(--color-primary);
 }

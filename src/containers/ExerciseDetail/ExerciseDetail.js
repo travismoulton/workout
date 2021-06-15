@@ -144,11 +144,13 @@ const ExerciseDetail = (props) => {
         </div>
       )}
       {buildingWorkout && (
-        <AddToWorkoutBtn
-          history={props.history}
-          id={exercise.id}
-          name={exercise.name}
-        />
+        <div className={classes.AddToWorkoutBtnContainer}>
+          <AddToWorkoutBtn
+            history={props.history}
+            id={exercise.id}
+            name={exercise.name}
+          />
+        </div>
       )}
       {props.location.state.custom ? deleteCustomExerciseBtn : null}
 
