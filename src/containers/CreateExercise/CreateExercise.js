@@ -1,7 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
 
-// import ExerciseNameInput from './ExerciseNameInput/ExerciseNameInput';
 import Input from '../../components/UI/Input/Input';
 import SubmitExerciseBtn from './SubmitExerciseBtn/SubmitExerciseBtn';
 import { updateObject, checkValidityHandler } from '../../shared/utility';
@@ -11,7 +9,6 @@ import classes from './CreateExercise.module.css';
 const CreateExercise = (props) => {
   // const [exerciseName, setExerciseName] = useState(null);
   // const [description, setDescription] = useState(null);
-  const { user } = useSelector((state) => state.auth);
   const [muscleSelectOptionsDone, setMuscleSelectOptionsDone] = useState(false);
   const [formIsValid, setFormIsValid] = useState(false);
   const [requiredEquipmentList, setRequiredEquipmentList] = useState({
@@ -290,7 +287,6 @@ const CreateExercise = (props) => {
         formIsValid={formIsValid}
         nameIsValid={exerciseNameInput.valid}
         categoryIsValid={categoryInput.valid}
-        userId={user.authUser.uid}
         title={exerciseNameInput.value}
         description={descriptionInput.value || ''}
         category={categoryInput.value}

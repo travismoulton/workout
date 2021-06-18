@@ -24,6 +24,8 @@ const RecordWorkout = (props) => {
   const { updated } = useSelector((state) => state.workout);
   const dispatch = useDispatch();
 
+  const { uid, za: accessToken } = user;
+
   const workoutDateRef = useRef(null);
 
   useEffect(() => {
@@ -129,7 +131,7 @@ const RecordWorkout = (props) => {
     const workoutFirebaseId = suggestedWorkout.firebaseId;
     await axios({
       method: 'put',
-      url: `https://workout-81691-default-rtdb.firebaseio.com/workouts/${user.authUser.uid}/${workoutFirebaseId}.json`,
+      url: `https://workout-81691-default-rtdb.firebaseio.com/workouts/${uid}/${workoutFirebaseId}.json?auth=${accessToken}`,
       data: {
         title: suggestedWorkout.title,
         targetAreaCode: suggestedWorkout.targetAreaCode,
@@ -179,7 +181,7 @@ const RecordWorkout = (props) => {
     workoutId
       ? axios
           .get(
-            `https://workout-81691-default-rtdb.firebaseio.com/workouts/${user.authUser.uid}/${workoutId}.json`,
+            `https://workout-81691-default-rtdb.firebaseio.com/workouts/${uid}/${workoutId}.json?auth=${accessToken}`,
             { timeout: 5000 }
           )
           .then((res) => {
@@ -226,12 +228,10 @@ const RecordWorkout = (props) => {
           history={props.history}
           updated={updated}
           updateWorkoutInFirebase={updateWorkoutInFirebase}
-          userId={user.authUser.uid}
         />
       ) : null}
 
       <RecordADifferentWorkout
-        userId={user.authUser.uid}
         show={showRecordDifferentWorkoutModal}
         closeModal={() => setShowRecordDifferentWorkoutModal(false)}
         switchWorkout={(workoutId) => switchWorkout(workoutId)}

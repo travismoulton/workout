@@ -15,10 +15,12 @@ const Workouts = (props) => {
   const { workouts, routines } = useSelector((state) => state.userProfile);
   const dispatch = useDispatch();
 
+  const { uid, za: accessToken } = user.authUser;
+
   const fetchWorkouts = useCallback(() => {
     axios
       .get(
-        `https://workout-81691-default-rtdb.firebaseio.com/workouts/${user.authUser.uid}.json`,
+        `https://workout-81691-default-rtdb.firebaseio.com/workouts/${uid}.json?auth=${accessToken}`,
         { timeout: 5000 }
       )
       .then((res) => {
@@ -34,7 +36,7 @@ const Workouts = (props) => {
       .catch((err) => {
         props.toggleError();
       });
-  }, [user.authUser.uid, dispatch, props]);
+  }, [uid, accessToken, dispatch, props]);
 
   useEffect(() => {
     if (!initialFetchCompleted && !props.isError) {
@@ -54,7 +56,7 @@ const Workouts = (props) => {
   const deleteWorkout = async (firebaseId) => {
     await axios
       .delete(
-        `https://workout-81691-default-rtdb.firebaseio.com/workouts/${user.authUser.uid}/${firebaseId}.json`,
+        `https://workout-81691-default-rtdb.firebaseio.com/workouts/${uid}/${firebaseId}.json?auth=${accessToken}`,
         { timeout: 5000 }
       )
       .then(() => setWorkoutDeleted(true))
@@ -79,7 +81,7 @@ const Workouts = (props) => {
 
       await axios({
         method: 'patch',
-        url: `https://workout-81691-default-rtdb.firebaseio.com/routines/${user.authUser.uid}/${routinesToAlter[i].firebaseId}.json`,
+        url: `https://workout-81691-default-rtdb.firebaseio.com/routines/${user.authUser.uid}/${routinesToAlter[i].firebaseId}.json?auth=${accessToken}`,
         data: { workouts: updatedWorkouts },
         timeout: 5000,
       }).catch((err) => {

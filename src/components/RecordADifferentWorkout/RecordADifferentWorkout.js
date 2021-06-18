@@ -44,11 +44,14 @@ const RecordADifferentWorkout = (props) => {
     valid: true,
   });
   const { activeRoutine } = useSelector((state) => state.favorites);
+  const { user } = useSelector((state) => state.auth);
+
+  const { uid, za: accessToken } = user.authUser;
 
   const fetchAllWorkouts = useCallback(() => {
     axios
       .get(
-        `https://workout-81691-default-rtdb.firebaseio.com/workouts/${props.userId}.json`,
+        `https://workout-81691-default-rtdb.firebaseio.com/workouts/${uid}.json?auth=${accessToken}`,
         { timeout: 5000 }
       )
       .then((res) => {
@@ -65,7 +68,7 @@ const RecordADifferentWorkout = (props) => {
           isError: true,
         });
       });
-  }, [props.userId, axiosError]);
+  }, [uid, axiosError, accessToken]);
 
   const fetchRoutineWorkouts = useCallback(async () => {
     if (activeRoutine) {
@@ -78,7 +81,7 @@ const RecordADifferentWorkout = (props) => {
       for (let i = 0; i < workoutIds.length; i++) {
         await axios
           .get(
-            `https://workout-81691-default-rtdb.firebaseio.com/workouts/${props.userId}/${workoutIds[i]}.json`,
+            `https://workout-81691-default-rtdb.firebaseio.com/workouts/${uid}/${workoutIds[i]}.json?auth=${accessToken}`,
             { timeout: 5000 }
           )
           .then((res) => {
@@ -93,7 +96,7 @@ const RecordADifferentWorkout = (props) => {
       }
       setRoutineWorkouts(tempArr);
     }
-  }, [activeRoutine, props.userId, axiosError]);
+  }, [activeRoutine, uid, axiosError, accessToken]);
 
   useEffect(() => {
     fetchRoutineWorkouts();

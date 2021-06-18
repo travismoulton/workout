@@ -13,6 +13,8 @@ const RecordedWorkouts = (props) => {
   const { recordedWorkouts } = useSelector((state) => state.userProfile);
   const dispatch = useDispatch();
 
+  const { uid, za: accessToken } = user.authUser;
+
   const bubbleSortWorkoutDates = useCallback((unsortedDates) => {
     const dates = [...unsortedDates];
     const swap = (arr, i, j) => ([arr[i], arr[j]] = [arr[j], arr[i]]);
@@ -40,7 +42,7 @@ const RecordedWorkouts = (props) => {
   const fetchRecordedWorkouts = useCallback(() => {
     axios
       .get(
-        `https://workout-81691-default-rtdb.firebaseio.com/recordedWorkouts/${user.authUser.uid}.json`,
+        `https://workout-81691-default-rtdb.firebaseio.com/recordedWorkouts/${uid}.json?auth=${accessToken}`,
         { timeout: 5000 }
       )
       .then((res) => {
@@ -57,7 +59,7 @@ const RecordedWorkouts = (props) => {
       .catch((err) => {
         props.toggleError();
       });
-  }, [user.authUser.uid, bubbleSortWorkoutDates, dispatch, props]);
+  }, [uid, accessToken, bubbleSortWorkoutDates, dispatch, props]);
 
   useEffect(() => {
     if (!initialFetchCompleted && !props.isError) {
@@ -70,7 +72,7 @@ const RecordedWorkouts = (props) => {
   const deleteRecordedWorkout = async (firebaseId) => {
     await axios
       .delete(
-        `https://workout-81691-default-rtdb.firebaseio.com/recordedWorkouts/${user.authUser.uid}/${firebaseId}.json`,
+        `https://workout-81691-default-rtdb.firebaseio.com/recordedWorkouts/${uid}/${firebaseId}.json?auth=${accessToken}`,
         { timeout: 5000 }
       )
       .then(() => {

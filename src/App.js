@@ -30,7 +30,7 @@ import { FirebaseContext } from './components/Firebase/index';
 
 function App(props) {
   const [authUser, setAuthUser] = useState(null);
-  const [loaded, setLoaded] = useState(false);
+  const [loaded, setLoaded] = useState(true);
   const isAuthenticated = useSelector((state) => state.auth.user !== null);
   const inAuth = useSelector((state) => state.auth.inAuth);
   const dispatch = useDispatch();
@@ -50,11 +50,13 @@ function App(props) {
   }, [authUser, isAuthenticated, dispatch, inAuth]);
 
   useEffect(() => {
-    if (authUser) dispatch(setFavorites(authUser.authUser.uid));
+    if (authUser)
+      dispatch(setFavorites(authUser.authUser.uid, authUser.authUser.za));
   }, [authUser, dispatch]);
 
   useEffect(() => {
-    if (authUser) dispatch(fetchActiveRoutine(authUser.authUser.uid));
+    if (authUser)
+      dispatch(fetchActiveRoutine(authUser.authUser.uid, authUser.authUser.za));
   }, [authUser, dispatch]);
 
   const routes = isAuthenticated ? (

@@ -21,6 +21,8 @@ const Results = (props) => {
   const { favorites } = useSelector((state) => state.favorites);
   const { user } = useSelector((state) => state.auth);
 
+  const { uid, za: accessToken } = user;
+
   useEffect(() => {
     const shouldFetchWgerExercises =
       props.location.state.wger && !exerciseResults.length;
@@ -60,7 +62,7 @@ const Results = (props) => {
       (async () => {
         await axios
           .get(
-            `https://workout-81691-default-rtdb.firebaseio.com/customExercises/${user.authUser.uid}.json`,
+            `https://workout-81691-default-rtdb.firebaseio.com/customExercises/${uid}.json?auth=${accessToken}`,
             { timeout: 5000 }
           )
           .then((res) => {
@@ -75,7 +77,7 @@ const Results = (props) => {
           });
       })();
     }
-  }, [props.location.state, exerciseResults, user, error]);
+  }, [props.location.state, exerciseResults, user, error, uid, accessToken]);
 
   useEffect(() => {
     if (favorites)

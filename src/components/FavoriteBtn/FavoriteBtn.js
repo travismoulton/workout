@@ -8,10 +8,12 @@ const FavoriteBtn = (props) => {
   const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
+  const { uid, za: accessToken } = user.authUser;
+
   const toggleFavoritesHandler = () =>
     props.isFavorite
-      ? dispatch(removeFromFavorites(user.authUser.uid, props.firebaseId))
-      : dispatch(addToFavorites(user.authUser.uid, props.exerciseId));
+      ? dispatch(removeFromFavorites(uid, props.firebaseId, accessToken))
+      : dispatch(addToFavorites(uid, props.exerciseId, accessToken));
 
   const btnClasses = [
     classes.Btn,

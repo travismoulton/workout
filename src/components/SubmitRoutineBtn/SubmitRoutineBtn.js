@@ -1,12 +1,15 @@
 import axios from 'axios';
 import { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import { fetchActiveRoutine } from '../../store/actions';
 
 const SubmitRoutineBtn = (props) => {
   const [error, setError] = useState({ isError: false, code: '', msg: '' });
+  const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
+
+  const { uid, za: accessToken } = user.authUser;
 
   useEffect(() => {
     if (props.valid && error.code === 'noRoutineName')
@@ -22,7 +25,7 @@ const SubmitRoutineBtn = (props) => {
     let nameTaken = false;
     await axios
       .get(
-        `https://workout-81691-default-rtdb.firebaseio.com/routines/${props.userId}.json`
+        `https://workout-81691-default-rtdb.firebaseio.com/routines/${uid}.json?auth=${accessToken}`
       )
       .then((res) => {
         for (const key in res.data) {
@@ -83,8 +86,8 @@ const SubmitRoutineBtn = (props) => {
     await axios({
       method: props.createNewRoutine ? 'post' : 'put',
       url: props.createNewRoutine
-        ? `https://workout-81691-default-rtdb.firebaseio.com/routines/${props.userId}.json`
-        : `https://workout-81691-default-rtdb.firebaseio.com/routines/${props.userId}/${props.firebaseId}.json`,
+        ? `https://workout-81691-default-rtdb.firebaseio.com/routines/${uid}.json?auth=${accessToken}`
+        : `https://workout-81691-default-rtdb.firebaseio.com/routines/${uid}/${props.firebaseId}.json?auth=${accessToken}`,
       timeout: 5000,
       data: {
         title: props.title,
@@ -93,7 +96,7 @@ const SubmitRoutineBtn = (props) => {
       },
     })
       .then(() => {
-        if (props.isActiveRoutine) dispatch(fetchActiveRoutine(props.userId));
+        if (props.isActiveRoutine) dispatch(fetchActiveRoutine(uid));
         redirectToMyProfile();
       })
       .catch((err) =>

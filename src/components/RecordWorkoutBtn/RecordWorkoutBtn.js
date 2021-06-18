@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
 import axios from 'axios';
 
 import classes from './RecordWorkoutBtn.module.css';
@@ -14,11 +15,13 @@ const RecordWorkoutBtn = (props) => {
       </p>
     ),
   });
+  const { user } = useSelector((state) => state.auth);
+  const { uid, za: accessToken } = user.authUser;
 
   const recordWorkoutHandler = async () => {
     axios({
       method: 'post',
-      url: `https://workout-81691-default-rtdb.firebaseio.com/recordedWorkouts/${props.userId}.json`,
+      url: `https://workout-81691-default-rtdb.firebaseio.com/recordedWorkouts/${uid}.json?auth=${accessToken}`,
       timeout: 5000,
       data: {
         exercises: props.exercises,

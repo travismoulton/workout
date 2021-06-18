@@ -29,16 +29,20 @@ const ExerciseDetail = (props) => {
     ),
     code: '',
   });
-  const user = useSelector((state) => state.auth.user);
+  const { user } = useSelector((state) => state.auth);
   const favorites = useSelector((state) => state.favorites.favorites);
   const buildingWorkout = useSelector((state) => state.workout.buildingWorkout);
   const dispatch = useDispatch();
 
+  const { uid, za: accessToken } = user.authUser;
+
   useEffect(() => {
+    const { firebaseSearchId, id } = props.location.state;
+
     const shouldLoadCustomExercises = props.location.state.custom && user;
     const url = shouldLoadCustomExercises
-      ? `https://workout-81691-default-rtdb.firebaseio.com/customExercises/${user.authUser.uid}/${props.location.state.firebaseSearchId}.json`
-      : `https://wger.de/api/v2/exercise/${props.location.state.id}`;
+      ? `https://workout-81691-default-rtdb.firebaseio.com/customExercises/${uid}/${firebaseSearchId}.json?auth=${accessToken}`
+      : `https://wger.de/api/v2/exercise/${id}`;
 
     axios
       .get(url, { timeout: 5000 })
@@ -46,7 +50,7 @@ const ExerciseDetail = (props) => {
       .catch((err) => {
         setError({ ...error, isError: true, code: 'noExercise' });
       });
-  }, [props.location.state, user, error]);
+  }, [props.location.state, uid, error, user, accessToken]);
 
   useEffect(() => {
     if (exercise) {
@@ -74,9 +78,11 @@ const ExerciseDetail = (props) => {
     if (isFavorite)
       dispatch(removeFromFavorites(user.authUser.uid, props.firebaseId));
 
+    const { firebaseSearchId } = props.location.state;
+
     await axios({
       method: 'delete',
-      url: `https://workout-81691-default-rtdb.firebaseio.com/customExercises/${user.authUser.uid}/${props.location.state.firebaseSearchId}.json`,
+      url: `https://workout-81691-default-rtdb.firebaseio.com/customExercises/${uid}/${firebaseSearchId}.json?auth=${accessToken}`,
       timeout: 5000,
     }).catch((err) => {
       setError({ ...error, isError: true, code: 'delete' });

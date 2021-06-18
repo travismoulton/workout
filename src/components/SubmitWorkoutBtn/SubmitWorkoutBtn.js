@@ -16,6 +16,8 @@ const SubmitWorkoutBtn = (props) => {
   const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
+  const { uid, za: accessToken } = user.authUser;
+
   useEffect(() => {
     if (props.formIsValid && error.code === 'workoutNameFormError')
       setError({ ...error, isError: false, msg: '', code: null });
@@ -35,7 +37,7 @@ const SubmitWorkoutBtn = (props) => {
     let nameTaken = false;
     await axios
       .get(
-        `https://workout-81691-default-rtdb.firebaseio.com/workouts/${user.authUser.uid}.json`
+        `https://workout-81691-default-rtdb.firebaseio.com/workouts/${uid}.json?auth=${accessToken}`
       )
       .then((res) => {
         for (const key in res.data) {
@@ -84,8 +86,8 @@ const SubmitWorkoutBtn = (props) => {
     axios({
       method: props.createNewWorkout ? 'post' : 'put',
       url: props.createNewWorkout
-        ? `https://workout-81691-default-rtdb.firebaseio.com/workouts/${user.authUser.uid}.json`
-        : `https://workout-81691-default-rtdb.firebaseio.com/workouts/${user.authUser.uid}/${props.firebaseId}.json`,
+        ? `https://workout-81691-default-rtdb.firebaseio.com/workouts/${uid}.json?auth=${accessToken}`
+        : `https://workout-81691-default-rtdb.firebaseio.com/workouts/${uid}/${props.firebaseId}.json?auth=${accessToken}`,
       timeout: 5000,
       data: workoutData,
     })

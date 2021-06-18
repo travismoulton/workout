@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import axios from 'axios';
 import uniqid from 'uniqid';
 
@@ -13,6 +14,9 @@ const SubmitExerciseBtn = (props) => {
     y: null,
     innerTxt: null,
   });
+  const { user } = useSelector((state) => state.auth);
+
+  const { uid, za: accessToken } = user.authUser;
 
   const axiosError = {
     ...error,
@@ -46,7 +50,7 @@ const SubmitExerciseBtn = (props) => {
     let nameTaken = false;
     await axios
       .get(
-        `https://workout-81691-default-rtdb.firebaseio.com/customExercises/${props.userId}.json`,
+        `https://workout-81691-default-rtdb.firebaseio.com/customExercises/${uid}.json?auth=${accessToken}`,
         { timeout: 5000 }
       )
       .then((res) => {
@@ -80,7 +84,7 @@ const SubmitExerciseBtn = (props) => {
 
     axios({
       method: 'post',
-      url: `https://workout-81691-default-rtdb.firebaseio.com/customExercises/${props.userId}.json`,
+      url: `https://workout-81691-default-rtdb.firebaseio.com/customExercises/${uid}.json?auth=${accessToken}`,
       timeout: 5000,
       data: exerciseData,
     })

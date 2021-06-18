@@ -2,12 +2,12 @@ import axios from 'axios';
 
 import { CHECK_FAVORITES, SET_ACTIVE_ROUTINE } from './actionsTypes';
 
-export const setFavorites = (userId) => {
+export const setFavorites = (userId, accessToken) => {
   return async (dispatch) => {
     let favorites = [];
     await axios
       .get(
-        `https://workout-81691-default-rtdb.firebaseio.com/favorites/${userId}.json`
+        `https://workout-81691-default-rtdb.firebaseio.com/favorites/${userId}.json?auth=${accessToken}`
       )
       .then((res) => {
         for (const key in res.data)
@@ -17,27 +17,29 @@ export const setFavorites = (userId) => {
   };
 };
 
-export const addToFavorites = (userId, exercise) => async (dispatch) => {
-  await axios.post(
-    `https://workout-81691-default-rtdb.firebaseio.com/favorites/${userId}.json`,
-    {
-      exercise,
-    }
-  );
-  dispatch(setFavorites(userId));
-};
+export const addToFavorites =
+  (userId, exercise, accessToken) => async (dispatch) => {
+    await axios.post(
+      `https://workout-81691-default-rtdb.firebaseio.com/favorites/${userId}.json?auth=${accessToken}`,
+      {
+        exercise,
+      }
+    );
+    dispatch(setFavorites(userId));
+  };
 
-export const removeFromFavorites = (userId, firebaseId) => async (dispatch) => {
-  await axios.delete(
-    `https://workout-81691-default-rtdb.firebaseio.com/favorites/${userId}/${firebaseId}.json`
-  );
-  dispatch(setFavorites(userId));
-};
+export const removeFromFavorites =
+  (userId, firebaseId, accessToken) => async (dispatch) => {
+    await axios.delete(
+      `https://workout-81691-default-rtdb.firebaseio.com/favorites/${userId}/${firebaseId}.json?auth=${accessToken}`
+    );
+    dispatch(setFavorites(userId));
+  };
 
-export const fetchActiveRoutine = (userId) => async (dispatch) => {
+export const fetchActiveRoutine = (userId, accessToken) => async (dispatch) => {
   await axios
     .get(
-      `https://workout-81691-default-rtdb.firebaseio.com/routines/${userId}.json`
+      `https://workout-81691-default-rtdb.firebaseio.com/routines/${userId}.json?auth=${accessToken}`
     )
     .then((res) => {
       for (const key in res.data) {

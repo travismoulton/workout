@@ -13,6 +13,8 @@ const FavoritesSelectMenu = (props) => {
   const [favoritesAsExercises, setFavoritesAsExercises] = useState([]);
   const [favoritesAsSelectOptions, setFavoritesAsSelectOptions] = useState([]);
 
+  const { uid, za: accessToken } = user.authUser;
+
   const [addFromFavorites, setAddFromFavorites] = useState({
     elementType: 'select',
     elementConfig: {
@@ -66,7 +68,7 @@ const FavoritesSelectMenu = (props) => {
 
           await axios
             .get(
-              `https://workout-81691-default-rtdb.firebaseio.com/customExercises/${user.authUser.uid}.json`,
+              `https://workout-81691-default-rtdb.firebaseio.com/customExercises/${uid}.json?auth=${accessToken}`,
               { timeout: 5000 }
             )
             .then((res) => {
@@ -82,7 +84,8 @@ const FavoritesSelectMenu = (props) => {
   }, [
     favorites,
     favoritesAsExercises,
-    user.authUser.uid,
+    uid,
+    accessToken,
     filterFavorites,
     props,
   ]);

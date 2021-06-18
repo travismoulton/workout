@@ -59,13 +59,15 @@ const CreateRoutine = (props) => {
 
   const { user } = useSelector((state) => state.auth);
 
+  const { uid, za: accessToken } = user.authUser;
+
   useEffect(() => {
     const shouldBuildWorkoutSelectMenuOptions =
       user && !workoutSelectMenu.elementConfig.options.length;
     if (shouldBuildWorkoutSelectMenuOptions)
       axios({
         method: 'get',
-        url: `https://workout-81691-default-rtdb.firebaseio.com/workouts/${user.authUser.uid}.json`,
+        url: `https://workout-81691-default-rtdb.firebaseio.com/workouts/${uid}.json?auth=${accessToken}`,
         timeout: 5000,
       })
         .then((res) => {
@@ -88,7 +90,7 @@ const CreateRoutine = (props) => {
         .catch((err) => {
           setError({ ...error, isError: true });
         });
-  }, [user, workoutSelectMenu, error]);
+  }, [accessToken, uid, workoutSelectMenu, error, user]);
 
   const days = [
     'Monday',
@@ -180,7 +182,6 @@ const CreateRoutine = (props) => {
       />
       {workoutSelectMenus}
       <SubmitRoutineBtn
-        userId={user.authUser.uid}
         title={routineNameInput.value}
         workouts={selectedWorkouts}
         history={props.history}

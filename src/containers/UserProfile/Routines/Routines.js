@@ -23,10 +23,12 @@ const Routines = (props) => {
   const { activeRoutine } = useSelector((state) => state.favorites);
   const dispatch = useDispatch();
 
+  const { uid, za: accessToken } = user.authUser;
+
   const fetchRoutines = useCallback(() => {
     axios
       .get(
-        `https://workout-81691-default-rtdb.firebaseio.com/routines/${user.authUser.uid}.json`,
+        `https://workout-81691-default-rtdb.firebaseio.com/routines/${uid}.json?auth=${accessToken}`,
         { timeout: 5000 }
       )
       .then((res) => {
@@ -42,7 +44,7 @@ const Routines = (props) => {
       .catch((err) => {
         props.toggleError();
       });
-  }, [user.authUser.uid, dispatch, props]);
+  }, [uid, accessToken, dispatch, props]);
 
   useEffect(() => {
     if (!initialFetchCompleted && !props.isError) {
@@ -72,7 +74,7 @@ const Routines = (props) => {
     if (activeRoutine.firebaseId) {
       axios({
         method: 'patch',
-        url: `https://workout-81691-default-rtdb.firebaseio.com/routines/${user.authUser.uid}/${activeRoutine.firebaseId}.json`,
+        url: `https://workout-81691-default-rtdb.firebaseio.com/routines/${uid}/${activeRoutine.firebaseId}.json?auth=${accessToken}`,
         timeout: 5000,
         data: { activeRoutine: false },
       }).catch((err) => {
@@ -82,7 +84,7 @@ const Routines = (props) => {
 
     axios({
       method: 'patch',
-      url: `https://workout-81691-default-rtdb.firebaseio.com/routines/${user.authUser.uid}/${firebaseId}.json`,
+      url: `https://workout-81691-default-rtdb.firebaseio.com/routines/${uid}/${firebaseId}.json?auth=${accessToken}`,
       timeout: 5000,
       data: { activeRoutine: true },
     }).catch((err) => {
@@ -95,7 +97,7 @@ const Routines = (props) => {
   const deleteRoutine = (firebaseId) => {
     axios
       .delete(
-        `https://workout-81691-default-rtdb.firebaseio.com/routines/${user.authUser.uid}/${firebaseId}.json`,
+        `https://workout-81691-default-rtdb.firebaseio.com/routines/${uid}/${firebaseId}.json?auth=${accessToken}`,
         { timeout: 5000 }
       )
       .then(() => setRoutineDeleted(true))

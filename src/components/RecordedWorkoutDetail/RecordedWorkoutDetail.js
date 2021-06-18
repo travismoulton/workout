@@ -18,6 +18,9 @@ const RecordedWorkoutDetail = (props) => {
   });
   const [workout, setWorkout] = useState(null);
   const { user } = useSelector((state) => state.auth);
+
+  const { uid, za: accessToken } = user.authUser;
+
   useEffect(() => {
     if (!workout) {
       const { pathname } = props.location;
@@ -26,7 +29,7 @@ const RecordedWorkoutDetail = (props) => {
       (async () =>
         await axios
           .get(
-            `https://workout-81691-default-rtdb.firebaseio.com/recordedWorkouts/${user.authUser.uid}/${firebaseId}.json`,
+            `https://workout-81691-default-rtdb.firebaseio.com/recordedWorkouts/${uid}/${firebaseId}.json?auth=${accessToken}`,
             { timeout: 5000 }
           )
           .then((res) => {
@@ -36,7 +39,7 @@ const RecordedWorkoutDetail = (props) => {
             setAxiosError({ ...axiosError, isError: true });
           }))();
     }
-  }, [workout, user.authUser.uid, props.location, axiosError]);
+  }, [workout, uid, accessToken, props.location, axiosError]);
 
   const exercises = workout
     ? workout.exercises.map((exercise) => (

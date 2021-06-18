@@ -19,13 +19,16 @@ const Search = (props) => {
     isError: false,
     message: (
       <p style={{ color: 'red' }}>
-        Sorry, we're having trouble right now. please refresh the page or try
-        again later
+        {/* Sorry, we're having trouble right now. please refresh the page or try
+        again later */}
+        What the fuck
       </p>
     ),
   });
   const [needLoginMessage, setNeedLoginMessage] = useState(null);
   const { user } = useSelector((state) => state.auth);
+
+  // const { uid, za: accessToken } = user;
 
   useEffect(() => {
     const page = props.location.pathname.substring(1);
@@ -42,8 +45,7 @@ const Search = (props) => {
       (async () => {
         await axios
           .get(
-            `https://workout-81691-default-rtdb.firebaseio.com/customExercises/${user.authUser.uid}.json`,
-            { timeout: 5000 }
+            `https://workout-81691-default-rtdb.firebaseio.com/customExercises/${user.authUser.uid}.json?auth=${user.authUser.za}`
           )
           .then((res) => {
             res.data ? setShowCustomOption(true) : setShowCustomOption(false);

@@ -1,4 +1,3 @@
-//1: When adding through search, need to fix styling
-//2: Need to update style on User profile message and animate the exit
+
 //3: Need to properly configure read / write privlages on firebase
 
