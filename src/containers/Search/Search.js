@@ -19,16 +19,13 @@ const Search = (props) => {
     isError: false,
     message: (
       <p style={{ color: 'red' }}>
-        {/* Sorry, we're having trouble right now. please refresh the page or try
-        again later */}
-        What the fuck
+        Sorry, we're having trouble right now. please refresh the page or try
+        again later
       </p>
     ),
   });
   const [needLoginMessage, setNeedLoginMessage] = useState(null);
   const { user } = useSelector((state) => state.auth);
-
-  // const { uid, za: accessToken } = user;
 
   useEffect(() => {
     const page = props.location.pathname.substring(1);
