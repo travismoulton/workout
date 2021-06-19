@@ -44,9 +44,7 @@ const RecordADifferentWorkout = (props) => {
     valid: true,
   });
   const { activeRoutine } = useSelector((state) => state.favorites);
-  const { user } = useSelector((state) => state.auth);
-
-  const { uid, za: accessToken } = user.authUser;
+  const { uid, accessToken } = useSelector((state) => state.auth);
 
   const fetchAllWorkouts = useCallback(() => {
     axios

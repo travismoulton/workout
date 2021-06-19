@@ -18,13 +18,11 @@ const RecordWorkout = (props) => {
   const [showRecordDifferentWorkoutModal, setShowRecordDifferentWorkoutModal] =
     useState(false);
   const [error, setError] = useState({ isError: false, message: '', code: '' });
-  const { user } = useSelector((state) => state.auth);
+  const { user, uid, accessToken } = useSelector((state) => state.auth);
   const { activeRoutine } = useSelector((state) => state.favorites);
   const { exercises } = useSelector((state) => state.workout);
   const { updated } = useSelector((state) => state.workout);
   const dispatch = useDispatch();
-
-  const { uid, za: accessToken } = user;
 
   const workoutDateRef = useRef(null);
 

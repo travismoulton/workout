@@ -29,12 +29,10 @@ const ExerciseDetail = (props) => {
     ),
     code: '',
   });
-  const { user } = useSelector((state) => state.auth);
+  const { user, uid, accessToken } = useSelector((state) => state.auth);
   const favorites = useSelector((state) => state.favorites.favorites);
   const buildingWorkout = useSelector((state) => state.workout.buildingWorkout);
   const dispatch = useDispatch();
-
-  const { uid, za: accessToken } = user.authUser;
 
   useEffect(() => {
     const { firebaseSearchId, id } = props.location.state;

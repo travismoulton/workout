@@ -9,11 +9,9 @@ import { setRecordedWorkouts } from '../../../store/actions';
 const RecordedWorkouts = (props) => {
   const [initialFetchCompleted, setInitialFetchCompleted] = useState(false);
   const [recordedWorkoutDeleted, setRecordedWorkoutDeleted] = useState(false);
-  const { user } = useSelector((state) => state.auth);
+  const { uid, accessToken } = useSelector((state) => state.auth);
   const { recordedWorkouts } = useSelector((state) => state.userProfile);
   const dispatch = useDispatch();
-
-  const { uid, za: accessToken } = user.authUser;
 
   const bubbleSortWorkoutDates = useCallback((unsortedDates) => {
     const dates = [...unsortedDates];

@@ -15,8 +15,7 @@ const RecordWorkoutBtn = (props) => {
       </p>
     ),
   });
-  const { user } = useSelector((state) => state.auth);
-  const { uid, za: accessToken } = user.authUser;
+  const { uid, accessToken } = useSelector((state) => state.auth);
 
   const recordWorkoutHandler = async () => {
     axios({

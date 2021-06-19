@@ -14,9 +14,7 @@ const SubmitExerciseBtn = (props) => {
     y: null,
     innerTxt: null,
   });
-  const { user } = useSelector((state) => state.auth);
-
-  const { uid, za: accessToken } = user.authUser;
+  const { uid, accessToken } = useSelector((state) => state.auth);
 
   const axiosError = {
     ...error,

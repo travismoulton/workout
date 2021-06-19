@@ -12,6 +12,8 @@ const initalState = {
   loading: false,
   user: null,
   inAuth: false,
+  uid: null,
+  accessToken: null,
 };
 
 const authStart = (state, action) =>
@@ -20,6 +22,8 @@ const authStart = (state, action) =>
 const authSuccess = (state, action) =>
   updateObject(state, {
     user: action.user,
+    uid: action.user.authUser.uid,
+    accessToken: action.user.authUser.za,
     error: null,
     loading: false,
     inAuth: false,

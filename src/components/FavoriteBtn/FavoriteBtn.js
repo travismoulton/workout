@@ -5,10 +5,8 @@ import classes from './FavoriteBtn.module.css';
 import { addToFavorites, removeFromFavorites } from '../../store/actions/';
 
 const FavoriteBtn = (props) => {
-  const { user } = useSelector((state) => state.auth);
+  const { uid, accessToken } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
-
-  const { uid, za: accessToken } = user.authUser;
 
   const toggleFavoritesHandler = () =>
     props.isFavorite

@@ -25,7 +25,7 @@ const Search = (props) => {
     ),
   });
   const [needLoginMessage, setNeedLoginMessage] = useState(null);
-  const { user } = useSelector((state) => state.auth);
+  const { user, uid, accessToken } = useSelector((state) => state.auth);
 
   useEffect(() => {
     const page = props.location.pathname.substring(1);
@@ -42,7 +42,7 @@ const Search = (props) => {
       (async () => {
         await axios
           .get(
-            `https://workout-81691-default-rtdb.firebaseio.com/customExercises/${user.authUser.uid}.json?auth=${user.authUser.za}`
+            `https://workout-81691-default-rtdb.firebaseio.com/customExercises/${uid}.json?auth=${accessToken}`
           )
           .then((res) => {
             res.data ? setShowCustomOption(true) : setShowCustomOption(false);
@@ -52,7 +52,7 @@ const Search = (props) => {
           });
       })();
     }
-  }, [user, loaded, error]);
+  }, [user, uid, accessToken, loaded, error]);
 
   useEffect(() => {
     if (!user && showCustomOption) setShowCustomOption(false);

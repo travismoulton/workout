@@ -13,10 +13,8 @@ const SubmitWorkoutBtn = (props) => {
   });
   const { exercises } = useSelector((state) => state.workout);
   const { formData } = useSelector((state) => state.workout);
-  const { user } = useSelector((state) => state.auth);
+  const { uid, accessToken } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
-
-  const { uid, za: accessToken } = user.authUser;
 
   useEffect(() => {
     if (props.formIsValid && error.code === 'workoutNameFormError')

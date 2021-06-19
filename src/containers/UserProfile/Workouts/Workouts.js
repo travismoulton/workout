@@ -11,11 +11,9 @@ const Workouts = (props) => {
   const [initialFetchCompleted, setInitialFetchCompleted] = useState(false);
   const [workoutDeleted, setWorkoutDeleted] = useState(false);
 
-  const { user } = useSelector((state) => state.auth);
+  const { user, uid, accessToken } = useSelector((state) => state.auth);
   const { workouts, routines } = useSelector((state) => state.userProfile);
   const dispatch = useDispatch();
-
-  const { uid, za: accessToken } = user.authUser;
 
   const fetchWorkouts = useCallback(() => {
     axios

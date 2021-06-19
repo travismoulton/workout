@@ -19,9 +19,7 @@ const Results = (props) => {
     ),
   });
   const { favorites } = useSelector((state) => state.favorites);
-  const { user } = useSelector((state) => state.auth);
-
-  const { uid, za: accessToken } = user.authUser;
+  const { user, uid, accessToken } = useSelector((state) => state.auth);
 
   useEffect(() => {
     const shouldFetchWgerExercises =

@@ -8,12 +8,10 @@ import { addExercise } from '../../../store/actions';
 
 const FavoritesSelectMenu = (props) => {
   const { favorites } = useSelector((state) => state.favorites);
-  const { user } = useSelector((state) => state.auth);
+  const { uid, accessToken } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const [favoritesAsExercises, setFavoritesAsExercises] = useState([]);
   const [favoritesAsSelectOptions, setFavoritesAsSelectOptions] = useState([]);
-
-  const { uid, za: accessToken } = user.authUser;
 
   const [addFromFavorites, setAddFromFavorites] = useState({
     elementType: 'select',

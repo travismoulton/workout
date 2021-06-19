@@ -7,8 +7,6 @@ import wgerDict from '../../shared/wgerDict';
 import classes from './CreateExercise.module.css';
 
 const CreateExercise = (props) => {
-  // const [exerciseName, setExerciseName] = useState(null);
-  // const [description, setDescription] = useState(null);
   const [muscleSelectOptionsDone, setMuscleSelectOptionsDone] = useState(false);
   const [formIsValid, setFormIsValid] = useState(false);
   const [requiredEquipmentList, setRequiredEquipmentList] = useState({

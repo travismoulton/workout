@@ -6,10 +6,8 @@ import { fetchActiveRoutine } from '../../store/actions';
 
 const SubmitRoutineBtn = (props) => {
   const [error, setError] = useState({ isError: false, code: '', msg: '' });
-  const { user } = useSelector((state) => state.auth);
+  const { uid, accessToken } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
-
-  const { uid, za: accessToken } = user.authUser;
 
   useEffect(() => {
     if (props.valid && error.code === 'noRoutineName')

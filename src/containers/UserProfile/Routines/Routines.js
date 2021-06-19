@@ -16,14 +16,12 @@ const Routines = (props) => {
   const [randomState, setRandomState] = useState(false);
   const [initialFetchCompleted, setInitialFetchCompleted] = useState(false);
   const [routineDeleted, setRoutineDeleted] = useState(false);
-  const { user } = useSelector((state) => state.auth);
+  const { uid, accessToken } = useSelector((state) => state.auth);
   const { routines, refreshRoutines } = useSelector(
     (state) => state.userProfile
   );
   const { activeRoutine } = useSelector((state) => state.favorites);
   const dispatch = useDispatch();
-
-  const { uid, za: accessToken } = user.authUser;
 
   const fetchRoutines = useCallback(() => {
     axios

@@ -25,7 +25,7 @@ export const addToFavorites =
         exercise,
       }
     );
-    dispatch(setFavorites(userId));
+    dispatch(setFavorites(userId, accessToken));
   };
 
 export const removeFromFavorites =
@@ -33,7 +33,7 @@ export const removeFromFavorites =
     await axios.delete(
       `https://workout-81691-default-rtdb.firebaseio.com/favorites/${userId}/${firebaseId}.json?auth=${accessToken}`
     );
-    dispatch(setFavorites(userId));
+    dispatch(setFavorites(userId, accessToken));
   };
 
 export const fetchActiveRoutine = (userId, accessToken) => async (dispatch) => {
