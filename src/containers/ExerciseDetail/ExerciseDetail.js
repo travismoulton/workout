@@ -103,8 +103,20 @@ const ExerciseDetail = (props) => {
   const modal = (
     <Modal show={showModal} modalClosed={() => setShowModal(false)}>
       <p>Are you sure you want to delete this exercise?</p>
-      <button onClick={() => setShowModal(false)}>Cancel</button>
-      <button onClick={deleteCustomExercise}>Delete exercise</button>
+      <div className={classes.ModalBtnWrapper}>
+        <button
+          className={`GlobalBtn-1 ${classes.ConfirmBtn}`}
+          onClick={deleteCustomExercise}
+        >
+          Delete exercise
+        </button>
+        <button
+          className={`GlobalBtn-1 ${classes.CancelBtn}`}
+          onClick={() => setShowModal(false)}
+        >
+          Cancel
+        </button>
+      </div>
     </Modal>
   );
 

@@ -7,7 +7,6 @@ import ChangePasswordLink from './ChangePasswordLink/ChangePasswordLink';
 import Modal from '../../components/UI/Modal/Modal';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import Message from './Message/Message';
-import classes from './UserProfile.module.css';
 
 const UserProfile = (props) => {
   const [initialFetchCompleted, setInitialFetchCompleted] = useState(false);

@@ -10,7 +10,7 @@
 }
 
 .DeleteBtn {
-  width: 12rem;
+  width: 11rem;
   margin-top: 1rem;
 }
 
@@ -28,4 +28,28 @@
   border: none;
   box-shadow: var(--box-shadow-2);
   color: var(--color-white);
+}
+
+.ModalBtnWrapper {
+  display: flex;
+  width: 60%;
+  justify-content: space-between;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.CancelBtn,
+.ConfirmBtn {
+  width: 15rem;
+}
+
+@media only screen and (max-width: 800px) {
+  .ModalBtnWrapper {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .ConfirmBtn {
+    margin-bottom: 1rem;
+  }
 }

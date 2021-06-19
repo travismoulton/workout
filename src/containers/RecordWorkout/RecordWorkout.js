@@ -18,7 +18,7 @@ const RecordWorkout = (props) => {
   const [showRecordDifferentWorkoutModal, setShowRecordDifferentWorkoutModal] =
     useState(false);
   const [error, setError] = useState({ isError: false, message: '', code: '' });
-  const { user, uid, accessToken } = useSelector((state) => state.auth);
+  const { uid, accessToken } = useSelector((state) => state.auth);
   const { activeRoutine } = useSelector((state) => state.favorites);
   const { exercises } = useSelector((state) => state.workout);
   const { updated } = useSelector((state) => state.workout);
@@ -49,7 +49,7 @@ const RecordWorkout = (props) => {
         (async () =>
           await axios
             .get(
-              `https://workout-81691-default-rtdb.firebaseio.com/workouts/${user.authUser.uid}/${workoutFirebaseId}.json`,
+              `https://workout-81691-default-rtdb.firebaseio.com/workouts/${uid}/${workoutFirebaseId}.json?auth=${accessToken}`,
               { timeout: 5000 }
             )
             .then((res) => {
@@ -81,7 +81,8 @@ const RecordWorkout = (props) => {
   }, [
     adjustDateForSunday,
     activeRoutine,
-    user.authUser.uid,
+    uid,
+    accessToken,
     loading,
     dispatch,
     exercises,

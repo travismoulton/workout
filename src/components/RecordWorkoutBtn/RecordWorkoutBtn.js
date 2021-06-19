@@ -58,9 +58,26 @@ const RecordWorkoutBtn = (props) => {
         You made changes to this workout. Would you like to make theses changes
         permanant?
       </p>
-      <button onClick={() => setShowModal(false)}>Go back</button>
-      <button onClick={closeModalWithoutSavingWorkout}>No</button>
-      <button onClick={closeModalAndSaveWorkout}>Yes</button>
+      <div className={classes.ModalBtnWrapper}>
+        <button
+          className={`GlobalBtn-1 ${classes.ModalBtn}`}
+          onClick={closeModalAndSaveWorkout}
+        >
+          Yes
+        </button>
+        <button
+          className={`GlobalBtn-1 ${classes.ModalBtn}`}
+          onClick={closeModalWithoutSavingWorkout}
+        >
+          No
+        </button>
+        <button
+          className={`GlobalBtn-1 ${classes.ModalBtn}`}
+          onClick={() => setShowModal(false)}
+        >
+          Go back
+        </button>
+      </div>
     </Modal>
   );
   return (
