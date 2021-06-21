@@ -10,8 +10,4 @@
 //9: Edit the README
 
 
-// CREATING GROUPED OPTIONS IN FAVORITES SELECT
-//1: Create a useCallback function to loop through favorites and return an array of the different categories
-//2: Map through that array and for every category map through favoritesAsExercises and push all exercises with the same category into that opt group.
-I don't think I have to loop, I can just filter
 

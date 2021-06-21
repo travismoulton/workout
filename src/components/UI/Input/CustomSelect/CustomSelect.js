@@ -41,6 +41,8 @@ const CustomSelect = (props) => {
     }),
   };
 
+  console.log(props.changed);
+
   const formatGroupLabel = (data) => (
     <div className={classes.GroupStyles}>
       <span>{data.label}</span>

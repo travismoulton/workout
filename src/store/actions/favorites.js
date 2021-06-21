@@ -11,23 +11,18 @@ export const setFavorites = (userId, accessToken) => {
       )
       .then((res) => {
         for (const key in res.data)
-          favorites.push({
-            firebaseId: key,
-            exercise: res.data[key].exercise,
-            category: res.data[key].category,
-          });
+          favorites.push({ firebaseId: key, exercise: res.data[key].exercise });
       });
     return dispatch({ type: CHECK_FAVORITES, favorites });
   };
 };
 
 export const addToFavorites =
-  (userId, exercise, accessToken, category) => async (dispatch) => {
+  (userId, exercise, accessToken) => async (dispatch) => {
     await axios.post(
       `https://workout-81691-default-rtdb.firebaseio.com/favorites/${userId}.json?auth=${accessToken}`,
       {
         exercise,
-        category,
       }
     );
     dispatch(setFavorites(userId, accessToken));

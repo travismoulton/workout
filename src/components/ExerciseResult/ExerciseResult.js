@@ -31,7 +31,6 @@ const ExerciseResult = (props) => {
               isFavorite={props.isFavorite}
               firebaseId={props.firebaseId}
               exerciseId={props.exerciseId}
-              exerciseCategory={props.category}
             />
           )}
           {buildingWorkout && (
