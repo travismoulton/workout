@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
@@ -72,8 +72,11 @@ const Register = (props) => {
   });
 
   const [errorMessage, setErrorMessage] = useState('');
-
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    document.title = 'Register';
+  }, []);
 
   const updateEmail = (e) => {
     setEmailInput({ ...emailInput, value: e.target.value });

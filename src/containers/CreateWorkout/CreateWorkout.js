@@ -38,6 +38,10 @@ const CreateWorkout = (props) => {
   );
 
   useEffect(() => {
+    document.title = 'Create Workout';
+  }, []);
+
+  useEffect(() => {
     if (error.isError) setLoaded(true);
   }, [error, loaded]);
 

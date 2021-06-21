@@ -28,6 +28,10 @@ const Search = (props) => {
   const { user, uid, accessToken } = useSelector((state) => state.auth);
 
   useEffect(() => {
+    document.title = 'Search For Exercises';
+  });
+
+  useEffect(() => {
     const page = props.location.pathname.substring(1);
     if (
       !user &&

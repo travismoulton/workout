@@ -96,6 +96,10 @@ const CreateExercise = (props) => {
     className: 'CreateExerciseSelect',
   });
 
+  useEffect(() => {
+    document.title = 'Create Custom Exercise';
+  }, []);
+
   const checkBoxTemplate = {
     elementType: 'input',
     elementConfig: {

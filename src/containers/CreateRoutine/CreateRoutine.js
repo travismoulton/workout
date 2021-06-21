@@ -60,6 +60,10 @@ const CreateRoutine = (props) => {
   const { user, uid, accessToken } = useSelector((state) => state.auth);
 
   useEffect(() => {
+    document.title = 'Create Routine';
+  }, []);
+
+  useEffect(() => {
     const shouldBuildWorkoutSelectMenuOptions =
       user && !workoutSelectMenu.elementConfig.options.length;
     if (shouldBuildWorkoutSelectMenuOptions)

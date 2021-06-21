@@ -27,6 +27,10 @@ const RecordWorkout = (props) => {
   const workoutDateRef = useRef(null);
 
   useEffect(() => {
+    document.title = 'Record Workout';
+  }, []);
+
+  useEffect(() => {
     workoutDateRef.current = workoutDate;
   }, []);
 

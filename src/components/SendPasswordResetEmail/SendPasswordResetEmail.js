@@ -25,6 +25,10 @@ const SendPasswordResetEmail = (props) => {
   const [passwordRest, setPasswordReset] = useState(false);
 
   useEffect(() => {
+    document.title = 'Reset Password';
+  }, []);
+
+  useEffect(() => {
     if (error) if (emailInput.value && error.code === 'noEmail') setError(null);
   }, [error, emailInput]);
 

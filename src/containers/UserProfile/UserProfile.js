@@ -31,6 +31,10 @@ const UserProfile = (props) => {
   });
 
   useEffect(() => {
+    document.title = 'My Profile';
+  });
+
+  useEffect(() => {
     if (
       workoutsFetched &&
       routinesFetched &&

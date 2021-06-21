@@ -22,6 +22,17 @@ const Results = (props) => {
   const { user, uid, accessToken } = useSelector((state) => state.auth);
 
   useEffect(() => {
+    document.title =
+      props.location.state.category === 'exercisecategory'
+        ? `Category: ${props.location.state.subCategory}`
+        : props.location.state.category === 'muscle'
+        ? `Muscle: ${props.location.state.subCategory}`
+        : props.location.state.category === 'equipment'
+        ? `Equipment: ${props.location.state.subCategory}`
+        : 'My Custom Exercises';
+  }, []);
+
+  useEffect(() => {
     const shouldFetchWgerExercises =
       props.location.state.wger && !exerciseResults.length;
     if (shouldFetchWgerExercises) {

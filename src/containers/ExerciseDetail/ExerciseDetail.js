@@ -35,6 +35,10 @@ const ExerciseDetail = (props) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    if (exercise) document.title = exercise.name;
+  }, []);
+
+  useEffect(() => {
     const { firebaseSearchId, id } = props.location.state;
 
     const shouldLoadCustomExercises = props.location.state.custom && user;
