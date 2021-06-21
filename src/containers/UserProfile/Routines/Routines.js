@@ -47,7 +47,7 @@ const Routines = (props) => {
   useEffect(() => {
     if (!initialFetchCompleted && !props.isError) {
       fetchRoutines();
-      setInitialFetchCompleted();
+      setInitialFetchCompleted(true);
       props.setFetchCompleted();
     }
   }, [initialFetchCompleted, fetchRoutines, props]);

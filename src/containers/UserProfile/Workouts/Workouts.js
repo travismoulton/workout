@@ -39,7 +39,7 @@ const Workouts = (props) => {
   useEffect(() => {
     if (!initialFetchCompleted && !props.isError) {
       fetchWorkouts();
-      setInitialFetchCompleted();
+      setInitialFetchCompleted(true);
       props.setFetchCompleted();
     }
   }, [initialFetchCompleted, fetchWorkouts, props]);

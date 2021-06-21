@@ -62,7 +62,7 @@ const RecordedWorkouts = (props) => {
   useEffect(() => {
     if (!initialFetchCompleted && !props.isError) {
       fetchRecordedWorkouts();
-      setInitialFetchCompleted();
+      setInitialFetchCompleted(true);
       props.setFetchCompleted();
     }
   }, [initialFetchCompleted, fetchRecordedWorkouts, props]);

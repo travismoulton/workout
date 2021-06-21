@@ -89,6 +89,7 @@ const WorkoutDetailsForm = (props) => {
       const { workout } = props.history.location.state;
 
       if (workout) {
+        console.log(workout);
         dispatch(setExercises(workout.exercises));
         dispatch(
           setEntireForm(
@@ -101,16 +102,20 @@ const WorkoutDetailsForm = (props) => {
         if (workout.title)
           setWorkoutNameInput({ ...workoutNameInput, value: workout.title });
 
-        if (workout.targetArea)
+        if (workout.targetAreaCode)
           setTargetAreaInput({
             ...targetAreaInput,
-            value: workout.targetAreaCode,
+            value: targetAreaInput.elementConfig.options.filter(
+              (option) => option.value === workout.targetAreaCode
+            )[0],
           });
 
-        if (workout.secondaryTargetArea)
+        if (workout.secondaryTargetCode)
           setSecondaryTargetAreaInput({
             ...secondaryTargetAreaInput,
-            value: workout.secondaryTargetCode,
+            value: secondaryTargetAreaInput.elementConfig.options.filter(
+              (option) => option.value === workout.secondaryTargetCode
+            )[0],
           });
 
         props.setOriginalTitle(workout.title);
