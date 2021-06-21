@@ -234,7 +234,12 @@ const CreateExercise = (props) => {
     if (e.target) e.value = e.target.value;
 
     const updatedInput = updateObject(input, {
-      value: e.value,
+      value:
+        input.elementType === 'select'
+          ? input.elementConfig.options.filter(
+              (option) => option.value === e.value
+            )[0]
+          : e.value,
       valid: checkValidityHandler(e.value.toString(), input.validation),
       touched: true,
     });

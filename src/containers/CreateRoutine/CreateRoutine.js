@@ -129,7 +129,12 @@ const CreateRoutine = (props) => {
   ]);
 
   const workoutSelectMenus = days.map((day, i) => {
-    const select = { ...workoutSelectMenu, value: selectedWorkouts[i] };
+    const select = {
+      ...workoutSelectMenu,
+      value: workoutSelectMenu.elementConfig.options.filter(
+        (option) => option.value === selectedWorkouts[i]
+      ),
+    };
     const changed = (e) => {
       const tempWorkouts = [...selectedWorkouts];
       tempWorkouts[i] = e.value;
@@ -150,6 +155,7 @@ const CreateRoutine = (props) => {
   });
 
   const inputChangedHandler = (e, input) => {
+    console.log();
     const updatedInput = updateObject(input, {
       value: e.target.value,
       valid: checkValidityHandler(e.target.value, input.validation),

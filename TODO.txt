@@ -2,12 +2,15 @@
 //2: Set an icon DONE
 //3: Set a 10 second timer on wger calls DONE
 //4: Can I set the favorites dropdown to list them by category DONE
+//5: Can I get the clear form button to reset the select menus on create workout? DONE
 
-//5: Can I get the clear form button to reset the select menus on create workout?
 //6: If a user doesn't have an active routine set a newly created routine to be active
-//7: Add username and email to be displayed on the my profile privlages
+//7: Add username and email to be displayed on the my profile page
 //8: Revisit adding pictures to exercise detail
-//9: Edit the README
+//9: Refactor set details
+//10: After editing the active routine, need to reset it
+//11: When on userprofile it's constantly sending a request to firebase
+//10: Edit the README
 
 
 

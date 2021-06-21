@@ -41,8 +41,6 @@ const CustomSelect = (props) => {
     }),
   };
 
-  console.log(props.changed);
-
   const formatGroupLabel = (data) => (
     <div className={classes.GroupStyles}>
       <span>{data.label}</span>
@@ -58,6 +56,7 @@ const CustomSelect = (props) => {
       styles={customStyles}
       components={{ DropdownIndicator }}
       defaultValue={defaultValue}
+      value={props.value}
       isSearchable={props.isSearchable}
       formatGroupLabel={formatGroupLabel}
     />

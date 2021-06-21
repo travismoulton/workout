@@ -153,6 +153,27 @@ const FavoritesSelectMenu = (props) => {
       });
   }, [addFromFavorites, favoritesAsSelectOptions]);
 
+  useEffect(() => {
+    if (props.clearSelect) {
+      setAddFromFavorites({ ...addFromFavorites, value: null });
+    }
+  }, [props.clearSelect, addFromFavorites]);
+
+  const setAddFromFavoritesValue = (val) => {
+    let returnVal;
+    const optionGroups = addFromFavorites.elementConfig.options;
+    optionGroups.forEach((group) => {
+      if (group.options) {
+        const matchingOption = group.options.filter(
+          (option) => option.value === val
+        );
+        if (matchingOption.length) returnVal = matchingOption[0];
+      }
+    });
+
+    return returnVal;
+  };
+
   const addExerciseFromFavorites = (e) => {
     const exercise = favoritesAsExercises.filter(
       (fav) => fav.id === e.value
@@ -167,6 +188,11 @@ const FavoritesSelectMenu = (props) => {
           focus: 'reps',
         })
       );
+
+    setAddFromFavorites({
+      ...addFromFavorites,
+      value: setAddFromFavoritesValue(e.value),
+    });
   };
 
   return favoritesAsExercises.length ? (

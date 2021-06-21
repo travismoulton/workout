@@ -28,13 +28,18 @@ const WorkoutListItem = (props) => {
         { value: 'time', label: 'Time' },
       ],
     },
-    value: 'reps',
-    label: 'Exercise focus: ',
+    value: { value: 'reps', label: 'Reps' },
+    label: 'Exercise focus:',
     id: 1,
   });
 
   const changeFocusHandler = (e) => {
-    setExerciseFocusInput({ ...exerciseFocusInput, value: e.value });
+    setExerciseFocusInput({
+      ...exerciseFocusInput,
+      value: exerciseFocusInput.elementConfig.options.filter(
+        (option) => option.value === e.value
+      )[0],
+    });
     setExerciseFocus(e.value);
 
     e.value === 'time'
@@ -50,6 +55,7 @@ const WorkoutListItem = (props) => {
       label={exerciseFocusInput.label}
       classname={'ExerciseFocusSelect'}
       wrapperClass={'ExerciseFocusSelectWrapper'}
+      value={exerciseFocusInput.value}
       notSearchable
     />
   );

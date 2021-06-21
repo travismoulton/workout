@@ -87,6 +87,7 @@ const CreateWorkout = (props) => {
           toggleError={() => setError({ ...error, isError: true })}
           isError={error.isError}
           isLoaded={loaded}
+          clearSelect={shouldClearFormInputs}
         />
 
         <button

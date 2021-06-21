@@ -27,6 +27,7 @@ const RecordADifferentWorkout = (props) => {
       options: [],
     },
     value: '',
+    displayValue: '',
     validation: {
       required: false,
     },
@@ -38,6 +39,7 @@ const RecordADifferentWorkout = (props) => {
       options: [],
     },
     value: '',
+    displayValue: '',
     validation: {
       required: false,
     },
@@ -153,12 +155,15 @@ const RecordADifferentWorkout = (props) => {
   const routineBasedInput = (
     <Input
       label={'Choose from active routine'}
-      value={activeRoutineSelectMenu.value}
+      value={activeRoutineSelectMenu.displayValue}
       elementConfig={activeRoutineSelectMenu.elementConfig}
       elementType={activeRoutineSelectMenu.elementType}
       changed={(e) =>
         setActiveRoutineSelectMenu({
           ...activeRoutineSelectMenu,
+          displayValue: activeRoutineSelectMenu.elementConfig.options.filter(
+            (option) => option.value === e.value
+          )[0],
           value: e.value,
         })
       }
@@ -171,12 +176,15 @@ const RecordADifferentWorkout = (props) => {
   const workoutBasedInput = (
     <Input
       label="Choose from all your workouts"
-      value={allWorkoutSelectMenu.value}
+      value={allWorkoutSelectMenu.displayValue}
       elementConfig={allWorkoutSelectMenu.elementConfig}
       elementType={allWorkoutSelectMenu.elementType}
       changed={(e) =>
         setAllWorkoutSelectMenu({
           ...allWorkoutSelectMenu,
+          displayValue: allWorkoutSelectMenu.elementConfig.options.filter(
+            (option) => option.value === e.value
+          )[0],
           value: e.value,
         })
       }
@@ -189,10 +197,13 @@ const RecordADifferentWorkout = (props) => {
   const switchWorkoutAndCloseModal = (menu) => {
     if (menu === 'routine') {
       props.switchWorkout(activeRoutineSelectMenu.value);
-      setActiveRoutineSelectMenu({ ...activeRoutineSelectMenu, value: '' });
+      setActiveRoutineSelectMenu({
+        ...activeRoutineSelectMenu,
+        displayValue: null,
+      });
     } else if (menu === 'allWorkouts') {
       props.switchWorkout(allWorkoutSelectMenu.value);
-      setAllWorkoutSelectMenu({ ...allWorkoutSelectMenu, value: '' });
+      setAllWorkoutSelectMenu({ ...allWorkoutSelectMenu, displayValue: null });
     }
     props.closeModal();
   };

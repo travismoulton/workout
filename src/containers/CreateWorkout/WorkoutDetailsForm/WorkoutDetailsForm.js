@@ -133,24 +133,32 @@ const WorkoutDetailsForm = (props) => {
     secondaryTargetAreaInput,
   ];
 
-  const inputChangedHandler = (e, input) => {
-    if (e.target) e.value = e.target.value;
-    const updatedInput = updateObject(input, {
-      value: e.value,
-      valid: checkValidityHandler(e.value, input.validation),
-      touched: true,
-    });
+  const inputChangedHandler = useCallback(
+    (e, input) => {
+      if (e.target) e.value = e.target.value;
+      const updatedInput = updateObject(input, {
+        value:
+          input === workoutNameInput
+            ? e.value
+            : input.elementConfig.options.filter(
+                (option) => option.value === e.value
+              )[0],
+        valid: checkValidityHandler(e.value, input.validation),
+        touched: true,
+      });
 
-    if (input.id === 'workoutName') props.setFormIsValid(updatedInput.valid);
+      if (input.id === 'workoutName') props.setFormIsValid(updatedInput.valid);
 
-    input.id === 'workoutName'
-      ? setWorkoutNameInput(updatedInput)
-      : input.id === 'targetArea'
-      ? setTargetAreaInput(updatedInput)
-      : setSecondaryTargetAreaInput(updatedInput);
+      input.id === 'workoutName'
+        ? setWorkoutNameInput(updatedInput)
+        : input.id === 'targetArea'
+        ? setTargetAreaInput(updatedInput)
+        : setSecondaryTargetAreaInput(updatedInput);
 
-    dispatch(setFormData(formData, input.id, e.value));
-  };
+      dispatch(setFormData(formData, input.id, e.value));
+    },
+    [dispatch, formData, props, workoutNameInput]
+  );
 
   const detailsForm = formFields.map((field) => (
     <Input
@@ -173,8 +181,8 @@ const WorkoutDetailsForm = (props) => {
 
   const clearAllFormInputs = useCallback(() => {
     setWorkoutNameInput({ ...workoutNameInput, value: '' });
-    setTargetAreaInput({ ...targetAreaInput, value: '' });
-    setSecondaryTargetAreaInput({ ...secondaryTargetAreaInput, value: '' });
+    setTargetAreaInput({ ...targetAreaInput, value: null });
+    setSecondaryTargetAreaInput({ ...secondaryTargetAreaInput, value: null });
   }, [secondaryTargetAreaInput, workoutNameInput, targetAreaInput]);
 
   const clearAllWorkoutData = useCallback(() => {
