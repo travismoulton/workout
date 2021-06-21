@@ -11,7 +11,14 @@ const FavoriteBtn = (props) => {
   const toggleFavoritesHandler = () =>
     props.isFavorite
       ? dispatch(removeFromFavorites(uid, props.firebaseId, accessToken))
-      : dispatch(addToFavorites(uid, props.exerciseId, accessToken));
+      : dispatch(
+          addToFavorites(
+            uid,
+            props.exerciseId,
+            accessToken,
+            props.exerciseCategory
+          )
+        );
 
   const btnClasses = [
     classes.Btn,

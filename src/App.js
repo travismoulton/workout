@@ -30,7 +30,7 @@ import { FirebaseContext } from './components/Firebase/index';
 
 function App(props) {
   const [authUser, setAuthUser] = useState(null);
-  const [loaded, setLoaded] = useState(true);
+  const [loaded, setLoaded] = useState(false);
   const isAuthenticated = useSelector((state) => state.auth.user !== null);
   const inAuth = useSelector((state) => state.auth.inAuth);
   const dispatch = useDispatch();

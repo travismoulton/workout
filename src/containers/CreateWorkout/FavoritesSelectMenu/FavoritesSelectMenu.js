@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
 import uniqid from 'uniqid';
 
+import wgerDict from '../../../shared/wgerDict';
 import Input from '../../../components/UI/Input/Input';
 import { addExercise } from '../../../store/actions';
 
@@ -88,20 +89,45 @@ const FavoritesSelectMenu = (props) => {
     props,
   ]);
 
+  const getExerciseCategories = useCallback(() => {
+    const categories = [];
+    favoritesAsExercises.forEach((exercise) => {
+      if (!categories.includes(exercise.category))
+        categories.push(exercise.category);
+    });
+
+    return categories;
+  }, [favoritesAsExercises]);
+
   useEffect(() => {
     // After favoritesAsExercises has been created, create an array of objects to
     // be used as select options inside the Add from favroites dropdown
     if (favoritesAsExercises.length && !favoritesAsSelectOptions.length) {
-      setFavoritesAsSelectOptions(
-        favoritesAsExercises.map((exercise) => ({
-          value: exercise.id,
-          label: exercise.name,
-        }))
+      const categories = getExerciseCategories();
+
+      const groupedOptions = categories.map((category) =>
+        favoritesAsExercises.filter(
+          (favorite) => favorite.category === category
+        )
       );
-      // Once the select options have been set, load the page
+
+      const finalOptions = categories.map((category, i) => ({
+        label: wgerDict.exerciseCategoryList[category],
+        options: groupedOptions[i].map((exercise) => ({
+          label: exercise.name,
+          value: exercise.id,
+        })),
+      }));
+
+      setFavoritesAsSelectOptions(finalOptions);
       props.toggleLoaded();
     }
-  }, [favoritesAsExercises, favoritesAsSelectOptions, props]);
+  }, [
+    favoritesAsExercises,
+    favoritesAsSelectOptions,
+    props,
+    getExerciseCategories,
+  ]);
 
   useEffect(() => {
     // If there are no favorites, the page can be loaded immediatley

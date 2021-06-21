@@ -17,8 +17,10 @@ const CustomSelect = (props) => {
   const customStyles = {
     option: (provided, state) => ({
       ...provided,
+      display: 'flex',
+      alignItems: 'center',
       textAlign: 'left',
-      height: '4rem',
+      height: '4.5rem',
       backgroundColor: state.isSelected
         ? '#00bbff'
         : state.isFocused
@@ -38,6 +40,14 @@ const CustomSelect = (props) => {
       },
     }),
   };
+
+  const formatGroupLabel = (data) => (
+    <div className={classes.GroupStyles}>
+      <span>{data.label}</span>
+      <span className={classes.GroupBadge}>{data.options.length}</span>
+    </div>
+  );
+
   return (
     <Select
       className={classes[props.inputClasses]}
@@ -47,6 +57,7 @@ const CustomSelect = (props) => {
       components={{ DropdownIndicator }}
       defaultValue={defaultValue}
       isSearchable={props.isSearchable}
+      formatGroupLabel={formatGroupLabel}
     />
   );
 };

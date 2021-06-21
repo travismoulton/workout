@@ -160,6 +160,7 @@ const ExerciseDetail = (props) => {
             isFavorite={isFavorite}
             firebaseId={firebaseId}
             exerciseId={exercise.id}
+            exerciseCategory={exercise.category}
           />
         </div>
       )}
