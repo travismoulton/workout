@@ -47,7 +47,7 @@ const ExerciseDetail = (props) => {
       : `https://wger.de/api/v2/exercise/${id}`;
 
     axios
-      .get(url, { timeout: 5000 })
+      .get(url, { timeout: 10000 })
       .then((res) => setExercise(res.data))
       .catch((err) => {
         setError({ ...error, isError: true, code: 'noExercise' });

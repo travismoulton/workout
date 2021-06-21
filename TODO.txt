@@ -1,10 +1,10 @@
 //1: Set document titles DONE
+//2: Set an icon DONE
+//3: Set a 10 second timer on wger calls DONE
 
-
-//2: Set an icon
-//3: Set a 10 second timer on wger calls
 //4: Can I set the favorites dropdown to list them by category?
 //5: Can I get the clear form button to reset the select menus on create workout?
 //6: If a user doesn't have an active routine set a newly created routine to be active
 //7: Add username and email to be displayed on the my profile privlages
 //8: Revisit adding pictures to exercise detail
+//9: Edit the README

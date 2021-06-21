@@ -65,17 +65,17 @@ const Search = (props) => {
   useEffect(() => {
     if (!exerciseCategories && !muscles && !equipment) {
       axios
-        .get(`https://wger.de/api/v2/exercisecategory`, { timeout: 5000 })
+        .get(`https://wger.de/api/v2/exercisecategory`, { timeout: 10000 })
         .then((res) => setExerciseCategoires(res.data.results))
         .catch(() => setError({ ...error, isError: true }));
 
       axios
-        .get(`https://wger.de/api/v2/muscle`, { timeout: 5000 })
+        .get(`https://wger.de/api/v2/muscle`, { timeout: 10000 })
         .then((res) => setMuscles(res.data.results))
         .catch(() => setError({ ...error, isError: true }));
 
       axios
-        .get(`https://wger.de/api/v2/equipment`, { timeout: 5000 })
+        .get(`https://wger.de/api/v2/equipment`, { timeout: 10000 })
         .then((res) => setEquipment(res.data.results))
         .catch(() => setError({ ...error, isError: true }));
     }

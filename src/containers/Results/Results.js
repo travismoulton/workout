@@ -49,7 +49,7 @@ const Results = (props) => {
       (async () => {
         while (next) {
           await axios
-            .get(next, { timeout: 5000 })
+            .get(next, { timeout: 10000 })
             // eslint-disable-next-line no-loop-func
             .then((res) => {
               res.data.results.forEach((result) => arr.push(result));
