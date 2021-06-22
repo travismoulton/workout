@@ -6,7 +6,10 @@ import { fetchActiveRoutine } from '../../store/actions';
 
 const SubmitRoutineBtn = (props) => {
   const [error, setError] = useState({ isError: false, code: '', msg: '' });
+  const [shouldBeActiveRoutine, setShouldBeActiveRoutine] = useState(false);
+  const { activeRoutine } = useSelector((state) => state.favorites);
   const { uid, accessToken } = useSelector((state) => state.auth);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -46,6 +49,10 @@ const SubmitRoutineBtn = (props) => {
 
     return nameTaken;
   };
+
+  useEffect(() => {
+    setShouldBeActiveRoutine(props.isActiveRoutine || !activeRoutine);
+  }, [props.isActiveRoutine, activeRoutine]);
 
   const redirectToMyProfile = () => {
     props.history.push({
@@ -90,11 +97,12 @@ const SubmitRoutineBtn = (props) => {
       data: {
         title: props.title,
         workouts: props.workouts,
-        activeRoutine: props.isActiveRoutine,
+        activeRoutine: shouldBeActiveRoutine,
       },
     })
       .then(() => {
-        if (props.isActiveRoutine) dispatch(fetchActiveRoutine(uid));
+        if (shouldBeActiveRoutine)
+          dispatch(fetchActiveRoutine(uid, accessToken));
         redirectToMyProfile();
       })
       .catch((err) =>
