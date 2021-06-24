@@ -9,7 +9,7 @@
 //10: After editing the active routine, need to reset it DONE
 
 //7: Add username and email to be displayed on the my profile page
-//8: Revisit adding pictures to exercise detail
+//8: Revisit adding pictures to exercise detail MAY NOT BE POSSIBLE
 //9: Refactor set details
 //10: Edit the README
 

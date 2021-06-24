@@ -38,6 +38,8 @@ const ExerciseDetail = (props) => {
     if (exercise) document.title = exercise.name;
   }, []);
 
+  if (exercise) console.log(exercise);
+
   useEffect(() => {
     const { firebaseSearchId, id } = props.location.state;
 
