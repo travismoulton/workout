@@ -2,7 +2,7 @@
 
 This app is built using the WGER Api. Huge thanks to the authors of that project for making this API poblicy available.
 
-[Check out the site here] (https://workout-2.netlify.app/)
+[Check out the site here](https://workout-2.netlify.app/)
 
 ### How to interact with the site
 
