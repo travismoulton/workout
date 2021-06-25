@@ -55,6 +55,8 @@ const ExerciseDetailImg = ({ primaryMuscles, secondaryMuscles }) => {
   const displayMuscularSystemBack =
     primaryBackMusclesStr || secondaryMusclesBackStr;
 
+  console.log(displayMuscularSystemBack);
+
   return displayMuscularSystemBack || displayMuscularSystemFront ? (
     <>
       <div className={classes.ColorKey}>
@@ -70,7 +72,11 @@ const ExerciseDetailImg = ({ primaryMuscles, secondaryMuscles }) => {
           <div
             className={classes.Img}
             style={{
-              backgroundImage: `${primaryFrontMusclesStr}, ${secondaryMusclesFrontStr}, ${muscularSystemFront}`,
+              backgroundImage: `${
+                primaryFrontMusclesStr ? primaryFrontMusclesStr + ',' : ''
+              } ${
+                secondaryMusclesFrontStr ? secondaryMusclesFrontStr + ',' : ''
+              } ${muscularSystemFront}`,
             }}
           ></div>
         )}
@@ -78,7 +84,11 @@ const ExerciseDetailImg = ({ primaryMuscles, secondaryMuscles }) => {
           <div
             className={classes.Img}
             style={{
-              backgroundImage: `${primaryBackMusclesStr}, ${secondaryMusclesBackStr}, ${muscularSystemBack}`,
+              backgroundImage: `${
+                primaryBackMusclesStr ? primaryBackMusclesStr + ',' : ''
+              } ${
+                secondaryMusclesBackStr ? secondaryMusclesBackStr + ',' : ''
+              } ${muscularSystemBack}`,
             }}
           ></div>
         )}
