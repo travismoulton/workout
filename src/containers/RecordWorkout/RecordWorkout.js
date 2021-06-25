@@ -25,13 +25,10 @@ const RecordWorkout = (props) => {
   const dispatch = useDispatch();
 
   const workoutDateRef = useRef(null);
+  workoutDateRef.current = workoutDate;
 
   useEffect(() => {
     document.title = 'Record Workout';
-  }, []);
-
-  useEffect(() => {
-    workoutDateRef.current = workoutDate;
   }, []);
 
   useEffect(() => {

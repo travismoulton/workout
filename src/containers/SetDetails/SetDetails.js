@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import classes from './SetDetails.module.css';
@@ -9,7 +8,7 @@ const SetDetails = (props) => {
   const { exercises } = useSelector((state) => state.workout);
   const dispatch = useDispatch();
 
-  const [weightInput, setWeightInput] = useState({
+  const weightInput = {
     elementType: 'select',
     elementConfig: {
       options: (() => {
@@ -25,11 +24,11 @@ const SetDetails = (props) => {
       )[0];
     },
     value: props.weight,
-    label: 'Weight',
+    label: 'weight',
     id: 1,
-  });
+  };
 
-  const [repsInput, setRepsInput] = useState({
+  const repsInput = {
     elementType: 'select',
     elementConfig: {
       options: (() => {
@@ -45,11 +44,11 @@ const SetDetails = (props) => {
       )[0];
     },
     value: props.reps,
-    label: 'Reps',
+    label: 'reps',
     id: 3,
-  });
+  };
 
-  const [minutesInput, setMinutesInput] = useState({
+  const minutesInput = {
     elementType: 'select',
     elementConfig: {
       options: (() => {
@@ -65,11 +64,11 @@ const SetDetails = (props) => {
       )[0];
     },
     value: props.minutes,
-    label: 'Minutes: ',
+    label: 'minutes',
     id: 3,
-  });
+  };
 
-  const [secondsInput, setSecondsInput] = useState({
+  const secondsInput = {
     elementType: 'select',
     elementConfig: {
       options: (() => {
@@ -85,180 +84,51 @@ const SetDetails = (props) => {
       )[0];
     },
     value: props.seconds,
-    label: 'Seconds',
+    label: 'seconds',
     id: 4,
-  });
+  };
 
-  const setWeight = (e) => {
+  const updateSetViaSelectMenu = (e, input) => {
     dispatch(
       updateExerciseData(
         exercises,
         props.id,
-        'weight',
+        input,
         e.value * 1,
         props.setNumber - 1
       )
     );
   };
 
-  const setNumReps = (e) => {
+  const increment = (input) => {
     dispatch(
       updateExerciseData(
         exercises,
         props.id,
-        'reps',
-        e.value * 1,
+        input.label,
+        input.value + (input.label === 'weight' ? 5 : 1),
         props.setNumber - 1
       )
     );
   };
 
-  const setNumMinutes = (e) => {
-    dispatch(
-      updateExerciseData(
-        exercises,
-        props.id,
-        'minutes',
-        e.value * 1,
-        props.setNumber - 1
-      )
-    );
-  };
-
-  const setNumSeconds = (e) => {
-    dispatch(
-      updateExerciseData(
-        exercises,
-        props.id,
-        'seconds',
-        e.value * 1,
-        props.setNumber - 1
-      )
-    );
-  };
-
-  const incrementWeight = () => {
-    dispatch(
-      updateExerciseData(
-        exercises,
-        props.id,
-        'weight',
-        weightInput.value + 5,
-        props.setNumber - 1
-      )
-    );
-  };
-
-  const decrementWeight = () => {
-    if (weightInput.value > 0) {
+  const decrement = (input) => {
+    if (input.value > 0)
       dispatch(
         updateExerciseData(
           exercises,
           props.id,
-          'weight',
-          weightInput.value - 5,
-          props.setNumber - 1
-        )
-      );
-    }
-  };
-
-  const incrementReps = () => {
-    dispatch(
-      updateExerciseData(
-        exercises,
-        props.id,
-        'reps',
-        repsInput.value + 1,
-        props.setNumber - 1
-      )
-    );
-  };
-
-  const decrementReps = () => {
-    if (repsInput.value > 0) {
-      dispatch(
-        updateExerciseData(
-          exercises,
-          props.id,
-          'reps',
-          repsInput.value - 1,
-          props.setNumber - 1
-        )
-      );
-    }
-  };
-
-  const incrementMinutes = () => {
-    dispatch(
-      updateExerciseData(
-        exercises,
-        props.id,
-        'minutes',
-        minutesInput.value + 1,
-        props.setNumber - 1
-      )
-    );
-  };
-
-  const decrementMinutes = () => {
-    if (minutesInput.value > 0)
-      dispatch(
-        updateExerciseData(
-          exercises,
-          props.id,
-          'minutes',
-          minutesInput.value - 1,
+          input.label,
+          input.value - (input.label === 'weight' ? 5 : 1),
           props.setNumber - 1
         )
       );
   };
-
-  const incrementSeconds = () => {
-    dispatch(
-      updateExerciseData(
-        exercises,
-        props.id,
-        'seconds',
-        secondsInput.value + 1,
-        props.setNumber - 1
-      )
-    );
-  };
-
-  const decrementSeconds = () => {
-    if (secondsInput.value > 0)
-      dispatch(
-        updateExerciseData(
-          exercises,
-          props.id,
-          'seconds',
-          secondsInput.value - 1,
-          props.setNumber - 1
-        )
-      );
-  };
-
-  const btnFunctions =
-    props.focus === 'reps'
-      ? [
-          [decrementWeight, incrementWeight],
-          [decrementReps, incrementReps],
-        ]
-      : [
-          [decrementMinutes, incrementMinutes],
-          [decrementSeconds, incrementSeconds],
-        ];
 
   const formFields =
     props.focus === 'reps'
       ? [weightInput, repsInput]
       : [minutesInput, secondsInput];
-
-  const updateFunctions =
-    props.focus === 'reps'
-      ? [setWeight, setNumReps]
-      : [setNumMinutes, setNumSeconds];
 
   const form = formFields.map((field, i) => (
     <Input
@@ -266,14 +136,14 @@ const SetDetails = (props) => {
       elementConfig={field.elementConfig}
       key={field.id}
       value={field.displayValue}
-      changed={updateFunctions[i]}
+      changed={(e) => updateSetViaSelectMenu(e, field.label)}
       label={field.label}
       classname="SetDetailsSelect"
       wrapperClass="SetDetailsSelectWrapper"
       setClipPath
       SetDetails
-      decrementFunction={btnFunctions[i][0]}
-      incrementFunction={btnFunctions[i][1]}
+      decrementFunction={() => decrement(field)}
+      incrementFunction={() => increment(field)}
       notSearchable
     />
   ));
