@@ -6,6 +6,7 @@ import ExerciseDetailCategory from '../../components/ExerciseDetails/ExerciseDet
 import ExerciseDetailEquipment from '../../components/ExerciseDetails/ExerciseDetailEquipment/ExerciseDetailEquipment';
 import ExerciseDetailDescription from '../../components/ExerciseDetails/ExerciseDetailDescription/ExerciseDetailDescription';
 import ExerciseDetailMuscles from '../../components/ExerciseDetails/ExerciseDetailMuscles/ExerciseDetailMuscles';
+import ExericseDetailImg from '../../components/ExerciseDetails/ExerciseDetailImg/ExerciseDetailImg';
 import AddToWorkoutBtn from '../../components/AddToWorkoutBtn/AddToWorkoutBtn';
 import Modal from '../../components/UI/Modal/Modal';
 import FavoriteBtn from '../../components/FavoriteBtn/FavoriteBtn';
@@ -37,8 +38,6 @@ const ExerciseDetail = (props) => {
   useEffect(() => {
     if (exercise) document.title = exercise.name;
   }, []);
-
-  if (exercise) console.log(exercise);
 
   useEffect(() => {
     const { firebaseSearchId, id } = props.location.state;
@@ -156,6 +155,11 @@ const ExerciseDetail = (props) => {
             : []
         }
       />
+      <ExericseDetailImg
+        primaryMuscles={exercise.muscles}
+        secondaryMuscles={exercise.muscles_secondary}
+      />
+
       {user && (
         <div className={classes.BtnContainer}>
           <FavoriteBtn

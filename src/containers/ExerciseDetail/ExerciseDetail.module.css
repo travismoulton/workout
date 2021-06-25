@@ -43,6 +43,15 @@
   width: 15rem;
 }
 
+.MuscleImg {
+  background-image: url('https://wger.de/static/images/muscles/secondary/muscle-13.svg');
+  background-repeat: no-repeat;
+  width: 20rem;
+  height: 40rem;
+
+  margin: 1rem auto;
+}
+
 @media only screen and (max-width: 800px) {
   .ModalBtnWrapper {
     flex-direction: column;

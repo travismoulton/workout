@@ -7,11 +7,14 @@
 //12: When editing a routine, the select menus are coming up blank DONE
 //6: If a user doesn't have an active routine set a newly created routine to be active DONE
 //10: After editing the active routine, need to reset it DONE
+//10: Edit the README DONE
 
+
+//: Check out Bear walk description. Write a regex that will hit have line breaks
 //7: Add username and email to be displayed on the my profile page
-//8: Revisit adding pictures to exercise detail MAY NOT BE POSSIBLE
+//8: Revisit adding pictures to exercise detail 
 //9: Refactor set details
-//10: Edit the README
+
 
 
 
