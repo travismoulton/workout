@@ -133,6 +133,7 @@ const ExerciseDetail = (props) => {
       {exercise.description && (
         <ExerciseDetailDescription description={exercise.description} />
       )}
+
       <ExerciseDetailMuscles
         muscles={
           exercise.muscles
@@ -148,8 +149,8 @@ const ExerciseDetail = (props) => {
         }
       />
       <ExericseDetailImg
-        primaryMuscles={exercise.muscles}
-        secondaryMuscles={exercise.muscles_secondary}
+        primaryMuscles={exercise.muscles || []}
+        secondaryMuscles={exercise.muscles_secondary || []}
       />
 
       {user && (
