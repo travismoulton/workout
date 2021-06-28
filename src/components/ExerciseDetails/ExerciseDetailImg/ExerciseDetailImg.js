@@ -55,8 +55,6 @@ const ExerciseDetailImg = ({ primaryMuscles, secondaryMuscles }) => {
   const displayMuscularSystemBack =
     primaryBackMusclesStr || secondaryMusclesBackStr;
 
-  console.log(displayMuscularSystemBack);
-
   return displayMuscularSystemBack || displayMuscularSystemFront ? (
     <>
       <div className={classes.ColorKey}>

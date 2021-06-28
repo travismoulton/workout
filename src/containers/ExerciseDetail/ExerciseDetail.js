@@ -17,7 +17,6 @@ import wgerDict from '../../shared/wgerDict';
 const ExerciseDetail = (props) => {
   const [exercise, setExercise] = useState();
   const [isFavorite, setIsFavorite] = useState(false);
-  const [description, setDescription] = useState('');
   const [firebaseId, setFirebaseId] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [error, setError] = useState({
@@ -54,15 +53,6 @@ const ExerciseDetail = (props) => {
         setError({ ...error, isError: true, code: 'noExercise' });
       });
   }, [props.location.state, uid, error, user, accessToken]);
-
-  useEffect(() => {
-    if (exercise) {
-      const div = document.createElement('div');
-      div.innerHTML = exercise.description;
-      // Strips out html tags from the API response
-      setDescription(div.textContent || div.innerText);
-    }
-  }, [exercise]);
 
   useEffect(() => {
     setIsFavorite(false);
@@ -140,7 +130,9 @@ const ExerciseDetail = (props) => {
             : []
         }
       />
-      <ExerciseDetailDescription description={description} />
+      {exercise.description && (
+        <ExerciseDetailDescription description={exercise.description} />
+      )}
       <ExerciseDetailMuscles
         muscles={
           exercise.muscles

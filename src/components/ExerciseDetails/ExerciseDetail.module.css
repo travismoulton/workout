@@ -29,10 +29,19 @@
 }
 
 .Description p {
-  width: 50%;
   margin: 0 auto;
   font-size: 1.8rem;
   line-height: 140%;
+}
+
+.Description div {
+  width: 60%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.Description div p {
+  margin-bottom: 1rem;
 }
 
 .Detail ul {

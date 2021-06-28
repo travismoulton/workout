@@ -9,12 +9,21 @@
 //10: After editing the active routine, need to reset it DONE
 //10: Edit the README DONE
 //8: Revisit adding pictures to exercise detail DONE
+//9: Refactor set details DONE
 
 
 //: Check out Bear walk description. Write a regex that will hit have line breaks
 //7: Add username and email to be displayed on the my profile page
-//9: Refactor set details
+//: Need to fix custom exercises.
 
 
 
-
+  useEffect(() => {
+    if (description) {
+      const div = document.createElement('div');
+      div.innerHTML = description;
+      console.log(div);
+      // Strips out html tags from the API response
+      descriptionRef.current = div.textContent || div.innerText;
+    }
+  }, [description]);
