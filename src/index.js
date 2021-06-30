@@ -33,6 +33,8 @@ const store = createStore(
     : applyMiddleware(thunk)
 );
 
+console.log(createStore(rootReducer));
+
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>

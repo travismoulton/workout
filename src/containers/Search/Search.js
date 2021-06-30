@@ -29,7 +29,7 @@ const Search = (props) => {
 
   useEffect(() => {
     document.title = 'Search For Exercises';
-  });
+  }, []);
 
   useEffect(() => {
     const page = props.location.pathname.substring(1);

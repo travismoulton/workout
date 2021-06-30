@@ -4,6 +4,7 @@ const SearchCategory = (props) => (
   <div
     className={`${classes.SearchCategory} ${classes.SearchCategory__mainCategory}`}
     onClick={props.clicked}
+    data-testid={props.categoryName}
   >
     {props.categoryName}
     <span
