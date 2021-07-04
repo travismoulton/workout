@@ -1,32 +1,41 @@
-import { unmountComponentAtNode } from 'react-dom';
-import { customRender, screen, getByLabelText } from '../../shared/testUtils';
-import userEvent from '@testing-library/user-event';
+import { customRender, screen, waitFor } from '../../shared/testUtils';
 
 import Search from './Search';
+import wgerDict from '../../shared/wgerDict';
+import { utils } from './searchUtils';
 
 describe('<Search />', () => {
-  let container = null;
-  beforeEach(() => {
-    container = document.createElement('div');
-    document.body.appendChild(container);
-  });
+  test('calls to the wger api', async () => {
+    const testVal = jest.spyOn(utils, 'fetchWgerData');
 
-  afterEach(() => {
-    unmountComponentAtNode(container);
-    container.remove();
-    container = null;
+    const props = { location: { pathname: '/search' } };
+    customRender(<Search {...props} />);
+
+    expect(testVal).toHaveBeenCalled();
   });
 
   test('renders ExerciseCategory div', async () => {
+    const mockCategories = () => {
+      const returnArr = [];
+      for (let category in wgerDict.exerciseCategoryList) {
+        returnArr.push({ [category]: wgerDict.exerciseCategoryList[category] });
+      }
+      return returnArr;
+    };
+
+    jest
+      .spyOn(utils, 'fetchWgerData')
+      .mockImplementation(jest.fn(() => Promise.resolve(mockCategories())));
+
     const props = { location: { pathname: '/search' } };
     customRender(<Search {...props} />);
+
+    const exerciseCategoryElement = await waitFor(() =>
+      screen.getByTestId('Exercise Category')
+    );
+
     screen.debug();
 
-    const exerciseCategoryElement = screen.getByText('Exercise Category', {
-      exact: false,
-    });
-
-    console.log(exerciseCategoryElement);
     expect(exerciseCategoryElement).toBeInTheDocument();
   });
 });

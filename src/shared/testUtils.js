@@ -23,8 +23,8 @@ function customRender(
     ...renderOptions
   } = {}
 ) {
-  console.log(rootReducer);
-  console.log(configureStore({ reducer: rootReducer, preLoadedState }));
+  // console.log(rootReducer);
+  // console.log(configureStore({ reducer: rootReducer, preLoadedState }));
 
   function wrapper({ children }) {
     return <Provider store={store}>{children}</Provider>;

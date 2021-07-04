@@ -1,11 +1,13 @@
 import axios from 'axios';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 
 import classes from './Search.module.css';
 import SearchCategory from '../../components/SearchCategory/SearchCategory';
 import SearchSubCategory from '../../components/SearchSubCategory/SearchSubCategory';
 import Spinner from '../../components/UI/Spinner/Spinner';
+
+import { utils } from './searchUtils';
 
 const Search = (props) => {
   const [subCategories, setSubCategories] = useState([]);
@@ -64,20 +66,14 @@ const Search = (props) => {
 
   useEffect(() => {
     if (!exerciseCategories && !muscles && !equipment) {
-      axios
-        .get(`https://wger.de/api/v2/exercisecategory`, { timeout: 10000 })
-        .then((res) => setExerciseCategoires(res.data.results))
-        .catch(() => setError({ ...error, isError: true }));
-
-      axios
-        .get(`https://wger.de/api/v2/muscle`, { timeout: 10000 })
-        .then((res) => setMuscles(res.data.results))
-        .catch(() => setError({ ...error, isError: true }));
-
-      axios
-        .get(`https://wger.de/api/v2/equipment`, { timeout: 10000 })
-        .then((res) => setEquipment(res.data.results))
-        .catch(() => setError({ ...error, isError: true }));
+      utils.fetchWgerData(
+        'exercisecategory',
+        setExerciseCategoires,
+        error,
+        setError
+      );
+      utils.fetchWgerData('muscle', setMuscles, error, setError);
+      utils.fetchWgerData('equipment', setEquipment, error, setError);
     }
   }, [error, exerciseCategories, muscles, equipment]);
 
