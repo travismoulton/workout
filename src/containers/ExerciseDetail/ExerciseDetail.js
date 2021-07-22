@@ -115,6 +115,8 @@ const ExerciseDetail = (props) => {
     </Modal>
   );
 
+  console.log(exercise);
+
   const display = exercise && (
     <>
       {error.code === 'delete' && error.message}

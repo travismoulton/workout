@@ -14,6 +14,8 @@ const ExerciseDetailImg = ({ primaryMuscles, secondaryMuscles }) => {
       3: Finally it joins the array with the desired strings into one string that can be used in a css background image property.
   */
 
+  console.log(primaryMuscles);
+
   const primaryFrontMusclesStr = primaryMuscles
     .map((muscle) =>
       wgerDict.muscles[muscle].is_front
@@ -55,6 +57,12 @@ const ExerciseDetailImg = ({ primaryMuscles, secondaryMuscles }) => {
   const displayMuscularSystemBack =
     primaryBackMusclesStr || secondaryMusclesBackStr;
 
+  console.log(
+    `${primaryFrontMusclesStr ? primaryFrontMusclesStr + ',' : ''} ${
+      secondaryMusclesFrontStr ? secondaryMusclesFrontStr + ',' : ''
+    } ${muscularSystemFront}`
+  );
+
   return displayMuscularSystemBack || displayMuscularSystemFront ? (
     <>
       <div className={classes.ColorKey}>
@@ -72,7 +80,7 @@ const ExerciseDetailImg = ({ primaryMuscles, secondaryMuscles }) => {
             style={{
               backgroundImage: `${
                 primaryFrontMusclesStr ? primaryFrontMusclesStr + ',' : ''
-              } ${
+              }${
                 secondaryMusclesFrontStr ? secondaryMusclesFrontStr + ',' : ''
               } ${muscularSystemFront}`,
             }}
@@ -84,7 +92,7 @@ const ExerciseDetailImg = ({ primaryMuscles, secondaryMuscles }) => {
             style={{
               backgroundImage: `${
                 primaryBackMusclesStr ? primaryBackMusclesStr + ',' : ''
-              } ${
+              }${
                 secondaryMusclesBackStr ? secondaryMusclesBackStr + ',' : ''
               } ${muscularSystemBack}`,
             }}

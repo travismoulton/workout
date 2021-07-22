@@ -8,10 +8,9 @@ import {
 
 export const authStart = () => ({ type: AUTH_START });
 
-export const authSuccess = (user) => ({
-  type: AUTH_SUCCESS,
-  user,
-});
+export const authSuccess = (user) => {
+  return { type: AUTH_SUCCESS, user };
+};
 
 export const authFail = (error) => ({ type: AUTH_FAIL, error });
 

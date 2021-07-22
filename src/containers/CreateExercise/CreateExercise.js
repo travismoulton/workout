@@ -298,7 +298,7 @@ const CreateExercise = (props) => {
         description={descriptionInput.value || ''}
         category={categoryInput.value}
         primaryMuscle={
-          primaryMuscleInput.value ? [primaryMuscleInput.value] : null
+          primaryMuscleInput.value ? [primaryMuscleInput.value.value * 1] : null
         }
         equipment={getEquipmentUsed()}
         secondaryMuscles={getSecondaryMusclesUsed()}

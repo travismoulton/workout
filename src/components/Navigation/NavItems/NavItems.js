@@ -1,6 +1,5 @@
 import { useSelector } from 'react-redux';
 
-// import DrawerToggle from '../DrawerToggle/DrawerToggle';
 import NavItem from './NavItem/NavItem';
 import classes from './NavItems.module.css';
 

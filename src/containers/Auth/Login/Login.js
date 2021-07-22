@@ -69,6 +69,7 @@ const Login = (props) => {
     props.firebase
       .doSignInWithEmailAndPassword(emailInput.value, passwordInput.value)
       .then((userCredential) => {
+        console.log(userCredential.user);
         dispatch(authSuccess(userCredential.user));
         setErrorMessage('');
       })
